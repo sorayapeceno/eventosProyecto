@@ -1,0 +1,60 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- ✅ CRMServlet -->
+    <servlet>
+        <servlet-name>CRMServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.crm.CRMServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Ruta raíz del contexto → CRMServlet -->
+    <servlet-mapping>
+        <servlet-name>CRMServlet</servlet-name>
+        <url-pattern>/</url-pattern>   <!-- ✅ AÑADIDO: cubre localhost:8080/eventosProyectos -->
+    </servlet-mapping>
+
+    <!-- Ruta /crm/* → CRMServlet -->
+    <servlet-mapping>
+        <servlet-name>CRMServlet</servlet-name>
+        <url-pattern>/crm/*</url-pattern>   <!-- ✅ CORREGIDO: faltaba la / inicial -->
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DashBoardsServlet</servlet-name>
+        <url-pattern>/dashboards/*</url-pattern>   <!-- ✅ CORREGIDO: faltaba la / inicial -->
+    </servlet-mapping>
+
+    dashboards
+
+    <servlet>
+        <servlet-name>VentasServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.ventas.VentasServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DashBoardsServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.dashboards.DashBoardsServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <!-- Ruta /ventas/* → VentasServlet -->
+    <servlet-mapping>
+        <servlet-name>VentasServlet</servlet-name>
+        <url-pattern>/ventas/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Recursos estáticos servidos por el servlet por defecto del contenedor -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/CSS/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/Fotos/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
