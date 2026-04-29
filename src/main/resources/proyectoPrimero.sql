@@ -1,12 +1,9 @@
+DROP DATABASE IF EXISTS eventos;
 
-CREATE DATABASE IF NOT EXISTS proyectoPrimero;
-USE proyectoPrimero;
+create database eventos;
+use eventos;
 
-CREATE TABLE IF NOT EXISTS usuarios (
-    usuario VARCHAR(50) PRIMARY KEY,
-    clave VARCHAR(100) NOT NULL
-);
+CREATE USER IF NOT EXISTS 'alumno'@'localhost' IDENTIFIED BY 'alumnodam#1234';
+GRANT ALL PRIVILEGES ON *.* TO 'alumno'@'localhost';
+FLUSH PRIVILEGES;
 
--- Usuario de prueba
-INSERT INTO usuarios (usuario, clave) VALUES ('usuario', 'usuario1234')
-ON DUPLICATE KEY UPDATE clave = 'usuario1234';
