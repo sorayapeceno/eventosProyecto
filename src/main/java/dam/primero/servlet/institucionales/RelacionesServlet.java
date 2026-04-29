@@ -18,7 +18,7 @@ import java.io.IOException;
 public class RelacionesServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
 	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
-	public static final String TEMPLATES = "/WEB-INF/templates/relaciones/";
+	public static final String TEMPLATES = "/WEB-INF/templates/institucionales/";
 	public static final String SUFFIX = ".html";
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;
@@ -63,7 +63,7 @@ public class RelacionesServlet extends HttpServlet {
 			templateEngine.process("index", context, response.getWriter());
 
 		}
-		else if ("/participantes".equals(servletPath)) {
+		else if ("/relaciones".equals(servletPath)) {
 
 			if (path.isEmpty() || path.equals("/")) {
 				templateEngine.process("indexRelaciones", context, response.getWriter());

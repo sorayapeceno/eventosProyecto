@@ -18,7 +18,7 @@ import java.io.IOException;
 public class ParticipantesServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
 	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
-	public static final String TEMPLATES = "/WEB-INF/templates/participantes/";
+	public static final String TEMPLATES = "/WEB-INF/templates/eventos_participantes/";
 	public static final String SUFFIX = ".html";
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;

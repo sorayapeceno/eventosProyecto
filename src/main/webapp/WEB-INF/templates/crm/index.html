@@ -1,56 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>EVENTOS</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <meta charset="UTF-8" />
+    <title>EVENTOS</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
 </head>
 <body>
+
 <header>
-	<a
-			href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-			target="_blank"> <img th:src="@{/Fotos/logo.svg}"
-								  alt="Logotipo Instituto" id="logo">
-	</a>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
+       target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
 
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-				 opacity: 0.3; z-index: -1;">
+    <h1>Eventos y Proyectos</h1>
 
-	</div>
-	<h1 align="center">Eventos</h1>
-	<div class="contenedorBotonInicio">		</div>
+    <div class="contenedorBotonInicio">
+        <!-- vacío: reservado para botón de inicio en otras páginas -->
+    </div>
 </header>
 
-<main>
-	<div></div>
-	<div class="cajaDeBotones">
-		<button class="botones"
-				onclick="window.location.href='crm'">Ver
-			CRM</button>
-		<button class="botones"
-				onclick="window.location.href='ventas'">Ver
-			Ventas</button>
-		<button class="botones"
-				onclick="window.location.href='dashboards'">Ver
-			Dashboards </button>
-			<button class="botones"
-					onclick="window.location.href='relaciones'">Ver
-				Relaciones</button>
-			<button class="botones"
-					onclick="window.location.href='participantes'">Ver
-				Participantes</button>
-			<button class="botones"
-					onclick="window.location.href='logistica'">Ver
-				Logistica </button>
-
-
-	</div>
-</main>
-<script>
-	function goHome() {
-		window.location.href = "/eventosProyecto/index";
-	}
-</script>
+<principal>
+    <div class="cajaDeBotones">
+        <button class="botones" onclick="window.location.href='crm'">Ver CRM</button>
+        <button class="botones" onclick="window.location.href='ventas'">Ver Ventas</button>
+        <button class="botones" onclick="window.location.href='dashboards'">Ver Dashboards</button>
+        <button class="botones" onclick="window.location.href='relaciones'">Ver Relaciones</button>
+        <button class="botones" onclick="window.location.href='participantes'">Ver Participantes</button>
+        <button class="botones" onclick="window.location.href='logistica'">Ver Logística</button>
+    </div>
+</principal>
+  
 </body>
 </html>

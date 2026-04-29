@@ -62,7 +62,7 @@ public class LogisticaServlet extends HttpServlet {
 			templateEngine.process("index", context, response.getWriter());
 
 		}
-		else if ("/participantes".equals(servletPath)) {
+		else if ("/logistica".equals(servletPath)) {
 
 			if (path.isEmpty() || path.equals("/")) {
 				templateEngine.process("indexLogistica", context, response.getWriter());
