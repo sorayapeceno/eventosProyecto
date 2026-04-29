@@ -10,41 +10,67 @@
         <servlet-class>dam.primero.servlet.crm.CRMServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
-    <!-- Ruta raíz del contexto → CRMServlet -->
-    <servlet-mapping>
-        <servlet-name>CRMServlet</servlet-name>
-        <url-pattern>/</url-pattern>   <!-- ✅ AÑADIDO: cubre localhost:8080/eventosProyectos -->
-    </servlet-mapping>
-
     <!-- Ruta /crm/* → CRMServlet -->
     <servlet-mapping>
         <servlet-name>CRMServlet</servlet-name>
-        <url-pattern>/crm/*</url-pattern>   <!-- ✅ CORREGIDO: faltaba la / inicial -->
+        <url-pattern>/crm/*</url-pattern>
     </servlet-mapping>
-
+    <!-- Ruta raíz del contexto → CRMServlet -->
     <servlet-mapping>
-        <servlet-name>DashBoardsServlet</servlet-name>
-        <url-pattern>/dashboards/*</url-pattern>   <!-- ✅ CORREGIDO: faltaba la / inicial -->
+        <servlet-name>CRMServlet</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    dashboards
-
-    <servlet>
-        <servlet-name>VentasServlet</servlet-name>
-        <servlet-class>dam.primero.servlet.ventas.VentasServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
 
     <servlet>
         <servlet-name>DashBoardsServlet</servlet-name>
         <servlet-class>dam.primero.servlet.dashboards.DashBoardsServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashBoardsServlet</servlet-name>
+        <url-pattern>/dashboards/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VentasServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.ventas.VentasServlet</servlet-class>
         <load-on-startup>3</load-on-startup>
     </servlet>
-    <!-- Ruta /ventas/* → VentasServlet -->
     <servlet-mapping>
         <servlet-name>VentasServlet</servlet-name>
         <url-pattern>/ventas/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ParticipantesServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.eventos_participantes.ParticipantesServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    <!-- Ruta /ventas/* → VentasServlet -->
+    <servlet-mapping>
+        <servlet-name>ParticipantesServlet</servlet-name>
+        <url-pattern>/participantes/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogisticaServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.logistica.LogisticaServlet</servlet-class>
+        <load-on-startup>5</load-on-startup>
+    </servlet>
+    <!-- Ruta /ventas/* → VentasServlet -->
+    <servlet-mapping>
+        <servlet-name>LogisticaServlet</servlet-name>
+        <url-pattern>/logistica/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RelacionesServlet</servlet-name>
+        <servlet-class>dam.primero.servlet.institucionales.RelacionesServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RelacionesServlet</servlet-name>
+        <url-pattern>/relaciones/*</url-pattern>
     </servlet-mapping>
 
     <!-- Recursos estáticos servidos por el servlet por defecto del contenedor -->
