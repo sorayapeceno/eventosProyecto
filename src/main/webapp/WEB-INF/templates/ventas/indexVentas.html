@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>VENTAS</title>
+	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+	<style>
+		body  { text-align: center; }
+		main  { display: flex; justify-content: center; align-items: center; }
+	</style>
+</head>
+<body>
+<header>
+	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
+	   target="_blank">
+		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+	</a>
+
+	<div class="fondo"
+		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                        opacity: 0.3; z-index: -1;">
+	</div>
+
+	<h1 align="center">VENTAS</h1>
+
+	<!-- Botón atrás: navega a la raíz del contexto -->
+	<a th:href="@{/}">
+		<button type="button">&#8592; Atrás</button>
+	</a>
+</header>
+
+<main>
+	<div></div>
+</main>
+</body>
+</html>
