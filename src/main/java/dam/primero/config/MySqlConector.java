@@ -20,12 +20,12 @@ public class MySqlConector {
 	public MySqlConector() throws MyException {
 		try {
 			Properties properties = new Properties();
-			FileInputStream fs = new FileInputStream("src/main/resources/database.properties");
+			FileInputStream fs = new FileInputStream("src/main/resources/db.properties");
 			properties.load(fs);
 
 			this.url = properties.getProperty("url");
 			this.user = properties.getProperty("user");
-			this.clave = properties.getProperty("password");
+			this.clave = properties.getProperty("clave");
 			
 			this.connect = DriverManager.getConnection(this.url, this.user, this.clave);
 			
