@@ -40,12 +40,12 @@ public class VentasServlet extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-		repoVentas = new RepoVentas();
+
 	}
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		repoVentas = new RepoVentas();
 		System.out.println("En el doGet CRMServlet");
 		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
 
