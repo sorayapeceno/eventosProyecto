@@ -10,7 +10,7 @@ public class TestConnection {
 	public static void main(String[] args) {
 		Properties properties = new Properties();
 		try {
-			FileInputStream fs = new FileInputStream("src/main/resources/database.properties");
+			FileInputStream fs = new FileInputStream("src/main/resources/db.properties");
 			properties.load(fs);
 
 			String url = properties.getProperty("url");

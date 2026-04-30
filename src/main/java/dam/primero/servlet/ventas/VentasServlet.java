@@ -1,6 +1,8 @@
 package dam.primero.servlet.ventas;
 
 
+import dam.primero.modelos.ventas.Cliente;
+import dam.primero.repositorio.ventas.RepoVentas;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class VentasServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
@@ -22,6 +25,7 @@ public class VentasServlet extends HttpServlet {
 	public static final String SUFFIX = ".html";
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;
+	private RepoVentas repoVentas;
 
 
 
@@ -36,7 +40,7 @@ public class VentasServlet extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-		//Inicializa repositorios
+		repoVentas = new RepoVentas();
 	}
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -78,13 +82,15 @@ public class VentasServlet extends HttpServlet {
 				String accion = partes[0];
 				String subaccion = partes.length > 1 ? partes[1] : null;
 
-				System.out.println("doGet accion:    " + accion);
-				System.out.println("doGet subaccion: " + subaccion);
+				System.out.println("doGet accion:" + accion);
+				System.out.println("doGet subaccion:" + subaccion);
 
 				// Aquí tu lógica de negocio por acción
-				switch (accion.toLowerCase()) {
-					case "clientes":
-						// templateEngine.process("clientes", context, response.getWriter());
+				switch (accion) {
+					case "verListadoClientes":
+						List<Cliente> clientes = repoVentas.listarClientes();
+						context.setVariable("clientes", clientes);
+						templateEngine.process("ListadoClientes", context, response.getWriter());
 						break;
 					case "eventos":
 						// templateEngine.process("eventos", context, response.getWriter());

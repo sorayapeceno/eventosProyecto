@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Listado Clientes</title>
+</head>
+<body>
+    <header>
+        <h1> Listado de Clientes </h1>
+        <p> Aquí se mostrará el listado de clientes</p>
+    </header>
+    <main>
+        <div th:if = "${clientes != null && clientes.size > 0}">
+            <table>
+                <thead>
+                <tr>
+                    <th> Nombre Cliente </th>
+                    <th> Correo electrónico </th>
+                    <th> Teléfono </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each = "c : ${clientes}">
+                    <td th:text = "${c.nombre}"></td>
+                    <td th:text = "${c.correo}"></td>
+                    <td th:text = "${c.telefono}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if = "${clientes == null || clientes == 0}">
+            <p> No existen equipos </p>
+        </div>
+    </main>
+
+</body>
+</html>
