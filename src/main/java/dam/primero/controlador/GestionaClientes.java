@@ -1,13 +1,12 @@
 package dam.primero.controlador;
 
-import dam.primero.exception.MyException;
-import dam.primero.repositorio.ventas.RepoVentas;
+import dam.primero.repositorio.ventas.RepoProducto;
 
 import java.sql.SQLException;
 
 public class GestionaClientes {
     public static void main(String[] args) {
-        RepoVentas rv = new RepoVentas();
+        RepoProducto rv = new RepoProducto();
         try {
             System.out.println("Añadiendo cliente");
             rv.darAltaCliente("Alex", "alexcozaru27@gmail.com", "+34 641-543-576");

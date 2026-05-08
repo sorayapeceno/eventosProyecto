@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #e2e8f0;
+    min-height: 100vh;
+}
+
+/* HEADER */
+header {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #60a5fa;
+}
+
+header p {
+    color: #cbd5e1;
+}
+
+/* MAIN */
+main {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* CONTENEDOR TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* CABECERA TABLA */
+thead {
+    background: #1d4ed8;
+    color: white;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+/* FILAS */
+tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: rgba(255,255,255,0.08);
+    transform: scale(1.01);
+}
+
+/* MENSAJE SIN CLIENTES */
+p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #94a3b8;
+}

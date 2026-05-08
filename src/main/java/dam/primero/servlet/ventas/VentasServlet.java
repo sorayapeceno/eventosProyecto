@@ -1,8 +1,7 @@
 package dam.primero.servlet.ventas;
 
 
-import dam.primero.modelos.ventas.Cliente;
-import dam.primero.repositorio.ventas.RepoVentas;
+import dam.primero.repositorio.ventas.RepoProducto;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -25,7 +24,7 @@ public class VentasServlet extends HttpServlet {
 	public static final String SUFFIX = ".html";
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;
-	private RepoVentas repoVentas;
+	private RepoProducto repoVentas;
 
 
 
@@ -45,7 +44,7 @@ public class VentasServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		repoVentas = new RepoVentas();
+		repoVentas = new RepoProducto();
 		System.out.println("En el doGet CRMServlet");
 		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
 

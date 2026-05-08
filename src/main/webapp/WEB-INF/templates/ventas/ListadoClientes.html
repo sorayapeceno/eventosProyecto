@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title> Listado Clientes</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaListadoClientes.css}">
 </head>
 <body>
     <header>
@@ -28,7 +29,7 @@
                 </tbody>
             </table>
         </div>
-        <div th:if = "${clientes == null || clientes == 0}">
+        <div th:if = "${clientes == null || clientes.size() == 0}">
             <p> No existen equipos </p>
         </div>
     </main>
