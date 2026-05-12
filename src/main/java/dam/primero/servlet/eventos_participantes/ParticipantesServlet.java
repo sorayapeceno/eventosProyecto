@@ -82,9 +82,9 @@ public class ParticipantesServlet extends HttpServlet {
 			System.out.println("doGet subaccion: " + subaccion);
 
 			// Aquí tu lógica de negocio por acción
-			switch (accion.toLowerCase()) {
-				case "clientes":
-					// templateEngine.process("clientes", context, response.getWriter());
+			switch (accion) {
+				case "listaParticipantes":
+					 templateEngine.process("indexParticipantes", context, response.getWriter());
 					break;
 				case "eventos":
 					// templateEngine.process("eventos", context, response.getWriter());
