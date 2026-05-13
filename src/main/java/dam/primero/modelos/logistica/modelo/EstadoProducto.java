@@ -1,4 +1,4 @@
 package dam.primero.modelos.logistica.modelo;
 
-public class EstadoProducto {
+public enum EstadoProducto {
 }
