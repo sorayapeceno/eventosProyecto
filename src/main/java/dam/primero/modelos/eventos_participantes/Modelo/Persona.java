@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Persona {
+    private static int contador;
     private int id_Persona;
     private String dni;
     private String username; //usuario
@@ -22,13 +23,9 @@ public class Persona {
     private String redes_Sociales;
     private String web; //podemos poner enlace
 
-    public Persona(int id_Persona, String dni, String username,
-                   String apellido1, String apellido2, String correo,
-                   Alergeno alergeno, int telefono, String ciudad,
-                   String pais, String foto, char genero,
-                   LocalDate fecha_Nacimiento, String password,
-                   String direccion, String redes_Sociales, String web) {
-        this.id_Persona = id_Persona;
+    public Persona(int id_Persona, String dni, String username, String apellido1, String apellido2, String correo, Alergeno alergeno, int telefono, String ciudad, String pais, String foto, char genero, LocalDate fecha_Nacimiento, String password, String direccion, String redes_Sociales, String web) {
+        contador++;
+        this.id_Persona = contador;
         this.dni = dni;
         this.username = username;
         this.apellido1 = apellido1;

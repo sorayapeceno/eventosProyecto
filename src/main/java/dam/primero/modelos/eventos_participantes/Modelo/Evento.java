@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Evento {
+    private static int contador;
     private int id_Evento;
     private String nombre;
     private String descripcion;
@@ -19,7 +20,9 @@ public class Evento {
     public Evento(int id_Evento, String nombre, String descripcion,
                   LocalDate fechaInicio, LocalDate fechaFin, String direccion, String ciudad, int capacidad,
                   Estado estado, Modalidad modalidad, String lugar) {
-        this.id_Evento = id_Evento;
+
+        contador++;
+        this.id_Evento = contador;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
