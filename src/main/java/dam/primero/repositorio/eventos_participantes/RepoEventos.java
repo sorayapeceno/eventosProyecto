@@ -12,7 +12,7 @@ public class RepoEventos {
             this.conector = new MySqlConector();
         } catch (MyException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
-        }
+        } /*Hola manuel*/
     }
 
 }
