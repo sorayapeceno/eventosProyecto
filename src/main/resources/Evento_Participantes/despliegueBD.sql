@@ -187,10 +187,6 @@ CREATE TABLE Ponente_Ponencia (
 );
 
 
-
-
-- -Empiezo con los INSERTS
-
 INSERT INTO Persona (
     DNI, Username, Nombre, Ap1, Ap2, Correo,
     Alergenos, Telefono, Ciudad, Pais,
@@ -251,7 +247,7 @@ NULL,'676212122','Almería','España',NULL,'Mujer','2004-12-22',
 ('11225578G','alejisan','Alejandra','Jiménez','Sánchez','alejandrajim@gmail.com',
 'Marisco','666887954','Almería','España',NULL,'Mujer','1999-02-13',
 'alejime7878*','Calle Santa Gracia 9','@alejimenez99',NULL);
-- -Tabla dummy
+
 INSERT INTO Organizacion () VALUES ();
 INSERT INTO Organizacion () VALUES ();
 INSERT INTO Organizacion () VALUES ();
@@ -393,14 +389,3 @@ INSERT INTO Ponente_Ponencia (id_Ponente, id_Ponencia) VALUES
 (6, 5);
 
 
-
-
-- -Ahora hago los DROPS de las tablas en el orden que corresponde
-DROP TABLE IF EXISTS Ponente_Ponencia;
-DROP TABLE IF EXISTS Ponencia;
-DROP TABLE IF EXISTS Evento;
-DROP TABLE IF EXISTS Tematica;
-DROP TABLE IF EXISTS Ponente;
-DROP TABLE IF EXISTS Persona_Organizacion;
-DROP TABLE IF EXISTS Organizacion;
-DROP TABLE IF EXISTS Persona;
