@@ -1,4 +1,4 @@
-/*Hola Juanma*/
+/*Hola Manuel*/
 
 CREATE DATABASE IF NOT EXISTS ProyectoFinalJud;
 USE ProyectoFinalJud;

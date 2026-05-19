@@ -29,7 +29,7 @@ public class RepoEventos {
         //Metodos
         public List<Evento> listarEvento() {
 
-          List<Evento> eventos = new ArrayList<>();
+          List<Evento> eventos = new ArrayList<>();/**/
 
             String query = "select * from evento;";
 

@@ -95,7 +95,7 @@ public class ParticipantesServlet extends HttpServlet {
 				case "Crear_Eventos":
 					EstadoRepo repo = new EstadoRepo();
 					List<Estado> estados = repo.listarEstados();
-					context.setVariable("estados", estados);
+					context.setVariable("estados", estados);/**/
 
 					templateEngine.process("Crear_Eventos", context, response.getWriter());
 

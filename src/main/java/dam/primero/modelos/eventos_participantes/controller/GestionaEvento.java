@@ -81,7 +81,7 @@ public class GestionaEvento {
          List<Estado> estados = new ArrayList<Estado>();
          EstadoRepo repo = new EstadoRepo();
          estados = repo.listarEstados();
-        System.out.println(estados);
+        System.out.println(estados);/**/
 
 
     }
