@@ -77,7 +77,7 @@ public class GestionaEvento {
         eventos.add(evento3);
         eventos.add(evento4);
 
-        System.out.println(eventos);
+       // System.out.println(eventos);
 
         repE.listarEvento(eventos);
 

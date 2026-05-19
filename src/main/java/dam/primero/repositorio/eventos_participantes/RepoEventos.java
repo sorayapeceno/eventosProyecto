@@ -58,7 +58,7 @@ public class RepoEventos {
                     Evento evento = new Evento(id_Evento, nombre, descripcion, fechaInicio, fechaFin, direccion,ciudad,
                             capacidad,estado,modalidad,lugar);
 
-                    eventos.add(evento);
+                    eventos.add(evento);/**/
                 }
 
             } catch (SQLException e) {
