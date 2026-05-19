@@ -248,6 +248,10 @@ NULL,'676212122','Almería','España',NULL,'Mujer','2004-12-22',
 'Marisco','666887954','Almería','España',NULL,'Mujer','1999-02-13',
 'alejime7878*','Calle Santa Gracia 9','@alejimenez99',NULL);
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> f427dd644a61ebb0501f695a8aea4b5d928b5c88
 INSERT INTO Organizacion () VALUES ();
 INSERT INTO Organizacion () VALUES ();
 INSERT INTO Organizacion () VALUES ();
@@ -387,5 +391,8 @@ INSERT INTO Ponente_Ponencia (id_Ponente, id_Ponencia) VALUES
 (2, 5),
 (3, 5),
 (6, 5);
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> f427dd644a61ebb0501f695a8aea4b5d928b5c88
