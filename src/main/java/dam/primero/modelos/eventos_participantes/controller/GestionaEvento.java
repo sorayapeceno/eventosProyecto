@@ -1,7 +1,85 @@
 package dam.primero.modelos.eventos_participantes.controller;
 
+import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.modelos.eventos_participantes.Modelo.Evento;
+import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
+import dam.primero.repositorio.eventos_participantes.RepoEventos;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class GestionaEvento {
     public static void main(String[] args) {
+        // Prueba metodo listar evento
+        RepoEventos repE = new RepoEventos();
+
+        Evento evento1 = new Evento(
+                1,
+                "InnovaCode: Jornadas de Programación y BBDD",
+                "Evento sobre programación y bases de datos",
+                LocalDate.of(2026, 6, 20),
+                LocalDate.of(2026, 6, 21),
+                "Calle Leonardo Da Vinci, 18",
+                "Sevilla",
+                150,
+                Estado.CERRADO,
+                Modalidad.HIBRIDO,
+                "TecnoIncubadora"
+        );
+
+        Evento evento2 = new Evento(
+                2,
+                "Frontend Lab Conference: UX y Desarrollo Moderno",
+                "Conferencia sobre UX y desarrollo frontend moderno",
+                LocalDate.of(2026, 9, 10),
+                LocalDate.of(2026, 9, 10),
+                "Avenida Reina Mercedes s/n",
+                "Sevilla",
+                250,
+                Estado.BORRADOR,
+                Modalidad.PRESENCIAL,
+                "Escuela Técnica"
+        );
+
+        Evento evento3 = new Evento(
+                3,
+                "Transformando el aula con IA",
+                "Evento sobre inteligencia artificial aplicada a la educación",
+                LocalDate.of(2026, 12, 12),
+                LocalDate.of(2026, 12, 12),
+                "Avenida Alcalde Luis Uruñuela, 1",
+                "Sevilla",
+                300,
+                Estado.BORRADOR,
+                Modalidad.HIBRIDO,
+                "FIBES"
+        );
+
+        Evento evento4 = new Evento(
+                4,
+                "Seguridad en Redes Modernas",
+                "Evento sobre ciberseguridad y redes",
+                LocalDate.of(2026, 11, 5),
+                LocalDate.of(2026, 11, 5),
+                "Avenida Alcalde Luis Uruñuela, 1",
+                "Sevilla",
+                300,
+                Estado.ABIERTO,
+                Modalidad.HIBRIDO,
+                "FIBES"
+        );
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        eventos.add(evento1);
+        eventos.add(evento2);
+        eventos.add(evento3);
+        eventos.add(evento4);
+
+        System.out.println(eventos);
+
+        repE.listarEvento(eventos);
 
     }
 }
