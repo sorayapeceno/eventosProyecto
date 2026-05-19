@@ -1,69 +1,191 @@
-  * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* ==========================================================================
+   Estilos Generales
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        html, body {
-            height: 100%;
-            font-family: 'Roboto', sans-serif;
-            position: relative;
-            z-index: 0;
-        }
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
 
+body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #2d97d0;
-            color: black;
-        }
+/* ==========================================================================
+   Cabecera Reestructurada (Header)
+   ========================================================================== */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column; /* Coloca los botones debajo de la fila del título */
+    gap: 20px;
+}
 
-        #logo {
-            height: 120px;
-        }
+/* Fila de arriba: Logo, Título e Inicio */
+.header-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
 
-        h1 {
-            font-size: 48px;
-            font-weight: bold;
-            font-style: italic;
-        }
+.logo-container {
+    display: flex;
+    align-items: center;
+}
 
-        .contenedorBotonInicio button {
-            font-size: 24px;
-            padding: 5px 50px;
-            border-radius: 50px;
-            background-color: white;
-            cursor: pointer;
-        }
+#logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+}
 
-        principal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 500px;
-        }
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000000;
+    flex-grow: 1;
+    margin: 0 20px;
+}
 
-        .cajaDeBotones {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    background-color: #ffffff;
+    color: #2d97d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
-        .botones {
-            width: 300px;
-            padding: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            background-color: #3348cb;
-            color: black;
-            border: none;
-            border-radius: 50px;
-        }
+.contenedorBotonInicio button:hover {
+    background-color: #3348cb;
+    color: #ffffff;
+    transform: scale(1.05);
+}
 
-        .botones:hover {
-            background-color: #7f85d7;
-            cursor: pointer;
-        }
+/* Fila de abajo: El contenedor de botones adaptado horizontalmente */
+.cajaDeBotones {
+    display: flex;
+    flex-direction: row; /* Dispuestos en fila de forma horizontal */
+    justify-content: center;
+    flex-wrap: wrap; /* Si no caben en pantallas medianas, bajan de forma ordenada */
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Línea divisoria sutil */
+}
+
+/* Estilos individuales de los botones del menú */
+.botones {
+    display: inline-block;
+    width: auto; /* Ancho automático basado en el texto */
+    min-width: 160px; /* Un tamaño mínimo estético */
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3348cb;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.botones:hover {
+    background-color: #7f85d7;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   Contenido Principal (Sección de Introducción del Centro)
+   ========================================================================== */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 40px 20px;
+}
+
+.contenido-introduccion {
+    width: 100%;
+    max-width: 900px;
+    background-color: rgba(255, 255, 255, 0.95); /* Caja flotante traslúcida que te gusta */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.contenido-introduccion h2 {
+    font-size: 28px;
+    color: #3348cb;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #2d97d0;
+    padding-bottom: 10px;
+}
+
+.contenido-introduccion p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.contenido-introduccion p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Adaptabilidad (Responsive)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-superior {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    h1 {
+        font-size: 28px;
+        margin: 10px 0;
+    }
+    
+    .cajaDeBotones {
+        flex-direction: column; /* En móviles se vuelven a poner en lista vertical */
+        align-items: center;
+        width: 100%;
+    }
+    
+    .botones {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .contenido-introduccion {
+        padding: 25px;
+    }
+
+    .contenido-introduccion h2 {
+        font-size: 24px;
+    }
+}
