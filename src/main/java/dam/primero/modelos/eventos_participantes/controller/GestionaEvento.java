@@ -3,6 +3,7 @@ package dam.primero.modelos.eventos_participantes.controller;
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
 import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
+import dam.primero.repositorio.eventos_participantes.EstadoRepo;
 import dam.primero.repositorio.eventos_participantes.RepoEventos;
 
 import java.time.LocalDate;
@@ -72,14 +73,16 @@ public class GestionaEvento {
 
         List<Evento> eventos = new ArrayList<Evento>();
 
-        eventos.add(evento1);
-        eventos.add(evento2);
-        eventos.add(evento3);
-        eventos.add(evento4);
-
        // System.out.println(eventos);
 
-        repE.listarEvento(eventos);
+        eventos = repE.listarEvento();
+        System.out.println(eventos);
+
+         List<Estado> estados = new ArrayList<Estado>();
+         EstadoRepo repo = new EstadoRepo();
+         estados = repo.listarEstados();
+        System.out.println(estados);
+
 
     }
 }

@@ -1,6 +1,8 @@
 package dam.primero.servlet.eventos_participantes;
 
 
+import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.repositorio.eventos_participantes.EstadoRepo;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class ParticipantesServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
@@ -89,6 +92,15 @@ public class ParticipantesServlet extends HttpServlet {
 				case "eventos":
 					// templateEngine.process("eventos", context, response.getWriter());
 					break;
+				case "Crear_Eventos":
+					EstadoRepo repo = new EstadoRepo();
+					List<Estado> estados = repo.listarEstados();
+					context.setVariable("estados", estados);
+
+					templateEngine.process("Crear_Eventos", context, response.getWriter());
+
+					break;
+
 				default:
 					response.sendError(HttpServletResponse.SC_NOT_FOUND,
 							"Acción no reconocida: " + accion);

@@ -27,11 +27,11 @@ public class RepoEventos {
     }
 
         //Metodos
-        public List<Evento> listarEvento(List<Evento> eventos) {
+        public List<Evento> listarEvento() {
 
-           eventos = new ArrayList<>();
+          List<Evento> eventos = new ArrayList<>();
 
-            String query = "select * from Evento";
+            String query = "select * from evento;";
 
             Statement stmt = null;
             ResultSet rs = null;
@@ -43,7 +43,7 @@ public class RepoEventos {
 
                 while (rs.next()) {
 
-                    int id_Evento = rs.getInt("id");
+                    int id_Evento = rs.getInt("id_Evento");
                     String nombre = rs.getString("Nombre");
                     String descripcion = rs.getString("Descripcion");
                     LocalDate fechaInicio = rs.getDate("Fecha_Inicio").toLocalDate();
@@ -51,18 +51,18 @@ public class RepoEventos {
                     String direccion = rs.getString("Direccion");
                     String ciudad = rs.getString("Ciudad");
                     int capacidad = rs.getInt("Capacidad");
-                    Estado estado = Estado.valueOf(rs.getString("Estado"));
-                    Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad"));
+                    Estado estado = Estado.valueOf(rs.getString("Estado").toUpperCase());
+                    Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
                     String lugar = rs.getString("Lugar");
 
                     Evento evento = new Evento(id_Evento, nombre, descripcion, fechaInicio, fechaFin, direccion,ciudad,
                             capacidad,estado,modalidad,lugar);
 
-                    eventos.add(evento);/**/
+                    eventos.add(evento);
                 }
 
             } catch (SQLException e) {
-                System.out.println("No hay Eventos disponibles");
+                System.out.println(e.getMessage());
             }
 
             return eventos;
