@@ -2,7 +2,9 @@ package dam.primero.servlet.eventos_participantes;
 
 
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
 import dam.primero.repositorio.eventos_participantes.EstadoRepo;
+import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -95,9 +97,18 @@ public class ParticipantesServlet extends HttpServlet {
 				case "Crear_Eventos":
 					EstadoRepo repo = new EstadoRepo();
 					List<Estado> estados = repo.listarEstados();
-					context.setVariable("estados", estados);/**/
+					context.setVariable("estados", estados);
 
 					templateEngine.process("Crear_Eventos", context, response.getWriter());
+
+					break;
+
+				case "Crear_Ponencias":
+					PonenciaRepo rep = new PonenciaRepo();
+					List<Ponencia> ponencias = rep.listarPonencias();
+					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
+
+					templateEngine.process("Crear_Ponencias",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
 
 					break;
 
