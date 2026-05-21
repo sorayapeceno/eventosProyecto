@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Crear Ponencia</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="css/estilos.css">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Ponencias.html">Listado de ponencias</a></li>
+                <li><a href="/html/Crear_Ponencia.html">Crear ponencia</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section>
+                <h2>Crear nueva ponencia</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de la ponencia</legend>
+
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" name="titulo" required>
+
+                        <label for="duracion">Duración (minutos):</label>
+                        <input type="number" id="duracion" name="duracion" required>
+
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" required>
+
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora" name="hora" required>
+
+                        <label for="ubicacion">Ubicación:</label>
+                        <input type="text" id="ubicacion" name="ubicacion" required>
+
+                        <label for="sala">Sala:</label>
+                        <input type="text" id="sala" name="sala" required>
+
+                        <label for="nivel">Nivel:</label>
+                        <select id="nivel" name="nivel">
+                            <option value="Básico">Básico</option>
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                        </select>
+
+                        <label for="tipo">Tipo:</label>
+                        <select id="tipo" name="tipo">
+                            <option value="Charla">Charla</option>
+                            <option value="Taller">Taller</option>
+                            <option value="Mesa">Mesa</option>
+                            <option value="Podcast">Podcast</option>
+                        </select>
+
+                        <label for="formato">Formato:</label>
+                        <select id="formato" name="formato">
+                            <option value="Presencial">Presencial</option>
+                            <option value="Híbrido">Híbrido</option>
+                            <option value="Online">Online</option>
+                        </select>
+
+                        <label for="tematica">Temática:</label>
+                        <select id="tematica" name="tematica">
+                            <option value="1">BBDD</option>
+                            <option value="2">Programación</option>
+                            <option value="3">LDM</option>
+                            <option value="4">IA</option>
+                            <option value="5">Ciberseguridad</option>
+                        </select>
+
+                        <label for="evento">Evento asociado:</label>
+                        <select id="evento" name="evento">
+                            <option value="1">InnovaCode: Jornadas de Programación y BBDD</option>
+                            <option value="2">Frontend Lab Conference</option>
+                            <option value="3">Transformando el aula con IA</option>
+                            <option value="4">Seguridad en Redes Modernas</option>
+                        </select>
+
+                        <button type="submit">Crear ponencia</button>
+                    </fieldset>
+                </form>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Gestión de Eventos Educativos</p>
+        </footer>
+
+    </body>
+</html>

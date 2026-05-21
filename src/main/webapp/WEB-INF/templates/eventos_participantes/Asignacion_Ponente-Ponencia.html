@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Asignar Ponente a Ponencia</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Ponentes.html">Listado de ponentes</a></li>
+                <li><a href="/html/Registrar_Ponente.html">Registrar ponente</a></li>
+                <li><a href="/html/Asignacion_Ponente-Ponencia.html">Asignar ponente a ponencia</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section>
+                <h2>Asignar ponente a ponencia</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de asignación</legend>
+
+                        <label for="ponencia">Selecciona una ponencia:</label>
+                        <select id="ponencia" name="ponencia">
+                            <option value="1">Diseño y optimización de BBDD en entornos reales</option>
+                            <option value="2">Del modelo E/R a PostgreSQL</option>
+                            <option value="3">POO con Java: del aula al proyecto real</option>
+                            <option value="4">Construyendo apps robustas con Java</option>
+                            <option value="5">Investigación y desarrollo en programación</option>
+                            <option value="6">UX y desarrollo frontend</option>
+                            <option value="7">Arquitecturas modernas con JS</option>
+                            <option value="8">Python desde 0</option>
+                            <option value="9">La IA en el aula</option>
+                            <option value="10">Seguridad en redes modernas</option>
+                        </select>
+
+                        <label for="ponente">Selecciona un ponente:</label>
+                        <select id="ponente" name="ponente">
+                            <option value="1">Ponente 1: Especialista en BBDD</option>
+                            <option value="2">Ponente 2: Programación Java</option>
+                            <option value="3">Ponente 3: Programador universitario</option>
+                            <option value="4">Ponente 4: Profesor universitario</option>
+                            <option value="5">Ponente 5: Especialista en JavaScript</option>
+                            <option value="6">Ponente 6: Programador Python</option>
+                            <option value="7">Ponente 7: Desarrollador Frontend</option>
+                            <option value="8">Ponente 8: Profesor de secundaria (IA)</option>
+                            <option value="9">Ponente 9: Anthony West</option>
+                            <option value="10">Ponente 10: Luna Rodríguez</option>
+                        </select>
+
+                        <button type="submit">Asignar ponente</button>
+                    </fieldset>
+                </form>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+
+    </body>
+</html>

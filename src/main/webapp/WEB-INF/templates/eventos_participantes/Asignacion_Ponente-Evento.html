@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Asignar Ponente a Evento</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Eventos.html">Listado de eventos</a></li>
+                <li><a href="/html/Crear_Evento.html">Crear evento</a></li>
+                <li><a href="/html/Asignacion_Ponente-Evento.html">Asignar ponente a evento</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section>
+                <h2>Asignar ponente a evento</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de asignación</legend>
+
+                        <label for="evento">Selecciona un evento:</label>
+                        <select id="evento" name="evento">
+                            <option value="1">InnovaCode: Jornadas de Programación y BBDD</option>
+                            <option value="2">Frontend Lab Conference: UX y Desarrollo Moderno</option>
+                            <option value="3">Transformando el aula con IA</option>
+                            <option value="4">Seguridad en Redes Modernas</option>
+                        </select>
+
+                        <label for="ponente">Selecciona un ponente:</label>
+                        <select id="ponente" name="ponente">
+                            <option value="1">Ponente 1: Especialista en BBDD</option>
+                            <option value="2">Ponente 2: Programación Java</option>
+                            <option value="3">Ponente 3: Programador universitario</option>
+                            <option value="4">Ponente 4: Profesor universitario</option>
+                            <option value="5">Ponente 5: Especialista en JavaScript</option>
+                            <option value="6">Ponente 6: Programador Python</option>
+                            <option value="7">Ponente 7: Desarrollador Frontend</option>
+                            <option value="8">Ponente 8: Profesor de secundaria (IA)</option>
+                            <option value="9">Ponente 9: Anthony West</option>
+                            <option value="10">Ponente 10: Luna Rodríguez</option>
+                        </select>
+
+                        <button type="submit">Asignar ponente</button>
+                    </fieldset>
+                </form>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+
+    </body>
+</html>

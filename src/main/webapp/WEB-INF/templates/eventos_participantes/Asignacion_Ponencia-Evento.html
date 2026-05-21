@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Asignar Ponencia a Evento</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="css/estilos.css">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Ponencias.html">Listado de ponencias</a></li>
+                <li><a href="/html/Crear_Ponencia.html">Crear ponencia</a></li>
+                <li><a href="/html/Asignacion_Ponencia-Evento.html">Asignar ponencia a evento</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section>
+                <h2>Asignar ponencia a evento</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de asignación</legend>
+
+                        <label for="evento">Selecciona un evento:</label>
+                        <select id="evento" name="evento">
+                            <option value="1">InnovaCode: Jornadas de Programación y BBDD</option>
+                            <option value="2">Frontend Lab Conference: UX y Desarrollo Moderno</option>
+                            <option value="3">Transformando el aula con IA</option>
+                            <option value="4">Seguridad en Redes Modernas</option>
+                        </select>
+
+                        <label for="ponencia">Selecciona una ponencia:</label>
+                        <select id="ponencia" name="ponencia">
+                            <option value="1">Diseño y optimización de BBDD en entornos reales</option>
+                            <option value="2">Del modelo E/R a PostgreSQL</option>
+                            <option value="3">POO con Java: del aula al proyecto real</option>
+                            <option value="4">Construyendo apps robustas con Java</option>
+                            <option value="5">Investigación y desarrollo en programación</option>
+                            <option value="6">UX y desarrollo frontend</option>
+                            <option value="7">Arquitecturas modernas con JS</option>
+                            <option value="8">Python desde 0</option>
+                            <option value="9">La IA en el aula</option>
+                            <option value="10">Seguridad en redes modernas</option>
+                        </select>
+
+                        <button type="submit">Asignar ponencia</button>
+                    </fieldset>
+                </form>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Gestión de Eventos Educativos</p>
+        </footer>
+
+    </body>
+</html>

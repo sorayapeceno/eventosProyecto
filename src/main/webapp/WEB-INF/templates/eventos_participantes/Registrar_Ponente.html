@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registrar Ponente</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Ponentes.html">Listado de ponentes</a></li>
+                <li><a href="/html/Registrar_Ponente.html">Registrar ponente</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section>
+                <h2>Registrar nuevo ponente</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos del ponente</legend>
+
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+
+                        <label for="apellidos">Apellidos:</label>
+                        <input type="text" id="apellidos" name="apellidos" required>
+
+                        <label for="especialidad">Especialidad:</label>
+                        <input type="text" id="especialidad" name="especialidad" required>
+
+                        <label for="correo">Correo electrónico:</label>
+                        <input type="email" id="correo" name="correo" required>
+
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+
+                        <label for="cv">Currículum (resumen):</label>
+                        <textarea id="cv" name="cv" rows="4"></textarea>
+
+                        <label for="nivelImparticion">Nivel de impartición:</label>
+                        <select id="nivelImparticion" name="nivelImparticion">
+                            <option value="Infantil">Infantil</option>
+                            <option value="Primaria">Primaria</option>
+                            <option value="Secundaria">Secundaria</option>
+                            <option value="Bachillerato">Bachillerato</option>
+                            <option value="FP">FP</option>
+                            <option value="Universidad">Universidad</option>
+                            <option value="Postgrados">Postgrados</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+
+                        <button type="submit">Registrar ponente</button>
+                    </fieldset>
+                </form>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+
+    </body>
+</html>
+
