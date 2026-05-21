@@ -3,8 +3,12 @@ package dam.primero.servlet.eventos_participantes;
 
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
+import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
+
 import dam.primero.repositorio.eventos_participantes.EstadoRepo;
+
 import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
+import dam.primero.repositorio.eventos_participantes.PonenteRepo;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParticipantesServlet extends HttpServlet {
@@ -94,21 +99,28 @@ public class ParticipantesServlet extends HttpServlet {
 				case "eventos":
 					// templateEngine.process("eventos", context, response.getWriter());
 					break;
-				case "Crear_Eventos":
+				case "Listado_Eventos":
 					EstadoRepo repo = new EstadoRepo();
 					List<Estado> estados = repo.listarEstados();
 					context.setVariable("estados", estados);
 
-					templateEngine.process("Crear_Eventos", context, response.getWriter());
+					templateEngine.process("Listado_Eventos", context, response.getWriter());
 
 					break;
 
-				case "Crear_Ponencias":
+				case "Listado_Ponencias":
 					PonenciaRepo rep = new PonenciaRepo();
 					List<Ponencia> ponencias = rep.listarPonencias();
 					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
 
-					templateEngine.process("Crear_Ponencias",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
+					templateEngine.process("Listado_Ponencias",context,response.getWriter()); /*Dirige a Listado_Ponencias.html*/
+
+					break;
+				case "Listado_Ponentes":
+					PonenteRepo repPonentes = new PonenteRepo();
+					List<Ponente> ponentes = new ArrayList<Ponente>();
+					context.setVariable("ponentes",ponentes);
+					templateEngine.process("Listado_Ponentes",context,response.getWriter());
 
 					break;
 

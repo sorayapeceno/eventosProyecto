@@ -7,6 +7,7 @@ import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
 import dam.primero.modelos.ventas.Cliente;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,6 +28,45 @@ public class RepoEventos {
     }
 
         //Metodos
+       /* public boolean crearEvento(Evento evento) {
+
+            String query = """
+            INSERT INTO evento
+            (Nombre, Descripcion, Fecha_Inicio, Fecha_Fin,
+             Direccion, Ciudad, Capacidad, Estado, Modalidad, Lugar)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+
+            try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
+
+                ps.setString(1, evento.getNombre());
+                ps.setString(2, evento.getDescripcion());
+
+                // LocalDate -> java.sql.Date
+                ps.setDate(3, java.sql.Date.valueOf(evento.getFechaInicio()));
+                ps.setDate(4, java.sql.Date.valueOf(evento.getFechaFin()));
+
+                ps.setString(5, evento.getDireccion());
+                ps.setString(6, evento.getCiudad());
+                ps.setInt(7, evento.getCapacidad());
+
+                // Enum -> String
+                ps.setString(8, evento.getEstado().name());
+                ps.setString(9, evento.getModalidad().name());
+
+                ps.setString(10, evento.getLugar());
+
+                int filas = ps.executeUpdate();
+
+                return filas > 0;
+
+            } catch (SQLException e) {
+                System.out.println("Error al crear evento: " + e.getMessage());
+                return false;
+            }
+        }*/
+
+
         public List<Evento> listarEvento() {
 
           List<Evento> eventos = new ArrayList<>();/**/
