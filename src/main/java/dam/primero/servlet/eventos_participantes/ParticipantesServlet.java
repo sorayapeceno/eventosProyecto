@@ -103,12 +103,12 @@ public class ParticipantesServlet extends HttpServlet {
 
 					break;
 
-				case "Crear_Ponencias":
+				case "Crear_Ponencia":
 					PonenciaRepo rep = new PonenciaRepo();
 					List<Ponencia> ponencias = rep.listarPonencias();
 					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
 
-					templateEngine.process("Crear_Ponencias",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
+					templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
 
 					break;
 
