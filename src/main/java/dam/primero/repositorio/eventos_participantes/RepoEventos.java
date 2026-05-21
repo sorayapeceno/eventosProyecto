@@ -64,7 +64,7 @@ public class RepoEventos {
                 System.out.println("Error al crear evento: " + e.getMessage());
                 return false;
             }
-        }*/
+        }*/ /*Preguntar a Soraya*/
 
 
         public List<Evento> listarEvento() {

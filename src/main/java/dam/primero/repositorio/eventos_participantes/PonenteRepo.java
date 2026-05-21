@@ -56,7 +56,7 @@ public class PonenteRepo {
             System.out.println(e.getMessage());
         }
 
-        return ponentes;
+        return ponentes; /*Metodo listado de Ponentes*/
     }
 
 }

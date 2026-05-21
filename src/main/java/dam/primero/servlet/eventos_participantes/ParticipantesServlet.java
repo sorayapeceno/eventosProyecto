@@ -2,6 +2,7 @@ package dam.primero.servlet.eventos_participantes;
 
 
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
 
@@ -9,6 +10,7 @@ import dam.primero.repositorio.eventos_participantes.EstadoRepo;
 
 import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
 import dam.primero.repositorio.eventos_participantes.PonenteRepo;
+import dam.primero.repositorio.eventos_participantes.RepoEventos;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -100,35 +102,39 @@ public class ParticipantesServlet extends HttpServlet {
 					// templateEngine.process("eventos", context, response.getWriter());
 					break;
 				case "Listado_Eventos":
+					RepoEventos repoEventos = new RepoEventos();
+					List<Evento> eventos = new ArrayList<Evento>();
+					context.setVariable("eventos",eventos);
+					templateEngine.process("Listado_Eventos", context, response.getWriter());
+					break;
+
+				/*case "Crear_Evento":
 					EstadoRepo repo = new EstadoRepo();
 					List<Estado> estados = repo.listarEstados();
 					context.setVariable("estados", estados);
 
-					templateEngine.process("Listado_Eventos", context, response.getWriter());
+					templateEngine.process("Crear_Evento", context, response.getWriter());
 
-					break;
+					break;*/
 
-<<<<<<< HEAD
-				case "Listado_Ponencias":
-=======
-				case "Crear_Ponencia":
->>>>>>> 4849b0df72985e51a1058494e0a234c0a82eff6b
+
+				case "Listado_Ponencias":/*Llamar al Listado_Ponencias*/
 					PonenciaRepo rep = new PonenciaRepo();
 					List<Ponencia> ponencias = rep.listarPonencias();
 					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
 
-<<<<<<< HEAD
+
 					templateEngine.process("Listado_Ponencias",context,response.getWriter()); /*Dirige a Listado_Ponencias.html*/
 
 					break;
-				case "Listado_Ponentes":
+				case "Listado_Ponentes": /*Llamar al Listado_Ponentes*/
 					PonenteRepo repPonentes = new PonenteRepo();
 					List<Ponente> ponentes = new ArrayList<Ponente>();
 					context.setVariable("ponentes",ponentes);
 					templateEngine.process("Listado_Ponentes",context,response.getWriter());
-=======
+
 					templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
->>>>>>> 4849b0df72985e51a1058494e0a234c0a82eff6b
+
 
 					break;
 

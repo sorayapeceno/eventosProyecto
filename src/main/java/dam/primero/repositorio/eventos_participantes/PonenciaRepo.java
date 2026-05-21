@@ -61,7 +61,7 @@ public class PonenciaRepo {
             System.out.println(e.getMessage());
         }
 
-        return ponencias;
+        return ponencias; /*Metodo listado de Ponencias*/
     }
 
 }

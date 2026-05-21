@@ -49,6 +49,6 @@ public class EstadoRepo {
             System.out.println(e.getMessage());
         }
 
-        return estados;
+        return estados;/*Metodo Listado de estados de Eventos*/
     }
 }
