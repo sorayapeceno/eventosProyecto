@@ -108,11 +108,16 @@ public class ParticipantesServlet extends HttpServlet {
 
 					break;
 
+<<<<<<< HEAD
 				case "Listado_Ponencias":
+=======
+				case "Crear_Ponencia":
+>>>>>>> 4849b0df72985e51a1058494e0a234c0a82eff6b
 					PonenciaRepo rep = new PonenciaRepo();
 					List<Ponencia> ponencias = rep.listarPonencias();
 					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
 
+<<<<<<< HEAD
 					templateEngine.process("Listado_Ponencias",context,response.getWriter()); /*Dirige a Listado_Ponencias.html*/
 
 					break;
@@ -121,6 +126,9 @@ public class ParticipantesServlet extends HttpServlet {
 					List<Ponente> ponentes = new ArrayList<Ponente>();
 					context.setVariable("ponentes",ponentes);
 					templateEngine.process("Listado_Ponentes",context,response.getWriter());
+=======
+					templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
+>>>>>>> 4849b0df72985e51a1058494e0a234c0a82eff6b
 
 					break;
 
