@@ -103,8 +103,7 @@ public class ParticipantesServlet extends HttpServlet {
 					break;
 					case "Crear_Evento":
 					RepoEventos repo = new RepoEventos();
-					//List<Estado> estados = repo.crearEvento();
-					//context.setVariable("estados", estados);
+
 
 					templateEngine.process("Crear_Evento", context, response.getWriter());
 

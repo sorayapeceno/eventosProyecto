@@ -31,8 +31,7 @@ public class GestionaEvento {
                 "TecnoIncubadora"
         );
 
-        RepoEventos rep2 = new RepoEventos();
-        rep2.crearEvento(evento1);
+
 
         Evento evento2 = new Evento(
                 2,
@@ -75,9 +74,22 @@ public class GestionaEvento {
                 Modalidad.HIBRIDO,
                 "FIBES"
         );
+        Evento evento5 = new Evento(
+                3,
+                "CiberTech Summit 2026",
+                "Jornada especializada en ciberseguridad, redes y hacking ético",
+                LocalDate.of(2026, 11, 14),
+                LocalDate.of(2026, 11, 15),
+                "Calle Arquitectura 12",
+                "Madrid",
+                400,
+                Estado.ABIERTO,
+                Modalidad.HIBRIDO,
+                "Centro de Innovación Digital"
+        );
 
-
-
+        RepoEventos rep2 = new RepoEventos();
+        rep2.crearEvento(evento5);
 
 
         List<Evento> eventos = new ArrayList<Evento>();
