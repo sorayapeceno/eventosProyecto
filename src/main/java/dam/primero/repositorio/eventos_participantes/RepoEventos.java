@@ -28,14 +28,16 @@ public class RepoEventos {
     }
 
         //Metodos
-       /* public boolean crearEvento(Evento evento) {
+        public Evento  crearEvento(Evento evento) {
+            boolean creado = false;
 
             String query = """
-            INSERT INTO evento
-            (Nombre, Descripcion, Fecha_Inicio, Fecha_Fin,
-             Direccion, Ciudad, Capacidad, Estado, Modalidad, Lugar)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """;
+        INSERT INTO evento
+        (Nombre, Descripcion, Fecha_Inicio, Fecha_Fin,
+         Direccion, Ciudad, Capacidad, Estado, Modalidad, Lugar)
+        VALUES ("IA Educativa", "Evento donde aprendemos sobre el uso de la IA", 2026/7/15,2026/7/15, "Avenida Reina Mercedes",
+                "Sevilla", 200, "POSTPUESTO", "HIBRIDO", "Escuela Superior de Ingenieria Informatica")
+        """;
 
             try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
 
@@ -55,56 +57,64 @@ public class RepoEventos {
                 ps.setString(9, evento.getModalidad().name());
 
                 ps.setString(10, evento.getLugar());
+               int numActualizado =  ps.executeUpdate();
+               if(numActualizado == 1)
+               {
 
-                int filas = ps.executeUpdate();
-
-                return filas > 0;
-
-            } catch (SQLException e) {
-                System.out.println("Error al crear evento: " + e.getMessage());
-                return false;
-            }
-        }*/ /*Preguntar a Soraya*/
+               }
+               else
+               {
+                   throw new MyException("Error al dar de alta un evento: "+evento);
+               }
 
 
-        public List<Evento> listarEvento() {
 
-          List<Evento> eventos = new ArrayList<>();/**/
+                } catch (SQLException | MyException e) {
+                    System.out.println("Error al crear evento: " + e.getMessage());
+                }
+            return evento;
 
-            String query = "select * from evento;";
+        }
 
-            Statement stmt = null;
-            ResultSet rs = null;
 
-            try {
+            public List<Evento> listarEvento() {
 
-                stmt = this.conector.getConnect().createStatement();
-                rs = stmt.executeQuery(query);
+              List<Evento> eventos = new ArrayList<>();
 
-                while (rs.next()) {
+                String query = "select * from evento;";
 
-                    int id_Evento = rs.getInt("id_Evento");
-                    String nombre = rs.getString("Nombre");
-                    String descripcion = rs.getString("Descripcion");
-                    LocalDate fechaInicio = rs.getDate("Fecha_Inicio").toLocalDate();
-                    LocalDate fechaFin = rs.getDate("Fecha_Fin").toLocalDate();
-                    String direccion = rs.getString("Direccion");
-                    String ciudad = rs.getString("Ciudad");
-                    int capacidad = rs.getInt("Capacidad");
-                    Estado estado = Estado.valueOf(rs.getString("Estado").toUpperCase());
-                    Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
-                    String lugar = rs.getString("Lugar");
+                Statement stmt = null;
+                ResultSet rs = null;
 
-                    Evento evento = new Evento(id_Evento, nombre, descripcion, fechaInicio, fechaFin, direccion,ciudad,
-                            capacidad,estado,modalidad,lugar);
+                try {
 
-                    eventos.add(evento);
+                    stmt = this.conector.getConnect().createStatement();
+                    rs = stmt.executeQuery(query);
+
+                    while (rs.next()) {
+
+                        int id_Evento = rs.getInt("id_Evento");
+                        String nombre = rs.getString("Nombre");
+                        String descripcion = rs.getString("Descripcion");
+                        LocalDate fechaInicio = rs.getDate("Fecha_Inicio").toLocalDate();
+                        LocalDate fechaFin = rs.getDate("Fecha_Fin").toLocalDate();
+                        String direccion = rs.getString("Direccion");
+                        String ciudad = rs.getString("Ciudad");
+                        int capacidad = rs.getInt("Capacidad");
+                        Estado estado = Estado.valueOf(rs.getString("Estado").toUpperCase());
+                        Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
+                        String lugar = rs.getString("Lugar");
+
+                        Evento evento = new Evento(id_Evento, nombre, descripcion, fechaInicio, fechaFin, direccion,ciudad,
+                                capacidad,estado,modalidad,lugar);
+
+                        eventos.add(evento);
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
                 }
 
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                return eventos;
             }
-
-            return eventos;
-        }
-}
+    }

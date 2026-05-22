@@ -1,5 +1,6 @@
-package dam.primero.config;
+package dam.primero.config.eventos_participantes;
 
+import dam.primero.config.MySqlConector;
 import dam.primero.exception.MyException;
 
 import java.io.IOException;
@@ -9,18 +10,12 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 
-
-public class MySqlConector {
-	protected Connection connect;
-	protected String url;
-	protected String user;
-	protected String clave;
-
-	public MySqlConector() throws MyException {
+public class MySqlConectorEventosParticipantes extends MySqlConector {
+	public MySqlConectorEventosParticipantes() throws MyException {
 		try {
 			Properties properties = new Properties();
-			var stream = MySqlConector.class.getClassLoader()
-					.getResourceAsStream("eventos_participantes/db.properties");
+			var stream = MySqlConectorEventosParticipantes.class.getClassLoader()
+					.getResourceAsStream("/eventos_participantes/db.properties");
 			if (stream == null) {
 				throw new MyException("No se encontró db.properties en el classpath");
 			}
@@ -44,23 +39,5 @@ public class MySqlConector {
         }
     }
 
-	public Connection getConnect() {
-		return connect;
-	}
-
-	public void release() {
-		try {
-			System.out.print("--- CERRANDO CONEXION ---");
-			if (this.connect != null)
-				this.connect.close();
-			this.connect = null;
-			this.url = null;
-			this.user = null;
-			this.clave = null;
-
-		} catch (SQLException e) {
-			System.err.println("No se ha podido cerrar la conexion con la BD");
-			e.printStackTrace();
-		}
-	}
+	
 }
