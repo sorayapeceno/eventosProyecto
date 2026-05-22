@@ -89,7 +89,7 @@ public class GestionaEvento {
         );
 
         RepoEventos rep2 = new RepoEventos();
-        rep2.crearEvento(evento5);
+        rep2.crearEvento(evento5);/**/
 
 
         List<Evento> eventos = new ArrayList<Evento>();

@@ -80,7 +80,7 @@ public class RepoEventos {
 
               List<Evento> eventos = new ArrayList<>();
 
-                String query = "select * from evento;";
+                String query = "select * from evento;"; /**/
 
                 Statement stmt = null;
                 ResultSet rs = null;
