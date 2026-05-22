@@ -31,6 +31,9 @@ public class GestionaEvento {
                 "TecnoIncubadora"
         );
 
+        RepoEventos rep2 = new RepoEventos();
+        rep2.crearEvento(evento1);
+
         Evento evento2 = new Evento(
                 2,
                 "Frontend Lab Conference: UX y Desarrollo Moderno",
@@ -73,12 +76,20 @@ public class GestionaEvento {
                 "FIBES"
         );
 
+
+
+
+
         List<Evento> eventos = new ArrayList<Evento>();
 
        // System.out.println(eventos);
 
+
+
         eventos = repE.listarEvento();
         System.out.println(eventos);
+
+
 
          List<Estado> estados = new ArrayList<Estado>();
          EstadoRepo repo = new EstadoRepo();

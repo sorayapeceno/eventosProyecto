@@ -141,7 +141,7 @@ public class ParticipantesServlet extends HttpServlet {
 					context.setVariable("ponentes",ponentes);
 					templateEngine.process("Listado_Ponentes",context,response.getWriter());
 
-					templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
+					//templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
 
 
 					break;
@@ -153,6 +153,82 @@ public class ParticipantesServlet extends HttpServlet {
 
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request,
+						  HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String pathInfo = request.getPathInfo();
+		String path = (pathInfo != null) ? pathInfo.trim() : "";
+
+		System.out.println("En doPost");
+		System.out.println("Path: " + path);
+
+		if (path.equals("/Crear_Evento")) {
+
+			try {
+
+				Evento evento = new Evento();
+
+				evento.setNombre(request.getParameter("nombre"));
+				evento.setDescripcion(request.getParameter("descripcion"));
+
+				evento.setDireccion(request.getParameter("direccion"));
+				evento.setCiudad(request.getParameter("ciudad"));
+
+				evento.setLugar(request.getParameter("lugar"));
+
+				evento.setCapacidad(
+						Integer.parseInt(
+								request.getParameter("capacidad")
+						)
+				);
+
+				evento.setFechaInicio(
+						java.time.LocalDate.parse(
+								request.getParameter("fechaInicio")
+						)
+				);
+
+				evento.setFechaFin(
+						java.time.LocalDate.parse(
+								request.getParameter("fechaFin")
+						)
+				);
+
+				evento.setEstado(
+						Estado.valueOf(
+								request.getParameter("estado")
+						)
+				);
+
+				evento.setModalidad(
+						dam.primero.modelos.eventos_participantes.Modelo.Modalidad
+								.valueOf(
+										request.getParameter("modalidad")
+								)
+				);
+
+				RepoEventos repo = new RepoEventos();
+
+				repo.crearEvento(evento);
+
+				response.sendRedirect(
+						request.getContextPath()
+								+ "/participantes/Listado_Eventos"
+				);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+				response.getWriter().println(
+						"Error al crear evento: " + e.getMessage()
+				);
+			}
 		}
 	}
 }

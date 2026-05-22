@@ -35,8 +35,7 @@ public class RepoEventos {
         INSERT INTO evento
         (Nombre, Descripcion, Fecha_Inicio, Fecha_Fin,
          Direccion, Ciudad, Capacidad, Estado, Modalidad, Lugar)
-        VALUES ("IA Educativa", "Evento donde aprendemos sobre el uso de la IA", 2026/7/15,2026/7/15, "Avenida Reina Mercedes",
-                "Sevilla", 200, "POSTPUESTO", "HIBRIDO", "Escuela Superior de Ingenieria Informatica")
+        VALUES (?, ?, ?,?, ?,?, ?, ?, ?,?)
         """;
 
             try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
@@ -53,8 +52,8 @@ public class RepoEventos {
                 ps.setInt(7, evento.getCapacidad());
 
                 // Enum -> String
-                ps.setString(8, evento.getEstado().name());
-                ps.setString(9, evento.getModalidad().name());
+                ps.setString(8, evento.getEstado().name().toUpperCase());
+                ps.setString(9, evento.getModalidad().name().toUpperCase());
 
                 ps.setString(10, evento.getLugar());
                int numActualizado =  ps.executeUpdate();
