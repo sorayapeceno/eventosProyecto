@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+<<<<<<< Updated upstream
 	<meta charset="UTF-8" />
 	<title>CRM</title>
 	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
@@ -31,6 +32,43 @@
 
 <main>
 	<div></div>
+=======
+    <meta charset="UTF-8" />
+    <title>CRM</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        body { text-align: center; }
+        main { display: flex; justify-content: center; align-items: center; }
+        .contenedorFormularios { margin-top: 30px; display: flex; flex-direction: column; gap: 18px; }
+        .botonesCRM { width: 330px; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
+
+    <div class="fondo"
+         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; z-index: -1;">
+    </div>
+
+    <h1 align="center">CRM</h1>
+
+    <a th:href="@{/}">
+        <button type="button">&#8592; Atrás</button>
+    </a>
+</header>
+
+<main>
+    <div class="contenedorFormularios">
+        <a th:href="@{/crm/organizacion}"><button class="botonesCRM" type="button">Formulario Organización</button></a>
+        <a th:href="@{/crm/oportunidad}"><button class="botonesCRM" type="button">Formulario Oportunidad</button></a>
+        <a th:href="@{/crm/producto}"><button class="botonesCRM" type="button">Formulario Producto</button></a>
+        <a th:href="@{/crm/xpath}"><button class="botonesCRM" type="button">Consultas XPath</button></a>
+        <a th:href="@{/crm/generar-json}"><button class="botonesCRM" type="button">Generar JSON Productos</button></a>
+    </div>
+>>>>>>> Stashed changes
 </main>
 </body>
 </html>

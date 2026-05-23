@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Consultas XPath CRM</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        main { width: 80%; margin: 20px auto; }
+        section { margin-bottom: 25px; padding: 15px; border: 1px solid #ccc; border-radius: 12px; background-color: white; }
+        code { font-weight: bold; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
+
+    <h1 align="center">Consultas XPath - CRM</h1>
+
+    <a th:href="@{/crm/}">
+        <button type="button">&#8592; Atrás</button>
+    </a>
+</header>
+
+<main>
+    <section>
+        <h2>Campos obligatorios de Organización</h2>
+        <p><code>/formularios/formulario[@id='organizacion']/campo[@obligatorio='true']/@nombre</code></p>
+        <ul>
+            <li th:each="campo : ${obligatoriosOrganizacion}" th:text="${campo}">campo</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Campos numéricos de Producto</h2>
+        <p><code>/formularios/formulario[@id='producto']/campo[@tipo='number']/@nombre</code></p>
+        <ul>
+            <li th:each="campo : ${numericosProducto}" th:text="${campo}">campo</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Campos del formulario de Oportunidad</h2>
+        <p><code>/formularios/formulario[@id='oportunidad']/campo/@nombre</code></p>
+        <ul>
+            <li th:each="campo : ${camposOportunidad}" th:text="${campo}">campo</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Rutas de formularios disponibles</h2>
+        <p><code>/formularios/formulario/@ruta</code></p>
+        <ul>
+            <li th:each="ruta : ${rutasFormularios}" th:text="${ruta}">ruta</li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>
