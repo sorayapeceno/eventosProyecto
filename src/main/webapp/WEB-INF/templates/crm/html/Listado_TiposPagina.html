@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>Tipos Página</title>
@@ -8,6 +7,22 @@
 <body>
 
 <h1>Listado Tipos Página</h1>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Id Tipo Página</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+        </tr>
+        </thead>
 
+        <tbody>
+        <tr th:each="pagina : ${paginas}">
+            <td th:text="${pagina.idTipoPagina}"></td>
+            <td th:text="${pagina.nombreTipo}"></td>
+            <td th:text="${pagina.descripcion}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

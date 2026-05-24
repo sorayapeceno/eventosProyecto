@@ -37,7 +37,7 @@ CREATE TABLE PerfilUsuario (
 );
 
 CREATE TABLE TipoPagina (
-    Id_Tipo_Pagina INT PRIMARY KEY,
+    Id_Tipo_Pagina INT PRIMARY KEY auto_increment,
     Nombre_Tipo VARCHAR(32) NOT NULL,
     Descripcion VARCHAR(128)
 );

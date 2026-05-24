@@ -1,13 +1,7 @@
 package dam.primero.servlet.crm;
 
-import dam.primero.modelos.crm.FormularioOportunidad;
-import dam.primero.modelos.crm.FormularioOrganizacion;
-import dam.primero.modelos.crm.FormularioProducto;
-import dam.primero.modelos.crm.PaginaWeb;
-import dam.primero.repositorio.crm.RepoCRM;
-import dam.primero.repositorio.crm.LectorXPathCRM;
-import dam.primero.repositorio.crm.GeneradorJsonCRM;
-import dam.primero.repositorio.crm.RepoPaginaWeb;
+import dam.primero.modelos.crm.*;
+import dam.primero.repositorio.crm.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -146,6 +140,11 @@ public class CRMServlet extends HttpServlet {
                 templateEngine.process("html/Listado_Paginas", context, response.getWriter());
                 break;
             case "listadotipospagina":
+                RepoTipoPagina repoTipoPagina = new RepoTipoPagina();
+                List<TipoPagina> paginasTipoPagina = repoTipoPagina.listarTipoPagina();
+
+                context.setVariable("paginas", paginasTipoPagina);
+
                 templateEngine.process("html/Listado_TiposPagina", context, response.getWriter());
                 break;
             default:
