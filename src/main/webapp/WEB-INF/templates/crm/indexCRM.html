@@ -21,12 +21,9 @@
 
     <h1>CRM</h1>
 
-    <button class="botonVolver"
-            onclick="window.location.href='/'">
-
-        ← Atrás
-
-    </button>
+    <a th:href="@{/}">
+        <button class="botonVolver" type="button">← Atrás</button>
+    </a>
 
 </header>
 
@@ -82,12 +79,7 @@
             <h3>Páginas Web</h3>
 
 
-            <button class="botones"
-                    onclick="window.location.href='Adrian/Listado_Paginas.html'">
-
-                Listado Páginas
-
-            </button>
+            <a th:href="@{/crm/listadopaginas}"><button class="botones" type="button">Listado Páginas</button></a>
 
             <button class="botones"
                     onclick="window.location.href='Adrian/Detalle_Pagina.html'">
@@ -108,12 +100,7 @@
 
             <h3>Tipos de Página</h3>
 
-            <button class="botones"
-                    onclick="window.location.href='Adrian/Listado_TiposPagina.html'">
-
-                Listado Tipos Página
-
-            </button>
+            <a th:href="@{/crm/listadotipospagina}"><button class="botones" type="button">Listado Tipos Página</button></a>
 
         </section>
 

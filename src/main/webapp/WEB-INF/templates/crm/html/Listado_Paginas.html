@@ -1,6 +1,5 @@
-Listado_TiposPagina.html
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>Listado Páginas</title>
@@ -10,19 +9,28 @@ Listado_TiposPagina.html
 <h1>Listado de Páginas Web</h1>
 
 <table border="1">
-
-<tr>
-    <th>ID</th>
-    <th>Título</th>
-    <th>URL</th>
-</tr>
-
-<tr>
-    <td>1</td>
-    <td>Inicio</td>
-    <td>/inicio</td>
-</tr>
-
+    <thead>
+        <tr>
+            <th>Id_Pagina</th>
+            <th>Titulo</th>
+            <th>Url</th>
+            <th>Contenido_HTML</th>
+            <th>Fecha_Creacion</th>
+            <th>Fecha_Modificacion</th>
+            <th>Id_Tipo_Pagina</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="pagina : ${paginas}">
+            <td th:text="${pagina.idPagina}"></td>
+            <td th:text="${pagina.titulo}"></td>
+            <td th:text="${pagina.url}"></td>
+            <td th:text="${pagina.contenidoHTML}"></td>
+            <td th:text="${pagina.fechaCreacion}"></td>
+            <td th:text="${pagina.fechaModificacion}"></td>
+            <td th:text="${pagina.idTipoPagina}"></td>
+        </tr>
+    </tbody>
 </table>
 
 </body>

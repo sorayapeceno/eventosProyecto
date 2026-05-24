@@ -3,9 +3,11 @@ package dam.primero.servlet.crm;
 import dam.primero.modelos.crm.FormularioOportunidad;
 import dam.primero.modelos.crm.FormularioOrganizacion;
 import dam.primero.modelos.crm.FormularioProducto;
+import dam.primero.modelos.crm.PaginaWeb;
 import dam.primero.repositorio.crm.RepoCRM;
 import dam.primero.repositorio.crm.LectorXPathCRM;
 import dam.primero.repositorio.crm.GeneradorJsonCRM;
+import dam.primero.repositorio.crm.RepoPaginaWeb;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -132,7 +134,16 @@ public class CRMServlet extends HttpServlet {
             case "generar-json":
                 generarJsonProductos(context, response);
                 break;
-            case "tipospagina":
+            // Esto es de Adrian
+            case "listadopaginas":
+                RepoPaginaWeb repo = new RepoPaginaWeb();
+                List<PaginaWeb> paginas = repo.listarPaginaWeb();
+
+                context.setVariable("paginas", paginas);
+
+                templateEngine.process("html/Listado_Paginas", context, response.getWriter());
+                break;
+            case "listadotipospagina":
                 templateEngine.process("html/Listado_TiposPagina", context, response.getWriter());
                 break;
             case "clientes":

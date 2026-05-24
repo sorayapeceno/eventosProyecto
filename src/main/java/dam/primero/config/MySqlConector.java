@@ -20,7 +20,7 @@ public class MySqlConector {
 		try {
 			Properties properties = new Properties();
 			var stream = MySqlConector.class.getClassLoader()
-					.getResourceAsStream("eventos_participantes/db.properties");
+					.getResourceAsStream("db.properties");
 			if (stream == null) {
 				throw new MyException("No se encontró db.properties en el classpath");
 			}

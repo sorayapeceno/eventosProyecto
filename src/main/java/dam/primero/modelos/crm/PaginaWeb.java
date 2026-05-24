@@ -1,5 +1,6 @@
 package dam.primero.modelos.crm;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class PaginaWeb {
@@ -7,15 +8,21 @@ public class PaginaWeb {
     private String titulo;
     private String url;
     private String contenidoHTML;
+    private LocalDate fechaCreacion;
+    private LocalDate fechaModificacion;
+    private int idTipoPagina;
 
     public PaginaWeb() {
     }
 
-    public PaginaWeb(int idPagina, String titulo, String url, String contenidoHTML) {
+    public PaginaWeb(int idPagina, String titulo, String url, String contenidoHTML, LocalDate fechaCreacion, LocalDate fechaModificacion, int idTipoPagina) {
         this.idPagina = idPagina;
         this.titulo = titulo;
         this.url = url;
         this.contenidoHTML = contenidoHTML;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.idTipoPagina = idTipoPagina;
     }
 
     public int getIdPagina() {
@@ -50,6 +57,30 @@ public class PaginaWeb {
         this.contenidoHTML = contenidoHTML;
     }
 
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public LocalDate getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDate fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public int getIdTipoPagina() {
+        return idTipoPagina;
+    }
+
+    public void setIdTipoPagina(int idTipoPagina) {
+        this.idTipoPagina = idTipoPagina;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof PaginaWeb paginaWeb)) return false;
@@ -68,6 +99,9 @@ public class PaginaWeb {
                 ", titulo='" + titulo + '\'' +
                 ", url='" + url + '\'' +
                 ", contenidoHTML='" + contenidoHTML + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                ", fechaModificacion=" + fechaModificacion +
+                ", idTipoPagina=" + idTipoPagina +
                 '}';
     }
 }
