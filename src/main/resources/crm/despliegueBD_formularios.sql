@@ -43,7 +43,7 @@ CREATE TABLE TipoPagina (
 );
 
 CREATE TABLE PaginaWeb (
-    Id_Pagina INT PRIMARY KEY,
+    Id_Pagina INT PRIMARY KEY auto_increment,
     Titulo VARCHAR(128) NOT NULL,
     Url VARCHAR(128) UNIQUE NOT NULL,
     Contenido_HTML TEXT,

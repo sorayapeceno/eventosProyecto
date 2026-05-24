@@ -6,9 +6,7 @@ import dam.primero.modelos.crm.PaginaWeb;
 import dam.primero.modelos.eventos_participantes.Modelo.NivelImparticion;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,23 @@ public class RepoPaginaWeb {
             this.conector = new MySqlConector();
         } catch (MyException e) {
             throw new RuntimeException("Error al conectar a la base de datos" + e.getMessage());
+        }
+    }
+
+    public void crearPaginaWeb(PaginaWeb p) {
+        String query = "INSERT INTO PaginaWeb (Titulo, Url, Contenido_HTML, Fecha_Creacion, Fecha_Modificacion, Id_Tipo_Pagina) VALUES (?, ?, ?, NOW(), NOW(), ?)";
+
+        try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
+
+            ps.setString(1, p.getTitulo());
+            ps.setString(2, p.getUrl());
+            ps.setString(3, p.getContenidoHTML());
+            ps.setInt(4, p.getIdTipoPagina());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Error al crear evento: " + e.getMessage());
         }
     }
 

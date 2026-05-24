@@ -134,7 +134,9 @@ public class CRMServlet extends HttpServlet {
             case "generar-json":
                 generarJsonProductos(context, response);
                 break;
-            // Esto es de Adrian
+            case "crearpagina":
+                templateEngine.process("html/Crear_Pagina.html", context, response.getWriter());
+                break;
             case "listadopaginas":
                 RepoPaginaWeb repo = new RepoPaginaWeb();
                 List<PaginaWeb> paginas = repo.listarPaginaWeb();
@@ -145,10 +147,6 @@ public class CRMServlet extends HttpServlet {
                 break;
             case "listadotipospagina":
                 templateEngine.process("html/Listado_TiposPagina", context, response.getWriter());
-                break;
-            case "clientes":
-            case "eventos":
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Pantalla pendiente de implementar: " + accion);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
@@ -175,9 +173,30 @@ public class CRMServlet extends HttpServlet {
             case "producto":
                 guardarProducto(request, context, response);
                 break;
+            case "guardarpagina":
+                guardarPagina(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
         }
+    }
+
+    private void guardarPagina(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String titulo = request.getParameter("titulo");
+        String url = request.getParameter("url");
+        String contenidoHTML = request.getParameter("contenidoHTML");
+        int idTipoPagina = Integer.parseInt(request.getParameter("idTipoPagina"));
+
+        PaginaWeb nueva = new PaginaWeb();
+        nueva.setTitulo(titulo);
+        nueva.setUrl(url);
+        nueva.setContenidoHTML(contenidoHTML);
+        nueva.setIdTipoPagina(idTipoPagina);
+
+        RepoPaginaWeb repo = new RepoPaginaWeb();
+        repo.crearPaginaWeb(nueva);
+
+        response.sendRedirect(request.getContextPath() + "/crm/listadopaginas");
     }
 
     private void mostrarConsultasXPath(WebContext context, HttpServletResponse response) throws IOException {

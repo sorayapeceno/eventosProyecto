@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>Crear Página</title>
@@ -9,20 +8,22 @@
 
 <h1>Crear Página</h1>
 
-<form>
+<form th:action="@{/crm/guardarPagina}" method="post" id="formulario">
 
-<label>Título</label>
-<input type="text">
+    <label>Título</label>
+    <input type="text" name="titulo" required>
 
-<label>URL</label>
-<input type="text">
+    <label>URL</label>
+    <input type="text" name="url" required>
 
-<label>Contenido HTML</label>
-<textarea></textarea>
+    <label>Contenido HTML</label>
+    <textarea name="contenidoHTML"></textarea>
 
-<button>Guardar</button>
+    <label>Id Tipo Pagina</label>
+    <input type="number" name="idTipoPagina" required>
+
+    <button type="submit">Crear página</button>
 
 </form>
-
 </body>
 </html>
