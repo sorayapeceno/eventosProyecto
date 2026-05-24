@@ -1,71 +1,141 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>CRM</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-	<style>
-		body  { text-align: center; }
-		main  { display: flex; justify-content: center; align-items: center; }
-	</style>
-</head>
-<body>
-<header>
-	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-	   target="_blank">
-		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-	</a>
-
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        opacity: 0.3; z-index: -1;">
-	</div>
-
-	<h1 align="center">CRM</h1>
-
-	<!-- Botón atrás: navega a la raíz del contexto -->
-	<a th:href="@{/}">
-		<button type="button">&#8592; Atrás</button>
-	</a>
-</header>
-
-<main>
-	<div></div>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>CRM</title>
-    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-    <style>
-        body { text-align: center; }
-        main { display: flex; justify-content: center; align-items: center; }
-        .contenedorFormularios { margin-top: 30px; display: flex; flex-direction: column; gap: 18px; }
-        .botonesCRM { width: 330px; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; }
-    </style>
+
+    <link rel="stylesheet" th:href="@{/CSS/CRM/indexCRM.css}">
 </head>
 <body>
+
 <header>
-    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
-        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
+       target="_blank">
+
+        <img th:src="@{/Fotos/logo.svg}"
+             alt="Logo Instituto"
+             id="logo">
+
     </a>
 
-    <div class="fondo"
-         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; z-index: -1;">
-    </div>
+    <h1>CRM</h1>
 
-    <h1 align="center">CRM</h1>
+    <button class="botonVolver"
+            onclick="window.location.href='/'">
 
-    <a th:href="@{/}">
-        <button type="button">&#8592; Atrás</button>
-    </a>
+        ← Atrás
+
+    </button>
+
 </header>
 
-<main>
-    <div class="contenedorFormularios">
-        <a th:href="@{/crm/organizacion}"><button class="botonesCRM" type="button">Formulario Organización</button></a>
-        <a th:href="@{/crm/oportunidad}"><button class="botonesCRM" type="button">Formulario Oportunidad</button></a>
-        <a th:href="@{/crm/producto}"><button class="botonesCRM" type="button">Formulario Producto</button></a>
-        <a th:href="@{/crm/xpath}"><button class="botonesCRM" type="button">Consultas XPath</button></a>
-        <a th:href="@{/crm/generar-json}"><button class="botonesCRM" type="button">Generar JSON Productos</button></a>
+
+<div class="contenedorPrincipal">
+
+
+    <div class="panelCRM">
+
+        <img th:src="@{/Fotos/logo.svg}"
+             alt="Logo Instituto"
+             class="logoCRM">
+
+        <h2>CRM</h2>
+
+        <p>
+            Gestión de formularios,
+            páginas web y recursos CRM.
+        </p>
+
     </div>
-</main>
+
+
+
+    <div class="contenedorBotones">
+
+
+        <!-- ========================= -->
+        <!-- FORMULARIOS -->
+        <!-- ========================= -->
+
+        <section class="bloque">
+
+            <h3>Formularios</h3>
+
+            <a th:href="@{/crm/organizacion}"><button class="botones" type="button">Formulario Organización</button></a>
+
+            <a th:href="@{/crm/oportunidad}"><button class="botones" type="button">Formulario Oportunidad</button></a>
+
+            <a th:href="@{/crm/producto}"><button class="botones" type="button">Formulario Producto</button></a>
+
+
+        </section>
+
+
+
+        <!-- ========================= -->
+        <!-- PAGINAS WEB -->
+        <!-- ========================= -->
+
+        <section class="bloque">
+
+            <h3>Páginas Web</h3>
+
+
+            <button class="botones"
+                    onclick="window.location.href='Adrian/Listado_Paginas.html'">
+
+                Listado Páginas
+
+            </button>
+
+            <button class="botones"
+                    onclick="window.location.href='Adrian/Detalle_Pagina.html'">
+
+                Detalle Página
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ========================= -->
+        <!-- TIPOS PAGINA -->
+        <!-- ========================= -->
+
+        <section class="bloque">
+
+            <h3>Tipos de Página</h3>
+
+            <button class="botones"
+                    onclick="window.location.href='Adrian/Listado_TiposPagina.html'">
+
+                Listado Tipos Página
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ========================= -->
+        <!-- XML -->
+        <!-- ========================= -->
+
+        <section class="bloque">
+
+            <h3>XML y JSON</h3>
+
+            <a th:href="@{/crm/xpath}"><button class="botones" type="button">Consultas XPath</button></a>
+
+            <a th:href="@{/crm/generar-json}"><button class="botones" type="button">Generar JSON Productos</button></a>
+
+        </section>
+
+    </div>
+
+</div>
+
 </body>
 </html>

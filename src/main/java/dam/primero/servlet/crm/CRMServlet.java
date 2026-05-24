@@ -118,13 +118,13 @@ public class CRMServlet extends HttpServlet {
 
         switch (accion) {
             case "organizacion":
-                templateEngine.process("formularioOrganizacion", context, response.getWriter());
+                templateEngine.process("html/formularioOrganizacion", context, response.getWriter());
                 break;
             case "oportunidad":
-                templateEngine.process("formularioOportunidad", context, response.getWriter());
+                templateEngine.process("html/formularioOportunidad", context, response.getWriter());
                 break;
             case "producto":
-                templateEngine.process("formularioProducto", context, response.getWriter());
+                templateEngine.process("html/formularioProducto", context, response.getWriter());
                 break;
             case "xpath":
                 mostrarConsultasXPath(context, response);
@@ -133,7 +133,7 @@ public class CRMServlet extends HttpServlet {
                 generarJsonProductos(context, response);
                 break;
             case "tipospagina":
-                templateEngine.process("Listado_TiposPagina", context, response.getWriter());
+                templateEngine.process("html/Listado_TiposPagina", context, response.getWriter());
                 break;
             case "clientes":
             case "eventos":
