@@ -19,14 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-<<<<<<< Updated upstream
 import java.util.List;
 import java.util.Set;
-=======
 import java.sql.SQLException;
 import java.util.List;
 import java.util.StringJoiner;
->>>>>>> Stashed changes
 
 public class CRMServlet extends HttpServlet {
     private static final long serialVersionUID = 2051990309999713971L;
@@ -273,20 +270,6 @@ public class CRMServlet extends HttpServlet {
         }
     }
 
-<<<<<<< Updated upstream
-			// Aquí tu lógica de negocio por acción
-			switch (accion.toLowerCase()) {
-				case "clientes":
-					// templateEngine.process("clientes", context, response.getWriter());
-					break;
-				case "eventos":
-					// templateEngine.process("eventos", context, response.getWriter());
-					break;
-				default:
-					response.sendError(HttpServletResponse.SC_NOT_FOUND,
-							"Acción no reconocida: " + accion);
-			}}
-=======
     private String validarOrganizacion(String nombre, String telefono, String email, String tipoOrganizacion) {
         if (estaVacio(nombre)) return "El nombre es obligatorio.";
         if (estaVacio(email) || !emailValido(email)) return "El email no es válido.";
@@ -294,7 +277,6 @@ public class CRMServlet extends HttpServlet {
         if (estaVacio(tipoOrganizacion)) return "Debes seleccionar un tipo de organización.";
         return null;
     }
->>>>>>> Stashed changes
 
     private String validarOportunidad(String titulo, String fechaInicio, String tiposOportunidad) {
         if (estaVacio(titulo)) return "El título es obligatorio.";
