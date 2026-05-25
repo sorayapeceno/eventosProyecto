@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mercancias - Gestion de Almacen</title>
+
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+
+    <style>
+
+        .contenido {
+            width: 90%;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #2d97d0;
+            color: white;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 10px;
+        }
+
+        .mensaje-ok {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-superior">
+
+        <div class="logo-container">
+            <img th:src="@{/Fotos/logo.svg}" id="logo" alt="Logo">
+        </div>
+
+        <h1>GESTIÓN DE MERCANCÍAS</h1>
+
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}">
+                <button type="button">Inicio</button>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="cajaDeBotones">
+
+        <a class="botones" th:href="@{/logistica}">
+            Logística
+        </a>
+
+        <a class="botones" th:href="@{/logistica/albaranes}">
+            Albaranes
+        </a>
+
+    </div>
+
+</header>
+
+<div class="contenido">
+
+    <h2>Mercancías</h2>
+
+    <p th:if="${mensaje}" class="mensaje-ok" th:text="${mensaje}"></p>
+
+    <h3>Registrar entrada de mercancía</h3>
+
+    <!-- FORMULARIO CORREGIDO -->
+    <form th:action="@{/logistica/entradaMercancia}" method="post">
+
+        <label>ID Mercancía:</label>
+        <input type="number" name="id" required>
+
+        <br><br>
+
+        <label>Cantidad a añadir:</label>
+        <input type="number" name="cantidad" required>
+
+        <br><br>
+
+        <button type="submit" class="botones">
+            Registrar entrada
+        </button>
+
+    </form>
+
+    <hr>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Descripcion</th>
+            <th>Categoria</th>
+            <th>Precio unitario</th>
+            <th>Stock minimo</th>
+            <th>Stock actual</th>
+            <th>Fecha creacion</th>
+        </tr>
+
+        <tr th:each="m : ${mercancias}">
+
+            <td th:text="${m.idMercancia}"></td>
+
+            <td th:text="${m.descripcion}"></td>
+
+            <td th:text="${m.categoria}"></td>
+
+            <td th:text="${m.precioUnitario}"></td>
+
+            <td th:text="${m.stockMinimo}"></td>
+
+            <td th:text="${m.stockActual}"></td>
+
+            <td th:text="${m.fechaCreacion}"></td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>
