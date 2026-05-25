@@ -168,7 +168,7 @@ public class ParticipantesServlet extends HttpServlet {
 
 		if (path.equals("/Crear_Evento")) {
 
-			try {	/**/
+			try {	/**/ /**/
 
 				Evento evento = new Evento();
 

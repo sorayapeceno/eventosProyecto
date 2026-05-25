@@ -7,10 +7,7 @@ import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
 import dam.primero.modelos.ventas.Cliente;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,7 @@ public class RepoEventos {
 
         //Metodos
         public Evento  crearEvento(Evento evento) {
-            boolean creado = false;
+
 
             String query = """
         INSERT INTO evento
@@ -56,6 +53,7 @@ public class RepoEventos {
                 ps.setString(9, evento.getModalidad().name().toUpperCase());
 
                 ps.setString(10, evento.getLugar());
+
                int numActualizado =  ps.executeUpdate();
                if(numActualizado == 1)
                {
@@ -76,44 +74,42 @@ public class RepoEventos {
         }
 
 
-            public List<Evento> listarEvento() {
+    public List<Evento> listarEvento() {
 
-              List<Evento> eventos = new ArrayList<>();
+        List<Evento> eventos = new ArrayList<>();
 
-                String query = "select * from evento;"; /**/
+        String query = "SELECT * FROM evento";
 
-                Statement stmt = null;
-                ResultSet rs = null;
+        try (
+                Connection conn = this.conector.getConnect();
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()
+        ) {
 
-                try {
+            while (rs.next()) {
 
-                    stmt = this.conector.getConnect().createStatement();
-                    rs = stmt.executeQuery(query);
+                Evento evento = new Evento(
+                        rs.getInt("id_Evento"),
+                        rs.getString("Nombre"),
+                        rs.getString("Descripcion"),
+                        rs.getDate("Fecha_Inicio").toLocalDate(),
+                        rs.getDate("Fecha_Fin").toLocalDate(),
+                        rs.getString("Direccion"),
+                        rs.getString("Ciudad"),
+                        rs.getInt("Capacidad"),
+                        Estado.valueOf(rs.getString("Estado").toUpperCase()),
+                        Modalidad.valueOf(rs.getString("Modalidad").toUpperCase()),
+                        rs.getString("Lugar")
+                );
 
-                    while (rs.next()) {
-
-                        int id_Evento = rs.getInt("id_Evento");
-                        String nombre = rs.getString("Nombre");
-                        String descripcion = rs.getString("Descripcion");
-                        LocalDate fechaInicio = rs.getDate("Fecha_Inicio").toLocalDate();
-                        LocalDate fechaFin = rs.getDate("Fecha_Fin").toLocalDate();
-                        String direccion = rs.getString("Direccion");
-                        String ciudad = rs.getString("Ciudad");
-                        int capacidad = rs.getInt("Capacidad");
-                        Estado estado = Estado.valueOf(rs.getString("Estado").toUpperCase());
-                        Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
-                        String lugar = rs.getString("Lugar");
-
-                        Evento evento = new Evento(id_Evento, nombre, descripcion, fechaInicio, fechaFin, direccion,ciudad,
-                                capacidad,estado,modalidad,lugar);
-
-                        eventos.add(evento);
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-
-                return eventos;
+                eventos.add(evento);
             }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+
+        return eventos;
+     }
     }
