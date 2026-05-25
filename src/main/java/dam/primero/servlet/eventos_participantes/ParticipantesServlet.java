@@ -1,13 +1,11 @@
 package dam.primero.servlet.eventos_participantes;
 
-
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
 import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
 import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
 
 import dam.primero.repositorio.eventos_participantes.EstadoRepo;
-
 import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
 import dam.primero.repositorio.eventos_participantes.PonenteRepo;
 import dam.primero.repositorio.eventos_participantes.RepoEventos;
@@ -35,8 +33,6 @@ public class ParticipantesServlet extends HttpServlet {
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;
 
-
-
 	@Override
 	public void init() throws ServletException {
 		System.out.println("En el init");
@@ -48,8 +44,8 @@ public class ParticipantesServlet extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-		//Inicializa repositorios
 	}
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,104 +56,72 @@ public class ParticipantesServlet extends HttpServlet {
 		IServletWebExchange webExchange = application.buildExchange(request, response);
 		WebContext context = new WebContext(webExchange, request.getLocale());
 
-
 		String servletPath = (request.getServletPath()!= null) ? request.getServletPath().trim() : "";
-		String pathInfo = request.getPathInfo();          // puede ser null
+		String pathInfo = request.getPathInfo();
 		String path = (pathInfo != null) ? pathInfo.trim() : "";
 
 		System.out.println("doGet servletPath: " + servletPath);
 		System.out.println("doGet pathInfo:    " + pathInfo);
 
-		// ── Ruta raíz: GET /eventosProyectos/ ─────────────────────────────────
-		// Mapping "/": servletPath="/" y pathInfo=null
 		if ("/".equals(servletPath) && path.isEmpty()) {
 			templateEngine.process("index", context, response.getWriter());
-
 		}
-
 		else if ("/participantes".equals(servletPath)) {
 
 			if (path.isEmpty() || path.equals("/")) {
 				templateEngine.process("indexParticipantes", context, response.getWriter());
-
 			}
-			else{
+			else {
+				String[] partes = path.substring(1).split("/");
+				String accion = partes[0];
+				String subaccion = partes.length > 1 ? partes[1] : null;
 
-			// Descomponemos el pathInfo para obtener acción y subacción
-			// path ejemplo: "/clientes"  →  partes = ["clientes"]
-			// path ejemplo: "/clientes/editar" →  partes = ["clientes","editar"]
-			String[] partes = path.substring(1).split("/");
-			String accion = partes[0];
-			String subaccion = partes.length > 1 ? partes[1] : null;
+				System.out.println("doGet accion:    " + accion);
+				System.out.println("doGet subaccion: " + subaccion);
 
-			System.out.println("doGet accion:    " + accion);
-			System.out.println("doGet subaccion: " + subaccion);
-
-			// Aquí tu lógica de negocio por acción
-			switch (accion) {
-				case "listaParticipantes":
-					 templateEngine.process("indexParticipantes", context, response.getWriter());
-					break;
-				case "eventos":
-					// templateEngine.process("eventos", context, response.getWriter());
-					break;
+				switch (accion) {
+					case "listaParticipantes":
+						templateEngine.process("indexParticipantes", context, response.getWriter());
+						break;
+					case "eventos":
+						break;
 					case "Crear_Evento":
-					RepoEventos repo = new RepoEventos();
-
-
-					templateEngine.process("Crear_Evento", context, response.getWriter());
-
-					break;
-				case "Listado_Eventos":
-					RepoEventos repoEventos = new RepoEventos();
-					List<Evento> eventos = new ArrayList<Evento>();
-					context.setVariable("eventos",eventos);
-					templateEngine.process("Listado_Eventos", context, response.getWriter());
-					break;
-
-				/*case "Crear_Evento":
-					EstadoRepo repo = new EstadoRepo();
-					List<Estado> estados = repo.listarEstados();
-					context.setVariable("estados", estados);
-
-					templateEngine.process("Crear_Evento", context, response.getWriter());
-
-					break;*/
-
-
-				case "Listado_Ponencias":/*Llamar al Listado_Ponencias*/
-					PonenciaRepo rep = new PonenciaRepo();
-					List<Ponencia> ponencias = rep.listarPonencias();
-					context.setVariable("ponencias",ponencias); /*Sirve para pasar al HTML una lista llamada ponencias*/
-
-
-					templateEngine.process("Listado_Ponencias",context,response.getWriter()); /*Dirige a Listado_Ponencias.html*/
-
-					break;
-				case "Listado_Ponentes": /*Llamar al Listado_Ponentes*/
-					PonenteRepo repPonentes = new PonenteRepo();
-					List<Ponente> ponentes = new ArrayList<Ponente>();
-					context.setVariable("ponentes",ponentes);
-					templateEngine.process("Listado_Ponentes",context,response.getWriter());
-
-					//templateEngine.process("Crear_Ponencia",context,response.getWriter()); /*Dirige a Crear_Ponencias.html*/
-
-
-					break;
-
-				default:
-					response.sendError(HttpServletResponse.SC_NOT_FOUND,
-							"Acción no reconocida: " + accion);
-			}}
-
+						RepoEventos repo = new RepoEventos();
+						templateEngine.process("html/Crear_Evento", context, response.getWriter());
+						break;
+					case "Listado_Eventos":
+						RepoEventos repoEventos = new RepoEventos();
+						List<Evento> eventos = new ArrayList<Evento>();
+						context.setVariable("eventos", eventos);
+						templateEngine.process("html/Listado_Eventos", context, response.getWriter());
+						break;
+					case "Listado_Ponencias":
+						try {
+							PonenciaRepo rep = new PonenciaRepo();
+							List<Ponencia> ponencias = rep.listarPonencias();
+							context.setVariable("ponencias", ponencias);
+							templateEngine.process("html/Listado_Ponencias", context, response.getWriter());
+						} catch (Exception e) {
+							response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en Base de Datos: " + e.getMessage());
+						}
+						break;
+					case "Listado_Ponentes":
+						PonenteRepo repPonentes = new PonenteRepo();
+						List<Ponente> ponentes = new ArrayList<Ponente>();
+						context.setVariable("ponentes", ponentes);
+						templateEngine.process("html/Listado_Ponentes", context, response.getWriter());
+						break;
+					default:
+						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
+				}
+			}
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-						  HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String pathInfo = request.getPathInfo();
@@ -167,66 +131,26 @@ public class ParticipantesServlet extends HttpServlet {
 		System.out.println("Path: " + path);
 
 		if (path.equals("/Crear_Evento")) {
-
-			try {	/**/ /**/
-
+			try {
 				Evento evento = new Evento();
-
 				evento.setNombre(request.getParameter("nombre"));
 				evento.setDescripcion(request.getParameter("descripcion"));
-
 				evento.setDireccion(request.getParameter("direccion"));
 				evento.setCiudad(request.getParameter("ciudad"));
-
 				evento.setLugar(request.getParameter("lugar"));
-
-				evento.setCapacidad(
-						Integer.parseInt(
-								request.getParameter("capacidad")
-						)
-				);
-
-				evento.setFechaInicio(
-						java.time.LocalDate.parse(
-								request.getParameter("fechaInicio")
-						)
-				);
-
-				evento.setFechaFin(
-						java.time.LocalDate.parse(
-								request.getParameter("fechaFin")
-						)
-				);
-
-				evento.setEstado(
-						Estado.valueOf(
-								request.getParameter("estado")
-						)
-				);
-
-				evento.setModalidad(
-						dam.primero.modelos.eventos_participantes.Modelo.Modalidad
-								.valueOf(
-										request.getParameter("modalidad")
-								)
-				);
+				evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
+				evento.setFechaInicio(java.time.LocalDate.parse(request.getParameter("fechaInicio")));
+				evento.setFechaFin(java.time.LocalDate.parse(request.getParameter("fechaFin")));
+				evento.setEstado(Estado.valueOf(request.getParameter("estado")));
+				evento.setModalidad(dam.primero.modelos.eventos_participantes.Modelo.Modalidad.valueOf(request.getParameter("modalidad")));
 
 				RepoEventos repo = new RepoEventos();
-
 				repo.crearEvento(evento);
 
-				response.sendRedirect(
-						request.getContextPath()
-								+ "/participantes/Listado_Eventos"
-				);
-
+				response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
 			} catch (Exception e) {
-
 				e.printStackTrace();
-
-				response.getWriter().println(
-						"Error al crear evento: " + e.getMessage()
-				);
+				response.getWriter().println("Error al crear evento: " + e.getMessage());
 			}
 		}
 	}
