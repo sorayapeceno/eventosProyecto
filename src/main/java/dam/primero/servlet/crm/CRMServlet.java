@@ -198,6 +198,7 @@ public class CRMServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/crm/listadopaginas");
     }
 
+
     private void mostrarConsultasXPath(WebContext context, HttpServletResponse response) throws IOException {
         // Consultas XPath usadas para cubrir la parte de Lenguaje de Marcas.
         context.setVariable("obligatoriosOrganizacion",

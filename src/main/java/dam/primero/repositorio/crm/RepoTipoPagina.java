@@ -5,6 +5,7 @@ import dam.primero.exception.MyException;
 import dam.primero.modelos.crm.PaginaWeb;
 import dam.primero.modelos.crm.TipoPagina;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
