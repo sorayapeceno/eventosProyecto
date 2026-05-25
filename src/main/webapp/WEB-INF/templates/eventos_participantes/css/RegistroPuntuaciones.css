@@ -1,0 +1,304 @@
+/* ==========================================================================
+   Estilos Generales y Base
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Encabezado (Header)
+   ========================================================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #2d97d0;
+    color: #000000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    background-color: #ffffff;
+    color: #2d97d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.contenedorBotonInicio button:hover {
+    background-color: #3348cb;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Sección de Contenido Principal
+   ========================================================================== */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    padding: 40px 20px;
+}
+
+.contenido-secundario {
+    width: 100%;
+    max-width: 1000px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.contenido-secundario h2 {
+    font-size: 28px;
+    color: #3348cb;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #2d97d0;
+    padding-bottom: 10px;
+}
+
+.contenido-secundario p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333;
+    margin-bottom: 25px;
+}
+
+/* ==========================================================================
+   Panel de Buscador y Filtros
+   ========================================================================== */
+.panel-herramientas {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.buscador input, .filtros select {
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    background-color: #ffffff;
+    color: #333333;
+    transition: border-color 0.3s ease;
+}
+
+.buscador input:focus, .filtros select:focus {
+    border-color: #2d97d0;
+}
+
+.buscador input {
+    width: 320px;
+}
+
+.filtros select {
+    width: 240px;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Maquetación de la Tabla
+   ========================================================================== */
+.contenedor-tabla {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px; /* Reducido para acercarlo a los controles */
+}
+
+.tabla-puntuaciones {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    text-align: left;
+    font-size: 15px;
+}
+
+.tabla-puntuaciones th, 
+.tabla-puntuaciones td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-puntuaciones th {
+    background-color: #2d97d0;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.tabla-puntuaciones tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.tabla-puntuaciones tbody tr:hover {
+    background-color: rgba(45, 151, 208, 0.08);
+}
+
+.nota {
+    font-weight: bold;
+    text-align: center;
+}
+
+.nota.aprobado { color: #1e6b22; }
+.nota.suspenso { color: #b91c1c; }
+
+/* ==========================================================================
+   NUEVO: Controles de Paginación Estilo Cápsula
+   ========================================================================== */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.paginacion button {
+    background-color: #3348cb;
+    color: #ffffff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.paginacion button:hover:not(:disabled) {
+    background-color: #2d97d0;
+    transform: scale(1.05);
+}
+
+/* Estado cuando el botón está deshabilitado */
+.paginacion button:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#infoPagina {
+    font-size: 14px;
+    font-weight: bold;
+    color: #475569;
+}
+
+/* ==========================================================================
+   Tarjetas de Resumen Estadístico
+   ========================================================================== */
+.tarjetas-estadisticas {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.tarjeta-mini {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 4px solid #2d97d0;
+    text-align: center;
+}
+
+.tarjeta-mini h4 {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.tarjeta-mini .cifra {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.tarjeta-mini .cifra.verde { color: #1e6b22; }
+.tarjeta-mini .cifra.azul { color: #3348cb; }
+
+/* ==========================================================================
+   Adaptabilidad (Responsive)
+   ========================================================================== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    h1 {
+        font-size: 28px;
+        margin: 10px 0;
+    }
+
+    .panel-herramientas {
+        flex-direction: column;
+    }
+
+    .buscador input, .filtros select {
+        width: 100%;
+    }
+    
+    .contenido-secundario {
+        padding: 20px;
+    }
+
+    .tarjetas-estadisticas {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

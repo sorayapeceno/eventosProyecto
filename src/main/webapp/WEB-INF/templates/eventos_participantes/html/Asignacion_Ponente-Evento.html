@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <title>Asignar Ponente a Evento</title>
+
         <!--Estilo Lili-->
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="/css/modulo1.css">
     </head>
-
     <body>
-
         <header>
             <h1>Gestión de Eventos Educativos</h1>
             <nav>
@@ -19,7 +18,6 @@
                 </ul>
             </nav>
         </header>
-
         <aside>
             <h2>Opciones</h2>
             <ul>
@@ -28,47 +26,35 @@
                 <li><a href="/html/Asignacion_Ponente-Evento.html">Asignar ponente a evento</a></li>
             </ul>
         </aside>
-
         <main>
-            <section>
+            <section class="contenido-secundario">
                 <h2>Asignar ponente a evento</h2>
 
-                <form action="#" method="post">
+                <form action="#" method="post" th:object="${asignacion}">
                     <fieldset>
                         <legend>Datos de asignación</legend>
 
+                        <!-- EVENTO -->
                         <label for="evento">Selecciona un evento:</label>
                         <select id="evento" name="evento">
-                            <option value="1">InnovaCode: Jornadas de Programación y BBDD</option>
-                            <option value="2">Frontend Lab Conference: UX y Desarrollo Moderno</option>
-                            <option value="3">Transformando el aula con IA</option>
-                            <option value="4">Seguridad en Redes Modernas</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
                         </select>
 
+                        <!-- PONENTE -->
                         <label for="ponente">Selecciona un ponente:</label>
                         <select id="ponente" name="ponente">
-                            <option value="1">Ponente 1: Especialista en BBDD</option>
-                            <option value="2">Ponente 2: Programación Java</option>
-                            <option value="3">Ponente 3: Programador universitario</option>
-                            <option value="4">Ponente 4: Profesor universitario</option>
-                            <option value="5">Ponente 5: Especialista en JavaScript</option>
-                            <option value="6">Ponente 6: Programador Python</option>
-                            <option value="7">Ponente 7: Desarrollador Frontend</option>
-                            <option value="8">Ponente 8: Profesor de secundaria (IA)</option>
-                            <option value="9">Ponente 9: Anthony West</option>
-                            <option value="10">Ponente 10: Luna Rodríguez</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="ponente : ${ponentes}" th:value="${ponente.id}" th:text="${ponente.nombre}"></option>
                         </select>
 
                         <button type="submit">Asignar ponente</button>
                     </fieldset>
                 </form>
-
             </section>
         </main>
-
         <footer>
             <p>© 2026 Gestión de Eventos</p>
         </footer>
-
     </body>
 </html>

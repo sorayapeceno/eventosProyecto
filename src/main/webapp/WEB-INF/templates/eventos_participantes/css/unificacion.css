@@ -1,0 +1,236 @@
+/* BASE GLOBAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER (común para todas las páginas) */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #2d97d0;
+    color: #000000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+/* botón inicio / cabecera */
+.contenedorBotonInicio,
+.contenedorBotonInicio button,
+.boton-inicio {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.contenedorBotonInicio button,
+.boton-inicio {
+    background-color: #ffffff;
+    color: #3292cd;
+    border: none;
+    padding: 10px 35px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.contenedorBotonInicio button:hover,
+.boton-inicio:hover {
+    background-color: #f0f7fc;
+    transform: translateY(-1px);
+}
+
+/* CONTENEDOR PRINCIPAL (estructura común) */
+
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    padding: 40px 20px;
+}
+
+.contenido-secundario {
+    width: 100%;
+    max-width: 1000px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* títulos generales */
+h2 {
+    font-size: 28px;
+    color: #3348cb;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #2d97d0;
+    padding-bottom: 10px;
+}
+
+/* FORMULARIOS */
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #444;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+form button {
+    margin-top: 20px;
+    background-color: #3292cd;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* selects tipo listas dinámicas  */
+select option {
+    padding: 5px;
+}
+
+/* TABLAS */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+th {
+    background-color: #2d97d0;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tr:hover {
+    background-color: rgba(45, 151, 208, 0.05);
+}
+
+/* LISTADOS / TARJETAS (home y servicios) */
+
+.lista-servicios,
+.lista-tramites,
+.lista-ofertas {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.servicio-item,
+.tramite-item,
+.oferta-bloque {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #2d97d0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.servicio-item:hover {
+    transform: translateY(-2px);
+    border-left-color: #3348cb;
+}
+
+/* SELECTORES Y FORM ELEMENTS ESPECÍFICOS */
+
+.panel-herramientas {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.buscador input,
+.filtros select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin: 10px 0;
+    }
+
+    .principal {
+        padding: 20px;
+    }
+
+    .contenido-secundario {
+        padding: 20px;
+    }
+
+    .panel-herramientas {
+        flex-direction: column;
+    }
+}

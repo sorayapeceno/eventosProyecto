@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Detalle del Evento</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="/css/modulo1.css">
+    </head>
+    <body>
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Eventos.html">Listado de eventos</a></li>
+                <li><a href="/html/Crear_Evento.html">Crear evento</a></li>
+                <li><a href="/html/Modificar_Evento.html">Modificar evento</a></li>
+            </ul>
+        </aside>
+        <main>
+            <section>
+                <h2>Detalle del evento</h2>
+                <article class="tarjeta">
+                    <h3 th:text="${evento.nombre}">
+                        InnovaCode: Jornadas de Programación y BBDD
+                    </h3>
+                    <p>
+                        <strong>ID del evento:</strong>
+                        <span th:text="${evento.id}">1</span>
+                    </p>
+                    <p>
+                        <strong>Descripción:</strong><br>
+                        <span th:text="${evento.descripcion}">Evento centrado en programación, bases de datos y tendencias tecnológicas.</span>
+                    </p>
+                    <p>
+                        <strong>Fecha de inicio:</strong>
+                        <time th:datetime="${evento.fechaInicio}" th:text="${evento.fechaInicio}">20 de junio de 2026</time>
+                    </p>
+                    <p>
+                        <strong>Fecha de fin:</strong>
+                        <time th:datetime="${evento.fechaFin}" th:text="${evento.fechaFin}"> 21 de junio de 2026</time>
+                    </p>
+                    <p>
+                        <strong>Dirección:</strong>
+                        <span th:text="${evento.direccion}">Calle Leonardo Da Vinci, 18</span>
+                    </p>
+                    <p>
+                        <strong>Ciudad:</strong>
+                        <span th:text="${evento.ciudad}">Sevilla</span>
+                    </p>
+                    <p>
+                        <strong>Capacidad:</strong>
+                        <span th:text="${evento.capacidad}">150</span>
+                    </p>
+                    <p>
+                        <strong>Estado:</strong>
+                        <span th:text="${evento.estado}">Cerrado</span>
+                    </p>
+                    <p>
+                        <strong>Modalidad:</strong>
+                        <span th:text="${evento.modalidad}">Híbrido</span>
+                    </p>
+                    <p>
+                        <strong>Lugar:</strong>
+                        <span th:text="${evento.lugar}">TecnoIncubadora Marie Curie</span>
+                    </p>
+                    <figure>
+                        <!--Añadir una imágen-->
+                        <img th:src="${evento.imagen}" src="" alt="Imagen del evento InnovaCode" width="350">
+                        <figcaption> Imagen representativa del evento InnovaCode.</figcaption>
+                    </figure>
+                </article>
+            </section>
+        </main>
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+    </body>
+</html>

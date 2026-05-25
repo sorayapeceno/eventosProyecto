@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <title>Crear Ponencia</title>
+
         <!--Estilo Lili-->
-        <link rel="stylesheet" href="css/estilos.css">
+        <link rel="stylesheet" href="/css/modulo1.css">
     </head>
-
     <body>
-
         <header>
             <h1>Gestión de Eventos Educativos</h1>
             <nav>
@@ -19,7 +18,6 @@
                 </ul>
             </nav>
         </header>
-
         <aside>
             <h2>Opciones</h2>
             <ul>
@@ -27,70 +25,60 @@
                 <li><a href="/html/Crear_Ponencia.html">Crear ponencia</a></li>
             </ul>
         </aside>
-
         <main>
-            <section>
+            <section class="contenido-secundario">
                 <h2>Crear nueva ponencia</h2>
-
-                <form action="#" method="post">
+                <form action="#" method="post" th:object="${ponencia}">
                     <fieldset>
                         <legend>Datos de la ponencia</legend>
-
                         <label for="titulo">Título:</label>
-                        <input type="text" id="titulo" name="titulo" required>
+                        <input type="text" id="titulo" name="titulo" th:value="${ponencia.titulo}" required>
 
-                        <label for="duracion">Duración (minutos):</label>
-                        <input type="number" id="duracion" name="duracion" required>
+                        <label for="duracion"> Duración:</label>
+                        <input type="number" id="duracion" name="duracion" th:value="${ponencia.duracion}" required>
 
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" name="fecha" required>
+                        <label for="fecha"> Fecha: </label>
+                        <input type="date" id="fecha" name="fecha" th:value="${ponencia.fecha}" required>
 
                         <label for="hora">Hora:</label>
-                        <input type="time" id="hora" name="hora" required>
+                        <input type="time" id="hora" name="hora" th:value="${ponencia.hora}" required>
 
                         <label for="ubicacion">Ubicación:</label>
-                        <input type="text" id="ubicacion" name="ubicacion" required>
+                        <input type="text" id="ubicacion" name="ubicacion" th:value="${ponencia.ubicacion}" required>
 
                         <label for="sala">Sala:</label>
-                        <input type="text" id="sala" name="sala" required>
+                        <input type="text" id="sala" name="sala" th:value="${ponencia.sala}" required>
 
                         <label for="nivel">Nivel:</label>
                         <select id="nivel" name="nivel">
-                            <option value="Básico">Básico</option>
-                            <option value="Intermedio">Intermedio</option>
-                            <option value="Avanzado">Avanzado</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="nivel : ${niveles}" th:value="${nivel}" th:text="${nivel}"></option>
                         </select>
 
                         <label for="tipo">Tipo:</label>
                         <select id="tipo" name="tipo">
-                            <option value="Charla">Charla</option>
-                            <option value="Taller">Taller</option>
-                            <option value="Mesa">Mesa</option>
-                            <option value="Podcast">Podcast</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
+                            </option>
                         </select>
 
                         <label for="formato">Formato:</label>
                         <select id="formato" name="formato">
-                            <option value="Presencial">Presencial</option>
-                            <option value="Híbrido">Híbrido</option>
-                            <option value="Online">Online</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="formato : ${formatos}" th:value="${formato}" th:text="${formato}"></option>
                         </select>
 
                         <label for="tematica">Temática:</label>
                         <select id="tematica" name="tematica">
-                            <option value="1">BBDD</option>
-                            <option value="2">Programación</option>
-                            <option value="3">LDM</option>
-                            <option value="4">IA</option>
-                            <option value="5">Ciberseguridad</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="tematica: ${tematicas}" th:value="${tematica.id}" th:text="${tematica.tema}">
+                            </option>
                         </select>
 
                         <label for="evento">Evento asociado:</label>
                         <select id="evento" name="evento">
-                            <option value="1">InnovaCode: Jornadas de Programación y BBDD</option>
-                            <option value="2">Frontend Lab Conference</option>
-                            <option value="3">Transformando el aula con IA</option>
-                            <option value="4">Seguridad en Redes Modernas</option>
+                            <option value="">Elige una opción:</option>
+                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
                         </select>
 
                         <button type="submit">Crear ponencia</button>
@@ -98,10 +86,8 @@
                 </form>
             </section>
         </main>
-
         <footer>
             <p>© 2026 Gestión de Eventos Educativos</p>
         </footer>
-
     </body>
 </html>

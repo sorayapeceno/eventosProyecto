@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Listado de Eventos</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" href="/css/modulo1.css">
+    </head>
+    <body>
+        <header>
+            <h1>Gestión de Eventos Educativos</h1>
+            <nav>
+                <ul>
+                    <li><a href="/html/Listado_Eventos.html">Eventos</a></li>
+                    <li><a href="/html/Listado_Ponencias.html">Ponencias</a></li>
+                    <li><a href="/html/Listado_Ponentes.html">Ponentes</a></li>
+                </ul>
+            </nav>
+        </header>
+        <aside>
+            <h2>Opciones</h2>
+            <ul>
+                <li><a href="/html/Listado_Eventos.html">Listado de eventos</a></li>
+                <li><a href="/html/Crear_Evento.html">Crear evento</a></li>
+            </ul>
+        </aside>
+        <main>
+            <section class="contenido-secundario">
+                <h2>Listado de eventos</h2>
+                <table>
+                    <caption>Eventos registrados</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Fecha inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Ciudad</th>
+                            <th>Estado</th>
+                            <th>Modalidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="evento: ${eventos}">
+                            <td th:text="${evento.id}">1</td>
+                            <td th:text="${evento.nombre}">InnovaCode: Jornadas de Programación y BBDD</td>
+                            <td th:text="${evento.fechaInicio}">2026-06-20</td>
+                            <td th:text="${evento.fechaFin}">2026-06-21</td>
+                            <td th:text="${evento.ciudad}">Sevilla</td>
+                            <td th:text="${evento.estado}">Cerrado</td>
+                            <td th:text="${evento.modalidad}">Híbrido</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+    </body>
+</html>
