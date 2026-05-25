@@ -15,7 +15,7 @@ public class MySqlConectorEventosParticipantes extends MySqlConector {
 		try {
 			Properties properties = new Properties();
 			var stream = MySqlConectorEventosParticipantes.class.getClassLoader()
-					.getResourceAsStream("/eventos_participantes/db.properties");
+					.getResourceAsStream("eventos_participantes/db.properties");
 			if (stream == null) {
 				throw new MyException("No se encontró db.properties en el classpath");
 			}

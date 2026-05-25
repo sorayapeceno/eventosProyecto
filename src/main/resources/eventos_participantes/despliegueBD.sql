@@ -1,6 +1,6 @@
 
-CREATE DATABASE IF NOT EXISTS ProyectoFinalJud;
-USE ProyectoFinalJud;
+CREATE DATABASE IF NOT EXISTS proyectofinaljud;
+USE proyectofinaljud;
 
 CREATE TABLE Persona (
     id_Persona BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

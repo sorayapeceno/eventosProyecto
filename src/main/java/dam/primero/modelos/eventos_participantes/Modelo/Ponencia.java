@@ -7,7 +7,8 @@ import java.util.Objects;
 public class Ponencia {
 
     private static int contador;
-    private int idPonencia;
+    private int id_Ponencia; // Modificado para que coincida exactamente con tu HTML y Repo
+    private int id_Evento;   // Añadido para que puedas guardar y listar el evento
     private String titulo;
     private int tematica;
     private int duracion;
@@ -19,10 +20,13 @@ public class Ponencia {
     private Tipo tipo;
     private Formato formato;
 
-    public Ponencia(int idPonencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, String tema, Nivel nivel, Tipo tipo, Formato formato) {
+    // Constructor vacío por buena práctica
+    public Ponencia() {}
 
+    // Constructor completo modificado para aceptar y respetar el ID real de la base de datos
+    public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, String tema, Nivel nivel, Tipo tipo, Formato formato) {
         contador++;
-        this.idPonencia = contador;
+        this.id_Ponencia = id_Ponencia; // Guardamos el ID real de la BBDD
         this.titulo = titulo;
         this.tematica = tematica;
         this.duracion = duracion;
@@ -43,12 +47,21 @@ public class Ponencia {
         Ponencia.contador = contador;
     }
 
-    public int getIdPonencia() {
-        return idPonencia;
+    // Getters y Setters actualizados con el nombre correcto para Thymeleaf
+    public int getId_Ponencia() {
+        return id_Ponencia;
     }
 
-    public void setIdPonencia(int idPonencia) {
-        this.idPonencia = idPonencia;
+    public void setId_Ponencia(int id_Ponencia) {
+        this.id_Ponencia = id_Ponencia;
+    }
+
+    public int getId_Evento() {
+        return id_Evento;
+    }
+
+    public void setId_Evento(int id_Evento) {
+        this.id_Evento = id_Evento;
     }
 
     public String getTitulo() {
@@ -135,18 +148,19 @@ public class Ponencia {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Ponencia ponencia = (Ponencia) o;
-        return idPonencia == ponencia.idPonencia;
+        return id_Ponencia == ponencia.id_Ponencia;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(idPonencia);
+        return Objects.hashCode(id_Ponencia);
     }
 
     @Override
     public String toString() {
         return "Ponencia{" +
-                "idPonencia=" + idPonencia +
+                "id_Ponencia=" + id_Ponencia +
+                ", id_Evento=" + id_Evento +
                 ", titulo='" + titulo + '\'' +
                 ", tematica=" + tematica +
                 ", duracion=" + duracion +
