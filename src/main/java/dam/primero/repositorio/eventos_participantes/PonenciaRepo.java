@@ -58,10 +58,12 @@ public class PonenciaRepo {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());/**/
         }
 
         return ponencias; /*Metodo listado de Ponencias*/
+
+
     }
 
 }
