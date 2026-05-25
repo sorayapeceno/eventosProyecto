@@ -1,36 +1,66 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="ES">
 <head>
-	<meta charset="UTF-8" />
-	<title>CRM</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-	<style>
-		body  { text-align: center; }
-		main  { display: flex; justify-content: center; align-items: center; }
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I.E.S. Torre de los Guzmanes - Actividades</title>
+        <link rel="stylesheet" th:href="@{/CSS/actividades.css}">
+    </head>
 </head>
+
 <body>
-<header>
-	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-	   target="_blank">
-		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-	</a>
 
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        opacity: 0.3; z-index: -1;">
-	</div>
+    <header>
+        <div class="logo-container">
+            <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
+               target="_blank">
+                <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+            </a></div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='PaginaBase.html'">INICIO</button>
+        </div>
+    </header>
 
-	<h1 align="center">CRM</h1>
+    <main class="contenedor-actividades">
+        <section class="introduccion">
+            <h2>Actividades Complementarias y Extraescolares</h2>
+            <p>En el I.E.S. Torre de los Guzmanes creemos en una formación integral que va más allá de las aulas. Descubre los eventos, talleres y salidas planificadas para este curso académico.</p>
+        </section>
 
-	<!-- Botón atrás: navega a la raíz del contexto -->
-	<a th:href="@{/}">
-		<button type="button">&#8592; Atrás</button>
-	</a>
-</header>
+        <div class="grid-actividades">
+            <article class="tarjeta-actividad">
+                <div class="icono-actividad">🎭</div>
+                <h3>Actividades Culturales</h3>
+                <p>Celebraciones de días clave (Día del Libro, Andalucía, Navidad), talleres de teatro, visitas a museos históricos y certámenes literarios organizados por nuestros departamentos.</p>
+            </article>
 
-<main>
-	<div></div>
-</main>
+            <article class="tarjeta-actividad">
+                <div class="icono-actividad">⚽</div>
+                <h3>Deportes y Salud</h3>
+                <p>Torneos de recreo (fútbol, baloncesto, ajedrez), jornadas de senderismo en entornos naturales de Sevilla y talleres orientados a la alimentación saludable y hábitos de vida activos.</p>
+            </article>
+
+            <article class="tarjeta-actividad">
+                <div class="icono-actividad">🚌</div>
+                <h3>Viajes y Excursiones</h3>
+                <p>Rutas e itinerarios didácticos por toda la comunidad autónoma, visitas a centros científicos de interés y nuestro tradicional viaje de fin de etapa para los alumnos de último curso.</p>
+            </article>
+
+            <article class="tarjeta-actividad">
+                <div class="icono-actividad">💻</div>
+                <h3>Talleres y Conferencias</h3>
+                <p>Charlas de concienciación sobre el uso seguro de redes del Plan Director, fomento del emprendimiento tecnológico, robótica aplicada e igualdad de género.</p>
+            </article>
+        </div>
+
+        <section class="info-adicional">
+            <div class="bloque-aviso">
+                <h4>📌 Información Importante para las Familias</h4>
+                <p>Todas las salidas fuera del centro requieren la autorización previa firmada por los padres o tutores legales a través de la aplicación <strong>iPasen</strong> o mediante el documento físico entregado por el tutor con al menos 3 días de antelación.</p>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>

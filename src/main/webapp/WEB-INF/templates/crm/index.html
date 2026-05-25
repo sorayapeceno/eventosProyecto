@@ -1,35 +1,44 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>EVENTOS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I.E.S. Torre de los Guzmanes - Inicio</title>
     <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
 </head>
 <body>
 
-<header>
-    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-       target="_blank">
-        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-    </a>
+    <header>
+        <div class="header-superior">
+            <div class="logo-container">
+                <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
+                   target="_blank">
+                    <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+                </a></div>
+            <h1>I.E.S. Torre de los Guzmanes</h1>
+            <div class="contenedorBotonInicio">
+                <button onclick="window.location.href='PaginaBase.html'">INICIO</button>
+            </div>
+        </div>
 
-    <h1>Eventos y Proyectos</h1>
+        <nav class="cajaDeBotones">
+            <button class="botones" onclick="window.location.href='crm'">Ver CRM</button>
+            <button class="botones" onclick="window.location.href='ventas'">Ver Ventas</button>
+            <button class="botones" onclick="window.location.href='dashboards'">Ver Dashboards</button>
+            <button class="botones" onclick="window.location.href='relaciones'">Ver Relaciones</button>
+            <button class="botones" onclick="window.location.href='participantes'">Ver Participantes</button>
+            <button class="botones" onclick="window.location.href='logistica'">Ver Logística</button>
+        </nav>
+    </header>
 
-    <div class="contenedorBotonInicio">
-        <!-- vacío: reservado para botón de inicio en otras páginas -->
-    </div>
-</header>
-
-<principal>
-    <div class="cajaDeBotones">
-        <button class="botones" onclick="window.location.href='crm'">Ver CRM</button>
-        <button class="botones" onclick="window.location.href='ventas'">Ver Ventas</button>
-        <button class="botones" onclick="window.location.href='dashboards'">Ver Dashboards</button>
-        <button class="botones" onclick="window.location.href='relaciones'">Ver Relaciones</button>
-        <button class="botones" onclick="window.location.href='participantes'">Ver Participantes</button>
-        <button class="botones" onclick="window.location.href='logistica'">Ver Logística</button>
-    </div>
-</principal>
+    <main class="principal">
+        <article class="contenido-introduccion">
+            <h2>Bienvenido a nuestro Centro Virtual</h2>
+            <p>El <strong>I.E.S. Torre de los Guzmanes</strong> es un centro educativo comprometido con la formación integral, la innovación pedagógica y el desarrollo tecnológico de nuestro alumnado.</p>
+            <p>A través de este portal, ponemos a disposición de toda la comunidad educativa (estudiantes, familias y profesorado) el acceso directo a la gestión de secretaría, la consulta de nuestra variada oferta formativa y las actividades complementarias planificadas para el curso escolar.</p>
+            <p>Nuestra meta es construir un entorno de aprendizaje dinámico, inclusivo y adaptado a las necesidades profesionales del mañana.</p>
+        </article>
+    </main>
 
 </body>
 </html>
