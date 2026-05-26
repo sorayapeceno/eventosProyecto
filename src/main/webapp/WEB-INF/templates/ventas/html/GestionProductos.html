@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Gestión de Productos</title>
+    <link rel="stylesheet" th:href="@{/CSS/GestionProductos.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones activo">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Catálogo de Productos</h2>
+
+        <!-- Alertas -->
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'guardado'}" class="alerta alerta-exito">
+                Producto guardado correctamente.
+            </div>
+            <div th:if="${param.msg[0] == 'eliminado'}" class="alerta alerta-exito">
+                Producto eliminado correctamente.
+            </div>
+        </div>
+        <div th:if="${param.error != null}">
+            <div th:if="${param.error[0] == 'tieneVentas'}" class="alerta alerta-error">
+                No se puede eliminar: el producto tiene ventas asociadas.
+            </div>
+        </div>
+        <div th:if="${error != null}" class="alerta alerta-error">
+             <span th:text="${error}"></span>
+        </div>
+
+        <!-- Panel herramientas -->
+        <div class="panel-herramientas">
+            <div class="buscador">
+                <input type="text" id="inputBuscar" placeholder="Buscar producto...">
+            </div>
+            <div class="acciones-panel">
+                <a th:href="@{/producto/formulario}" class="btn-primario">Nuevo Producto</a>
+            </div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="contenedor-tabla">
+            <table class="tabla-ventas" id="tablaProductos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Descuento</th>
+                        <th>Precio Final</th>
+                        <th>Stock</th>
+                        <th>IVA</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${productos == null or #lists.isEmpty(productos)}">
+                        <td colspan="10" style="text-align:center; color:#94a3b8; padding:30px;">
+                           No hay productos en el catálogo.
+                        </td>
+                    </tr>
+                    <tr th:each="prod : ${productos}">
+                        <td th:text="${prod.id_Producto}">1</td>
+                        <td><strong th:text="${prod.nombreProducto}">Producto</strong></td>
+                        <td>
+                            <span th:class="'badge badge-' + ${prod.tipoProducto.name().toLowerCase()}"
+                                  th:text="${prod.tipoProducto.displayName}">Tipo</span>
+                        </td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">€0.00</td>
+                        <td>
+                            <span th:if="${prod.descuento > 0}" style="color:#b91c1c;"
+                                 th:text="'-€' + ${#numbers.formatDecimal(prod.descuento, 1, 2)}">-€0.00</span>
+                            <span th:if="${prod.descuento <= 0}" style="color:#94a3b8;">—</span>
+                        </td>
+                        <td>
+                            <strong style="color:#3348cb"
+                                   th:text="'€' + ${#numbers.formatDecimal(prod.precioConDescuento, 1, 2)}">
+                                €0.00
+                            </strong>
+                        </td>
+                        <td>
+                            <span th:if="${prod.stockDisponible > 10}" style="color:#1e6b22; font-weight:bold;"
+                                 th:text="${prod.stockDisponible}">100</span>
+                            <span th:if="${prod.stockDisponible > 0 and prod.stockDisponible <= 10}"
+                                 style="color:#c05621; font-weight:bold;"
+                                 th:text="${prod.stockDisponible}">5</span>
+                            <span th:if="${prod.stockDisponible <= 0}"
+                                 style="color:#b91c1c; font-weight:bold;">Sin stock</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-tarjeta"
+                                 th:text="${prod.tipoIVA != null ? prod.tipoIVA.porcentaje + '%' : '21%'}">
+                                21%
+                            </span>
+                        </td>
+                        <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
+                           th:text="${prod.descripcionProducto}">Descripción</td>
+                        <td>
+                            <div class="acciones">
+                                <a th:href="@{/producto/formulario(id=${prod.id_Producto})}"
+                                  class="btn-neutro">Editar</a>
+                                <form th:action="@{/producto/eliminar}" method="post"
+                                     onsubmit="return confirm('¿Eliminar este producto? Solo es posible si no tiene ventas.');">
+                                    <input type="hidden" name="id" th:value="${prod.id_Producto}">
+                                    <button type="submit" class="btn-peligro"></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="paginacion">
+            <button id="btnAnterior">Anterior</button>
+            <span id="infoPagina">Página 1 de 1</span>
+            <button id="btnSiguiente">Siguiente</button>
+        </div>
+
+    </div>
+</main>
+
+<script>
+   const inputBuscar  = document.getElementById('inputBuscar');
+   const tabla        = document.getElementById('tablaProductos').getElementsByTagName('tbody')[0];
+   const filas        = Array.from(tabla.getElementsByTagName('tr'));
+   const btnAnt       = document.getElementById('btnAnterior');
+   const btnSig       = document.getElementById('btnSiguiente');
+   const infoPag      = document.getElementById('infoPagina');
+   const porPagina    = 8;
+   let pagActual      = 1;
+   let filtradas      = [...filas];
+
+   function actualizar() {
+       const total  = filtradas.length;
+       const pages  = Math.ceil(total / porPagina) || 1;
+       if (pagActual >pages) pagActual = pages;
+       if (pagActual < 1)    pagActual = 1;
+       filas.forEach(f =>f.style.display = 'none');
+       const ini = (pagActual - 1) * porPagina;
+       filtradas.slice(ini, ini + porPagina).forEach(f =>f.style.display = '');
+       infoPag.textContent = `Página ${pagActual} de ${pages}`;
+       btnAnt.disabled = pagActual === 1;
+       btnSig.disabled = pagActual === pages;
+    }
+
+   function filtrar() {
+       const txt = inputBuscar.value.toLowerCase();
+       filtradas = filas.filter(f => {
+           const celdas = f.getElementsByTagName('td');
+           if (celdas.length === 0) return true;
+           return (celdas[1]?.textContent || '').toLowerCase().includes(txt) ||
+                   (celdas[2]?.textContent || '').toLowerCase().includes(txt) ||
+                   (celdas[8]?.textContent || '').toLowerCase().includes(txt);
+        });
+       pagActual = 1;
+       actualizar();
+    }
+
+   btnAnt.addEventListener('click',  () => { pagActual--; actualizar(); });
+   btnSig.addEventListener('click',  () => { pagActual++; actualizar(); });
+   inputBuscar.addEventListener('keyup', filtrar);
+   actualizar();
+</script>
+
+</body>
+</html>

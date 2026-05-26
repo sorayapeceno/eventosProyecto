@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Listado de Ventas</title>
+    <link rel="stylesheet" th:href="@{/CSS/ListadoVentas.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones activo">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Listado de Ventas</h2>
+
+        <!-- Alertas -->
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'cancelado'}" class="alerta alerta-exito">
+                El ticket ha sido cancelado correctamente y el stock restaurado.
+            </div>
+        </div>
+        <div th:if="${error != null}" class="alerta alerta-error">
+             <span th:text="${error}"></span>
+        </div>
+
+        <!-- Tarjetas de resumen -->
+        <div class="tarjetas-resumen">
+            <div class="tarjeta-stat">
+                <h4>Total Tickets</h4>
+                <span class="cifra azul" th:text="${totalTickets}">0</span>
+            </div>
+            <div class="tarjeta-stat">
+                <h4>Total Facturado</h4>
+                <span class="cifra verde" th:text="'€' + ${totalFacturado}">€0.00</span>
+            </div>
+            <div class="tarjeta-stat">
+                <h4>Asistentes</h4>
+                <span class="cifra naranja"
+                     th:text="${#lists.size(tickets)} > 0
+                                ? ${#lists.size(tickets.stream().map(t ->t.duenio.id_Asistente).distinct().collect(T(java.util.stream.Collectors).toList()))}
+                                : 0">0</span>
+            </div>
+        </div>
+
+        <!-- Panel herramientas -->
+        <div class="panel-herramientas">
+            <div class="buscador">
+                <input type="text" id="inputBuscar" placeholder="Buscar por ID o asistente...">
+            </div>
+            <div class="filtros">
+                <select id="selectMetodo">
+                    <option value="todos">Todos los métodos de pago</option>
+                    <option value="TARJETA">Tarjeta</option>
+                    <option value="PAYPAL">PayPal</option>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+            </div>
+            <div class="acciones-panel">
+                <a th:href="@{/ticket/nuevo}" class="btn-primario">Nueva Venta</a>
+            </div>
+        </div>
+
+        <!-- Tabla de tickets -->
+        <div class="contenedor-tabla">
+            <table class="tabla-ventas" id="tablaTickets">
+                <thead>
+                    <tr>
+                        <th>ID Ticket</th>
+                        <th>Código QR</th>
+                        <th>Asistente</th>
+                        <th>Fecha Compra</th>
+                        <th>Método Pago</th>
+                        <th>Descuento</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${tickets == null or #lists.isEmpty(tickets)}">
+                        <td colspan="8" style="text-align:center; color:#94a3b8; padding: 30px;">
+                           No hay ventas registradas aún.
+                        </td>
+                    </tr>
+                    <tr th:each="ticket : ${tickets}">
+                        <td>
+                            <strong th:text="'#' + ${ticket.id_Ticket}">#100</strong>
+                        </td>
+                        <td>
+                            <code th:text="${ticket.codigoQR}">QR-0000</code>
+                        </td>
+                        <td>
+                            <span th:text="${ticket.duenio != null ? ticket.duenio.bio : 'N/D'}">Bio</span>
+                            <br>
+                            <small style="color:#64748b"
+                                  th:text="'ID: ' + ${ticket.duenio != null ? ticket.duenio.id_Asistente : '-'}"></small>
+                        </td>
+                        <td th:text="${ticket.fechaCompra != null ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy') : '-'}">
+                            01/01/2024
+                        </td>
+                        <td>
+                            <span class="badge"
+                                 th:classappend="${ticket.metodoPago != null && ticket.metodoPago.name() == 'TARJETA'} ? 'badge-tarjeta' :
+                                                  (${ticket.metodoPago != null && ticket.metodoPago.name() == 'PAYPAL'}  ? 'badge-paypal'  :
+                                                  (${ticket.metodoPago != null && ticket.metodoPago.name() == 'EFECTIVO'} ? 'badge-efectivo' : 'badge-transfer'))"
+                                 th:text="${ticket.metodoPago != null ? ticket.metodoPago.name() : '-'}">
+                               TARJETA
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${ticket.descuento > 0}" style="color:#1e6b22; font-weight:bold;"
+                                 th:text="'-€' + ${#numbers.formatDecimal(ticket.descuento, 1, 2)}">-€5.00</span>
+                            <span th:if="${ticket.descuento <= 0}" style="color:#94a3b8;">—</span>
+                        </td>
+                        <td>
+                            <strong style="color:#3348cb"
+                                   th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">
+                                €150.00
+                            </strong>
+                        </td>
+                        <td>
+                            <div class="acciones">
+                                <a th:href="@{/ventas/detalleTicket(id=${ticket.id_Ticket})}"
+                                  class="btn-secundario">Ver</a>
+                                <form th:action="@{/ventas/cancelarTicket}" method="post"
+                                     onsubmit="return confirm('¿Seguro que quieres cancelar este ticket? Se restaurará el stock.');">
+                                    <input type="hidden" name="id" th:value="${ticket.id_Ticket}">
+                                    <button type="submit" class="btn-peligro">Cancelar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación JS -->
+        <div class="paginacion">
+            <button id="btnAnterior">Anterior</button>
+            <span id="infoPagina">Página 1 de 1</span>
+            <button id="btnSiguiente">Siguiente</button>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    // Filtrado + Paginación
+   const inputBuscar    = document.getElementById('inputBuscar');
+   const selectMetodo   = document.getElementById('selectMetodo');
+   const tabla          = document.getElementById('tablaTickets').getElementsByTagName('tbody')[0];
+   const filas          = Array.from(tabla.getElementsByTagName('tr'));
+   const btnAnterior    = document.getElementById('btnAnterior');
+   const btnSiguiente   = document.getElementById('btnSiguiente');
+   const infoPagina     = document.getElementById('infoPagina');
+   const filasPorPagina = 8;
+   let paginaActual     = 1;
+   let filasFiltradas   = [...filas];
+
+   function actualizarTabla() {
+       const total  = filasFiltradas.length;
+       const pages  = Math.ceil(total / filasPorPagina) || 1;
+       if (paginaActual >pages) paginaActual = pages;
+       if (paginaActual < 1)    paginaActual = 1;
+
+       filas.forEach(f =>f.style.display = 'none');
+       const inicio = (paginaActual - 1) * filasPorPagina;
+       filasFiltradas.slice(inicio, inicio + filasPorPagina)
+                      .forEach(f =>f.style.display = '');
+
+       infoPagina.textContent   = `Página ${paginaActual} de ${pages}`;
+       btnAnterior.disabled     = paginaActual === 1;
+       btnSiguiente.disabled    = paginaActual === pages;
+    }
+
+   function filtrar() {
+       const texto   = inputBuscar.value.toLowerCase();
+       const metodo  = selectMetodo.value.toLowerCase();
+
+       filasFiltradas = filas.filter(fila => {
+           const celdas  = fila.getElementsByTagName('td');
+           if (celdas.length === 0) return true;
+           const id      = (celdas[0]?.textContent || '').toLowerCase();
+           const asist   = (celdas[2]?.textContent || '').toLowerCase();
+           const mp      = (celdas[4]?.textContent || '').toLowerCase();
+           const cumpleTexto  = id.includes(texto) || asist.includes(texto);
+           const cumpleMetodo = metodo === 'todos' || mp.includes(metodo);
+           return cumpleTexto && cumpleMetodo;
+        });
+
+       paginaActual = 1;
+       actualizarTabla();
+    }
+
+   btnAnterior.addEventListener('click',  () => { paginaActual--; actualizarTabla(); });
+   btnSiguiente.addEventListener('click', () => { paginaActual++; actualizarTabla(); });
+   inputBuscar.addEventListener('keyup',  filtrar);
+   selectMetodo.addEventListener('change', filtrar);
+
+   actualizarTabla();
+</script>
+
+</body>
+</html>

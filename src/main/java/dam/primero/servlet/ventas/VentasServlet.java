@@ -1,8 +1,11 @@
 package dam.primero.servlet.ventas;
 
+import dam.primero.modelos.ventas.*;
+import dam.primero.repositorio.ventas.AsistenteRepository;
+import dam.primero.repositorio.ventas.ProductoRepository;
+import dam.primero.repositorio.ventas.TicketRepository;
+import dam.primero.exception.MyException;
 
-import dam.primero.modelos.ventas.Cliente;
-import dam.primero.repositorio.ventas.RepoVentas;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -15,93 +18,205 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class VentasServlet extends HttpServlet {
-	private static final long serialVersionUID = 2051990309999713971L;
-	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
-	public static final String TEMPLATES = "/WEB-INF/templates/ventas/";
-	public static final String SUFFIX = ".html";
-	private TemplateEngine templateEngine;
-	private JavaxServletWebApplication application;
-	private RepoVentas repoVentas;
 
+    private TemplateEngine templateEngine;
+    private JavaxServletWebApplication application;
 
+    private static final String TEMPLATES = "/WEB-INF/templates/ventas/";
+    private static final String SUFFIX    = ".html";
 
-	@Override
-	public void init() throws ServletException {
-		System.out.println("En el init");
-		ServletContext servletContext = getServletContext();
-		application = JavaxServletWebApplication.buildApplication(servletContext);
-		WebApplicationTemplateResolver templateResolver = new WebApplicationTemplateResolver(application);
-		templateResolver.setPrefix(TEMPLATES);
-		templateResolver.setSuffix(SUFFIX);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		templateEngine = new TemplateEngine();
-		templateEngine.setTemplateResolver(templateResolver);
+    private final TicketRepository    ticketRepo    = new TicketRepository();
+    private final AsistenteRepository asistenteRepo = new AsistenteRepository();
+    private final ProductoRepository  productoRepo  = new ProductoRepository();
 
-	}
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		repoVentas = new RepoVentas();
-		System.out.println("En el doGet CRMServlet");
-		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
+    @Override
+    public void init() throws ServletException {
+        ServletContext ctx = getServletContext();
+        application = JavaxServletWebApplication.buildApplication(ctx);
+        WebApplicationTemplateResolver resolver = new WebApplicationTemplateResolver(application);
+        resolver.setPrefix(TEMPLATES);
+        resolver.setSuffix(SUFFIX);
+        resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setCharacterEncoding("UTF-8");
+        templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(resolver);
+    }
 
-		IServletWebExchange webExchange = application.buildExchange(request, response);
-		WebContext context = new WebContext(webExchange, request.getLocale());
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-		// getServletPath() → "/" o "/crm"
-		// getPathInfo()    → lo que hay DESPUÉS del patrón mapeado
-		String servletPath = (request.getServletPath()!= null) ? request.getServletPath().trim() : "";
-		String pathInfo = request.getPathInfo();          // puede ser null
-		String path = (pathInfo != null) ? pathInfo.trim() : "";
+        String path = req.getPathInfo() == null ? "/" : req.getPathInfo();
 
-		System.out.println("doGet servletPath: " + servletPath);
-		System.out.println("doGet pathInfo:    " + pathInfo);
+        switch (path) {
+            case "/":
+            case "/index":
+                mostrarIndex(req, resp);
+                break;
+            case "/verListadoVentas":
+                mostrarListadoVentas(req, resp);
+                break;
+            case "/detalleTicket":
+                mostrarDetalleTicket(req, resp);
+                break;
+            case "/verAsistentes":
+                mostrarListadoAsistentes(req, resp);
+                break;
+            case "/verProductos":
+                mostrarListadoProductos(req, resp);
+                break;
+            default:
+                resp.sendRedirect(req.getContextPath() + "/ventas/");
+        }
+    }
 
-		// ── Ruta raíz: GET /eventosProyectos/ ─────────────────────────────────
-		// Mapping "/": servletPath="/" y pathInfo=null
-		if ("/".equals(servletPath) && path.isEmpty()) {
-			templateEngine.process("index", context, response.getWriter());
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-		}
+        String path = req.getPathInfo() == null ? "/" : req.getPathInfo();
 
-		else if ("/ventas".equals(servletPath)) {
-		if (path.isEmpty() || path.equals("/")) {
-				templateEngine.process("indexVentas", context, response.getWriter());
+        switch (path) {
+            case "/cancelarTicket":
+                cancelarTicket(req, resp);
+                break;
+            default:
+                resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas");
+        }
+    }
 
-			}
-			else{
+    private void mostrarIndex(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            List<Ticket>   tickets   = ticketRepo.findAll();
+            List<Producto> productos = productoRepo.findAll();
+            long         totalAsis = asistenteRepo.findAll().size();
 
-				// Descomponemos el pathInfo para obtener acción y subacción
-				// path ejemplo: "/clientes"  →  partes = ["clientes"]
-				// path ejemplo: "/clientes/editar" →  partes = ["clientes","editar"]
-				String[] partes = path.substring(1).split("/");
-				String accion = partes[0];
-				String subaccion = partes.length > 1 ? partes[1] : null;
+            double totalFacturado = tickets.stream()
+                    .mapToDouble(Ticket::getPrecioFinal).sum();
 
-				System.out.println("doGet accion:" + accion);
-				System.out.println("doGet subaccion:" + subaccion);
+            resp.setContentType("text/html;charset=UTF-8");
+            IServletWebExchange webExchange = application.buildExchange(req, resp);
+            WebContext context = new WebContext(webExchange, req.getLocale());
+            context.setVariable("totalTickets",    tickets.size());
+            context.setVariable("totalAsistentes", totalAsis);
+            context.setVariable("totalProductos",  productos.size());
+            context.setVariable("totalFacturado",  String.format("%.2f", totalFacturado));
 
-				// Aquí tu lógica de negocio por acción
-				switch (accion) {
-					case "verListadoClientes":
-						List<Cliente> clientes = repoVentas.listarClientes();
-						context.setVariable("clientes", clientes);
-						templateEngine.process("ListadoClientes", context, response.getWriter());
-						break;
-					case "eventos":
-						// templateEngine.process("eventos", context, response.getWriter());
-						break;
-					default:
-						response.sendError(HttpServletResponse.SC_NOT_FOUND,
-								"Acción no reconocida: " + accion);
-				}}
+            templateEngine.process("indexVentas", context, resp.getWriter());
 
-		} else {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
+        } catch (MyException e) {
+            renderError(req, resp, e.getMessage());
+        }
+    }
+
+    private void mostrarListadoVentas(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            List<Ticket> tickets = ticketRepo.findAll();
+
+            double totalFacturado = tickets.stream()
+                    .mapToDouble(Ticket::getPrecioFinal).sum();
+
+            resp.setContentType("text/html;charset=UTF-8");
+            IServletWebExchange webExchange = application.buildExchange(req, resp);
+            WebContext context = new WebContext(webExchange, req.getLocale());
+            context.setVariable("tickets",        tickets);
+            context.setVariable("totalFacturado", String.format("%.2f", totalFacturado));
+            context.setVariable("totalTickets",   tickets.size());
+
+            templateEngine.process("html/ListadoVentas", context, resp.getWriter());
+
+        } catch (MyException e) {
+            renderError(req, resp, e.getMessage());
+        }
+    }
+
+    private void mostrarDetalleTicket(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            String idStr = req.getParameter("id");
+            if (idStr == null || idStr.isBlank()) {
+                resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas");
+                return;
+            }
+
+            long id = Long.parseLong(idStr);
+            Optional<Ticket> resultado = ticketRepo.findByIdConLineas(id);
+
+            resp.setContentType("text/html;charset=UTF-8");
+            IServletWebExchange webExchange = application.buildExchange(req, resp);
+            WebContext context = new WebContext(webExchange, req.getLocale());
+
+            if (resultado.isPresent()) {
+                context.setVariable("ticket", resultado.get());
+                templateEngine.process("html/DetalleTicket", context, resp.getWriter());
+            } else {
+                context.setVariable("error", "Ticket no encontrado");
+                templateEngine.process("html/error", context, resp.getWriter());
+            }
+
+        } catch (MyException | NumberFormatException e) {
+            renderError(req, resp, "Error al cargar el ticket: " + e.getMessage());
+        }
+    }
+
+    private void mostrarListadoAsistentes(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            List<Asistente> asistentes = asistenteRepo.findAll();
+
+            resp.setContentType("text/html;charset=UTF-8");
+            IServletWebExchange webExchange = application.buildExchange(req, resp);
+            WebContext context = new WebContext(webExchange, req.getLocale());
+            context.setVariable("asistentes", asistentes);
+
+            templateEngine.process("html/ListadoAsistentes", context, resp.getWriter());
+
+        } catch (MyException e) {
+            renderError(req, resp, e.getMessage());
+        }
+    }
+
+    private void mostrarListadoProductos(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            List<Producto> productos = productoRepo.findAll();
+
+            resp.setContentType("text/html;charset=UTF-8");
+            IServletWebExchange webExchange = application.buildExchange(req, resp);
+            WebContext context = new WebContext(webExchange, req.getLocale());
+            context.setVariable("productos", productos);
+
+            templateEngine.process("html/GestionProductos", context, resp.getWriter());
+
+        } catch (MyException e) {
+            renderError(req, resp, e.getMessage());
+        }
+    }
+
+    private void cancelarTicket(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            long id = Long.parseLong(req.getParameter("id"));
+            ticketRepo.cancelar(id);
+            resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas?msg=cancelado");
+        } catch (MyException | NumberFormatException e) {
+            renderError(req, resp, "Error al cancelar ticket: " + e.getMessage());
+        }
+    }
+
+    private void renderError(HttpServletRequest req, HttpServletResponse resp, String mensaje)
+            throws IOException {
+        IServletWebExchange webExchange = application.buildExchange(req, resp);
+        WebContext context = new WebContext(webExchange, req.getLocale());
+        context.setVariable("error", mensaje);
+        templateEngine.process("html/error", context, resp.getWriter());
+    }
 }

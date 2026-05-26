@@ -1,48 +1,142 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>VENTAS</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-	<style>
-		body  { text-align: center; }
-		main  { display: flex; justify-content: center; align-items: center; }
-		.botones {
-			width: 300px;
-			padding: 15px;
-			font-size: 20px;
-			font-weight: bold;
-			background-color: #3348cb;
-			color: black;
-			border: none;
-			border-radius: 50px;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Módulo Ventas - Inicio</title>
+	<link rel="stylesheet" th:href="@{/CSS--/indexVentas.css}">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-	   target="_blank">
-		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-	</a>
 
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        opacity: 0.3; z-index: -1;">
+<!-- ══════════════════════════════════════════════════════════════════
+    HEADER — igual al resto del proyecto
+     ══════════════════════════════════════════════════════════════════ -->
+<header>
+	<div class="header-superior">
+		<div class="logo-container">
+			<a th:href="@{/}">
+				<img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+			</a>
+		</div>
+		<h1>I.E.S. Torre de los Guzmanes</h1>
+		<div class="contenedorBotonInicio">
+			<button onclick="window.location.href='/'">INICIO</button>
+		</div>
 	</div>
 
-	<h1 align="center">VENTAS</h1>
-
-	<!-- Botón atrás: navega a la raíz del contexto -->
-	<a th:href="@{/}">
-		<button type="button">&#8592; Atrás</button>
-	</a>
+	<!-- Navegación del proyecto completo -->
+	<nav class="cajaDeBotones">
+		<a href="/secretaria.html"           class="botones">Secretaría</a>
+		<a href="/RegistroPuntuaciones.html" class="botones">Registro Puntuaciones</a>
+		<a href="/oferta.html"               class="botones">Oferta Educativa</a>
+		<a href="/servicios.html"            class="botones">Servicios</a>
+		<a href="/actividades.html"          class="botones">Actividades</a>
+		<a href="/contacto.html"             class="botones">Contacto</a>
+	</nav>
 </header>
 
-<main>
-	<div>
-		<button class="botones" onclick="window.location.href='ventas/verListadoClientes'">Ver Ventas</button>
-	</div>
+<!-- ══════════════════════════════════════════════════════════════════
+    CONTENIDO PRINCIPAL
+     ══════════════════════════════════════════════════════════════════ -->
+<main class="principal">
+	<div class="contenido-index">
+
+		<!-- Bloque de bienvenida -->
+		<section class="bienvenida">
+			<h2>Módulo de Ventas</h2>
+			<p>
+				Bienvenido al módulo de gestión de ventas del evento.
+				Desde aquí puedes gestionar los <strong>tickets de compra</strong>,
+				consultar el <strong>catálogo de productos</strong>
+				(entradas, textil y otros) y administrar los <strong>asistentes</strong>
+				registrados en el sistema.
+			</p>
+			<p>
+				Usa los accesos rápidos de abajo para navegar entre las secciones
+				o la barra de navegación superior para moverte por el resto del portal.
+			</p>
+		</section>
+
+		<!-- Título de la sección de accesos -->
+		<p class="seccion-titulo">Accesos rápidos del módulo</p>
+
+		<!-- Grid de tarjetas de acceso -->
+		<div class="grid-accesos">
+
+			<!-- Listado de Ventas -->
+			<a th:href="@{/ventas/verListadoVentas}" class="tarjeta-acceso ventas">
+				<span class="icono"></span>
+				<h3>Listado de Ventas</h3>
+				<p>Consulta todos los tickets generados, filtra por método de pago y accede al detalle de cada venta.</p>
+				<span class="etiqueta">Ver ventas</span>
+			</a>
+
+			<!-- Nueva Venta -->
+			<a th:href="@{/ticket/nuevo}" class="tarjeta-acceso nuevo">
+				<span class="icono"></span>
+				<h3>Nueva Venta</h3>
+				<p>Abre el proceso de compra: selecciona productos, añádelos al carrito y confirma el ticket con el asistente y método de pago.</p>
+				<span class="etiqueta">Crear ticket</span>
+			</a>
+
+			<!-- Asistentes -->
+			<a th:href="@{/asistente/listar}" class="tarjeta-acceso asistente">
+				<span class="icono"></span>
+				<h3>Asistentes</h3>
+				<p>Gestiona el listado completo de asistentes registrados: consulta, edita sus datos o da de alta nuevos perfiles.</p>
+				<span class="etiqueta">Ver asistentes</span>
+			</a>
+
+			<!-- Nuevo Asistente -->
+			<a th:href="@{/asistente/formulario}" class="tarjeta-acceso asistente">
+				<span class="icono"></span>
+				<h3>Nuevo Asistente</h3>
+				<p>Registra un nuevo asistente en el sistema indicando su temática, nivel de impartición y datos de contacto.</p>
+				<span class="etiqueta">Crear asistente</span>
+			</a>
+
+			<!-- Catálogo de Productos -->
+			<a th:href="@{/producto/listar}" class="tarjeta-acceso producto">
+				<span class="icono"></span>
+				<h3>Catálogo de Productos</h3>
+				<p>Consulta y gestiona el catálogo completo: entradas VIP, estándar, becas, textil y otros artículos del evento.</p>
+				<span class="etiqueta">Ver productos</span>
+			</a>
+
+			<!-- Nuevo Producto -->
+			<a th:href="@{/producto/formulario}" class="tarjeta-acceso producto">
+				<span class="icono"></span>
+				<h3>Nuevo Producto</h3>
+				<p>Añade un nuevo producto al catálogo indicando nombre, precio, stock disponible, IVA y descuento aplicable.</p>
+				<span class="etiqueta">Crear producto</span>
+			</a>
+
+		</div><!-- /grid-accesos -->
+
+		<!-- Estadísticas rápidas estáticas (decorativas, los valores reales vendrían del servlet) -->
+		<div class="stats-rapidas">
+			<div class="stat-item">
+				<span class="num" th:text="${totalTickets != null ? totalTickets : '—'}">—</span>
+				<span class="desc">Tickets emitidos</span>
+			</div>
+			<div class="stat-item">
+				<span class="num" th:text="${totalAsistentes != null ? totalAsistentes : '—'}">—</span>
+				<span class="desc">Asistentes registrados</span>
+			</div>
+			<div class="stat-item">
+				<span class="num" th:text="${totalProductos != null ? totalProductos : '—'}">—</span>
+				<span class="desc">Productos en catálogo</span>
+			</div>
+			<div class="stat-item">
+                <span class="num"
+					 th:text="${totalFacturado != null ? '€' + totalFacturado : '—'}">—</span>
+				<span class="desc">Total facturado</span>
+			</div>
+		</div>
+
+	</div><!-- /contenido-index -->
 </main>
+
 </body>
 </html>

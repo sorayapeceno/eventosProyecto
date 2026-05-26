@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Detalle Ticket</title>
+    <link rel="stylesheet" th:href="@{/CSS/DetalleTicket.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Detalle del Ticket</h2>
+
+        <!-- Alerta creado -->
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'creado'}" class="alerta alerta-exito">
+                Ticket creado correctamente. Stock actualizado.
+            </div>
+        </div>
+
+        <div th:if="${ticket != null}">
+
+            <!-- Cabecera del ticket -->
+            <div class="ticket-header">
+
+                <div class="ticket-info-bloque">
+                    <h3>Información del Ticket</h3>
+                    <p><strong>ID:</strong> <span th:text="'#' + ${ticket.id_Ticket}">#100</span></p>
+                    <p><strong>Código QR:</strong> <code th:text="${ticket.codigoQR}">QR-0000</code></p>
+                    <p><strong>Fecha:</strong>
+                        <span th:text="${ticket.fechaCompra != null
+                                         ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy')
+                                         : '-'}">01/01/2024</span>
+                    </p>
+                    <p><strong>Método de Pago:</strong>
+                        <span class="badge"
+                             th:classappend="${ticket.metodoPago != null && ticket.metodoPago.name() == 'TARJETA'} ? 'badge-tarjeta' :
+                                              (${ticket.metodoPago != null && ticket.metodoPago.name() == 'PAYPAL'}  ? 'badge-paypal'  :
+                                              (${ticket.metodoPago != null && ticket.metodoPago.name() == 'EFECTIVO'} ? 'badge-efectivo' : 'badge-transfer'))"
+                             th:text="${ticket.metodoPago != null ? ticket.metodoPago.name() : '-'}">
+                           TARJETA
+                        </span>
+                    </p>
+                    <p th:if="${ticket.codPromocional != null and !#strings.isEmpty(ticket.codPromocional)}">
+                        <strong>Código Promocional:</strong>
+                        <code th:text="${ticket.codPromocional}">PROMO</code>
+                    </p>
+                </div>
+
+                <div class="ticket-info-bloque">
+                    <h3>Asistente</h3>
+                    <p th:if="${ticket.duenio != null}">
+                        <strong>ID:</strong>
+                        <span th:text="${ticket.duenio.id_Asistente}">1</span>
+                    </p>
+                    <p th:if="${ticket.duenio != null and ticket.duenio.bio != null}">
+                        <strong>Bio:</strong>
+                        <span th:text="${ticket.duenio.bio}">Bio</span>
+                    </p>
+                    <p th:if="${ticket.duenio != null and ticket.duenio.tematica != null}">
+                        <strong>Temática:</strong>
+                        <span th:text="${ticket.duenio.tematica}">Música</span>
+                    </p>
+                    <p th:if="${ticket.duenio != null and ticket.duenio.nivelImparticion != null}">
+                        <strong>Nivel:</strong>
+                        <span th:text="${ticket.duenio.nivelImparticion}">Experto</span>
+                    </p>
+                    <p th:if="${ticket.duenio != null and ticket.duenio.direccion != null}">
+                        <strong>Dirección:</strong>
+                        <span th:text="${ticket.duenio.direccion}">Calle...</span>
+                    </p>
+                </div>
+
+                <div class="ticket-info-bloque">
+                    <h3>Importe</h3>
+                    <p class="valor-destacado"
+                      th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">
+                        €150.00
+                    </p>
+                    <p th:if="${ticket.descuento > 0}" style="color:#1e6b22; margin-top:8px;">
+                        <strong>Descuento aplicado:</strong>
+                        -€<span th:text="${#numbers.formatDecimal(ticket.descuento, 1, 2)}">5.00</span>
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Líneas del ticket -->
+            <h3 style="font-size:18px; color:#3348cb; margin-bottom:14px;">Líneas del Ticket</h3>
+
+            <div class="contenedor-tabla">
+                <table class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>ID Línea</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal Base</th>
+                            <th>IVA (21%)</th>
+                            <th>Total Línea</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${ticket.lineas == null or #lists.isEmpty(ticket.lineas)}">
+                            <td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">
+                               Este ticket no tiene líneas registradas.
+                            </td>
+                        </tr>
+                        <tr th:each="linea : ${ticket.lineas}">
+                            <td th:text="${linea.id_LineaTicket}">501</td>
+                            <td>
+                                <span th:text="${linea.producto != null ? linea.producto.nombreProducto : '-'}">
+                                   Producto
+                                </span>
+                                <br>
+                                <small style="color:#64748b"
+                                      th:if="${linea.producto != null}"
+                                      th:text="'ID: ' + ${linea.producto.id_Producto}">ID: 1</small>
+                            </td>
+                            <td th:text="${linea.cantidad}">1</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(linea.subtotalBase, 1, 2)}">€123.97</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(linea.ivaCuota, 1, 2)}">€26.03</td>
+                            <td>
+                                <strong th:text="'€' + ${#numbers.formatDecimal(linea.totalLinea, 1, 2)}">
+                                    €150.00
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumen de totales -->
+            <div class="resumen-totales">
+                <div class="fila-total">
+                    <span>Subtotal (sin IVA):</span>
+                    <span th:text="'€' + ${#numbers.formatDecimal(
+                       ticket.lineas.stream().mapToDouble(T(dam.primero.ventas.model.LineaTicket).subtotalBase.get()).sum(),
+                        1, 2)}">€0.00</span>
+                </div>
+                <div class="fila-total">
+                    <span>IVA total:</span>
+                    <span th:text="'€' + ${#numbers.formatDecimal(
+                       ticket.lineas.stream().mapToDouble(T(dam.primero.ventas.model.LineaTicket).ivaCuota.get()).sum(),
+                        1, 2)}">€0.00</span>
+                </div>
+                <div th:if="${ticket.descuento > 0}" class="fila-total" style="color:#1e6b22;">
+                    <span>Descuento <code th:text="${ticket.codPromocional}"></code>:</span>
+                    <span th:text="'-€' + ${#numbers.formatDecimal(ticket.descuento, 1, 2)}">-€0.00</span>
+                </div>
+                <div class="fila-total total-final">
+                    <span>TOTAL FINAL:</span>
+                    <span th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">€150.00</span>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="form-acciones" style="margin-top:20px;">
+                <a th:href="@{/ventas/verListadoVentas}" class="btn-neutro">← Volver al Listado</a>
+                <form th:action="@{/ventas/cancelarTicket}" method="post" style="display:inline;"
+                     onsubmit="return confirm('¿Seguro que quieres cancelar este ticket?');">
+                    <input type="hidden" name="id" th:value="${ticket.id_Ticket}">
+                    <button type="submit" class="btn-peligro">Cancelar Ticket</button>
+                </form>
+            </div>
+
+        </div><!-- /ticket != null -->
+
+        <div th:if="${ticket == null}" class="error-container">
+            <div class="error-icono"></div>
+            <h2>Ticket no encontrado</h2>
+            <p>El ticket solicitado no existe o ha sido cancelado.</p>
+            <a th:href="@{/ventas/verListadoVentas}" class="btn-primario">← Volver al Listado</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

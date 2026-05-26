@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Formulario Producto</title>
+    <link rel="stylesheet" th:href="@{/CSS/FormularioProducto.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .seccion-tipo {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-top: 1.2rem;
+            padding: 1rem 1.2rem 1.2rem;
+        }
+        .seccion-titulo {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #3348cb;
+            margin-bottom: .8rem;
+            padding-bottom: .4rem;
+            border-bottom: 2px solid #2d97d0;
+        }
+        .badge-tipo {
+            display: inline-block;
+            padding: .2rem .6rem;
+            border-radius: .4rem;
+            background: #3348cb;
+            color: #fff;
+            font-size: .85rem;
+            margin-left: .5rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones activo">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>
+            <span th:if="${producto != null}">Editar Producto
+                <span class="badge-tipo" th:text="${producto.tipoProducto.displayName}"></span>
+            </span>
+            <span th:if="${producto == null}">Nuevo Producto</span>
+        </h2>
+
+        <div th:if="${error != null}" class="alerta alerta-error">
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/producto/guardar}" method="post" class="form-ventas">
+
+            <!-- ID oculto (edición) -->
+            <input th:if="${producto != null}" type="hidden" name="id" th:value="${producto.id_Producto}">
+
+            <!-- IDs de subtipo (edición): se usan en el update() -->
+            <input type="hidden" name="idEntrada"   th:if="${idEntrada   != null}" th:value="${idEntrada}">
+            <input type="hidden" name="idVip"       th:if="${idVip       != null}" th:value="${idVip}">
+            <input type="hidden" name="idEstandar"  th:if="${idEstandar  != null}" th:value="${idEstandar}">
+            <input type="hidden" name="idBeca"      th:if="${idBeca      != null}" th:value="${idBeca}">
+            <input type="hidden" name="idTextil"    th:if="${idTextil    != null}" th:value="${idTextil}">
+            <input type="hidden" name="idCamisetas" th:if="${idCamisetas != null}" th:value="${idCamisetas}">
+            <input type="hidden" name="idAccesorios"th:if="${idAccesorios!= null}" th:value="${idAccesorios}">
+            <input type="hidden" name="idOtros"     th:if="${idOtros     != null}" th:value="${idOtros}">
+
+            <!-- ══════════════════════════════════════════════════════
+                 TIPO DE PRODUCTO
+                 Selector activo al crear; deshabilitado + hidden al editar
+             ══════════════════════════════════════════════════════ -->
+            <div class="form-grupo">
+                <label for="selTipo">Tipo de Producto *</label>
+                <!-- Al editar: select deshabilitado (solo visual) + hidden que envía el valor -->
+                <select id="selTipo" th:disabled="${producto != null}"
+                        th:name="${producto == null ? 'tipoProducto' : '_ignorado'}">
+                    <option value=""         th:selected="${tipoProducto == null}">-- Selecciona tipo --</option>
+                    <option value="VIP"      th:selected="${tipoProducto == 'VIP'}">VIP</option>
+                    <option value="ESTANDAR" th:selected="${tipoProducto == 'ESTANDAR'}">Estándar</option>
+                    <option value="BECA"     th:selected="${tipoProducto == 'BECA'}">Beca</option>
+                    <option value="CAMISETA" th:selected="${tipoProducto == 'CAMISETA'}">Camiseta</option>
+                    <option value="ACCESORIO"th:selected="${tipoProducto == 'ACCESORIO'}">Accesorio</option>
+                    <option value="OTROS"    th:selected="${tipoProducto == 'OTROS'}">Otros</option>
+                </select>
+                <!-- Hidden que envía el tipo cuando estamos editando -->
+                <input type="hidden" name="tipoProducto" th:if="${producto != null}" th:value="${tipoProducto}">
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 CAMPOS BASE (comunes a todos)
+             ══════════════════════════════════════════════════════ -->
+            <div class="form-grid">
+
+                <div class="form-grupo">
+                    <label for="nombreProducto">Nombre *</label>
+                    <input type="text" id="nombreProducto" name="nombreProducto"
+                           th:value="${producto != null ? producto.nombreProducto : ''}"
+                           placeholder="Ej: Pase VIP Premium" required maxlength="64">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="precio">Precio (€) *</label>
+                    <input type="number" id="precio" name="precio" step="0.01" min="0"
+                           th:value="${producto != null ? producto.precio : ''}"
+                           placeholder="0.00" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="stockDisponible">Stock *</label>
+                    <input type="number" id="stockDisponible" name="stockDisponible" min="0"
+                           th:value="${producto != null ? producto.stockDisponible : ''}"
+                           placeholder="0" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="tipoIVA">IVA *</label>
+                    <select id="tipoIVA" name="tipoIVA" required>
+                        <option th:each="iva : ${tiposIVA}"
+                                th:value="${iva.porcentaje}"
+                                th:text="${iva.porcentaje + '%'}"
+                                th:selected="${producto != null and producto.tipoIVA == iva}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="descuento">Descuento (€)</label>
+                    <input type="number" id="descuento" name="descuento" step="0.01" min="0"
+                           th:value="${producto != null ? producto.descuento : '0'}"
+                           placeholder="0.00">
+                </div>
+
+                <div class="form-grupo full-width">
+                    <label for="descripcionProducto">Descripción *</label>
+                    <textarea id="descripcionProducto" name="descripcionProducto"
+                              rows="2" required maxlength="256"
+                              placeholder="Descripción general del producto..."
+                              th:text="${producto != null ? producto.descripcionProducto : ''}"></textarea>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: ENTRADA (común a VIP, Estándar, Beca)
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-entrada" class="seccion-tipo">
+                <p class="seccion-titulo">Datos de Entrada</p>
+                <div class="form-grid">
+                    <div class="form-grupo">
+                        <label>Zona</label>
+                        <input type="text" name="zona" maxlength="32"
+                               th:value="${producto != null ? producto.zona : ''}" placeholder="Ej: Palco O">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Asiento</label>
+                        <input type="text" name="asiento" maxlength="16"
+                               th:value="${producto != null ? producto.asiento : ''}" placeholder="Ej: Sofá 1">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Acceso Permitido</label>
+                        <input type="text" name="accesoPermitido" maxlength="64"
+                               th:value="${producto != null ? producto.accesoPermitido : ''}"
+                               placeholder="Ej: Todo el recinto">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Accesos Adicionales</label>
+                        <input type="text" name="accesosAdicionales" maxlength="128"
+                               th:value="${producto != null ? producto.accesosAdicionales : ''}"
+                               placeholder="Ej: Catering, Wi-Fi Premium">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Validez (horas)</label>
+                        <input type="number" name="validezHoras" min="0"
+                               th:value="${producto != null ? producto.validezHoras : ''}" placeholder="24">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Estado</label>
+                        <select name="estadoEntrada">
+                            <option th:each="e : ${estadosEntrada}"
+                                    th:value="${e.name()}"
+                                    th:text="${e.name()}"
+                                    th:selected="${producto != null and producto.estadoEntrada == e}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: VIP
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-vip" class="seccion-tipo">
+                <p class="seccion-titulo">Datos VIP</p>
+                <div class="form-grid">
+                    <div class="form-grupo full-width">
+                        <label>Beneficios Incluidos</label>
+                        <input type="text" name="beneficiosIncluidos" maxlength="256"
+                               th:value="${producto != null ? producto.beneficiosIncluidos : ''}"
+                               placeholder="Ej: Kit de prensa, Vinilo firmado">
+                    </div>
+                    <div class="form-grupo full-width">
+                        <label>Servicios Adicionales</label>
+                        <input type="text" name="serviciosAdicionales" maxlength="256"
+                               th:value="${producto != null ? producto.serviciosAdicionales : ''}"
+                               placeholder="Ej: Acceso a pruebas de sonido">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Precio Extra (€)</label>
+                        <input type="number" name="precioExtra" step="0.01" min="0"
+                               th:value="${producto != null ? producto.precioExtra : '0'}" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: ESTÁNDAR
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-estandar" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Estándar</p>
+                <div class="form-grid">
+                    <div class="form-grupo full-width">
+                        <label>Incluye Regalo</label>
+                        <input type="text" name="incluyeRegalo" maxlength="256"
+                               th:value="${producto != null ? producto.incluyeRegalo : ''}"
+                               placeholder="Ej: Camiseta básica">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: BECA
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-beca" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Beca</p>
+                <div class="form-grid">
+                    <div class="form-grupo">
+                        <label>Motivo de la Beca</label>
+                        <input type="text" name="motivoBeca" maxlength="128"
+                               th:value="${producto != null ? producto.motivoBeca : ''}"
+                               placeholder="Ej: Inclusión Social">
+                    </div>
+                    <div class="form-grupo">
+                        <label>% Descuento Beca</label>
+                        <input type="number" name="porcentajeDescuento" step="0.01" min="0" max="100"
+                               th:value="${producto != null ? producto.porcentajeDescuento : '0'}"
+                               placeholder="80">
+                    </div>
+                    <div class="form-grupo full-width">
+                        <label>Requisitos</label>
+                        <input type="text" name="requisitos" maxlength="256"
+                               th:value="${producto != null ? producto.requisitos : ''}"
+                               placeholder="Ej: Certificado Discapacidad">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: TEXTIL (común a Camiseta y Accesorio)
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-textil" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Textil</p>
+                <div class="form-grid">
+                    <div class="form-grupo">
+                        <label>Talla</label>
+                        <input type="text" name="talla" maxlength="8"
+                               th:value="${producto != null ? producto.talla : ''}" placeholder="XL">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Color</label>
+                        <input type="text" name="color" maxlength="32"
+                               th:value="${producto != null ? producto.color : ''}" placeholder="Negro">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Material</label>
+                        <input type="text" name="material" maxlength="64"
+                               th:value="${producto != null ? producto.material : ''}" placeholder="Algodón">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Género</label>
+                        <select name="genero">
+                            <option value="">-- Selecciona --</option>
+                            <option th:each="g : ${generos}"
+                                    th:value="${g.name()}"
+                                    th:text="${g.name()}"
+                                    th:selected="${producto != null and producto.genero == g}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-grupo">
+                        <label>Tipo Textil</label>
+                        <input type="text" name="tipoTextil" maxlength="32"
+                               th:value="${producto != null ? producto.tipoTextil : ''}"
+                               placeholder="Ej: Camiseta, Gorra">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: CAMISETA
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-camiseta" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Camiseta</p>
+                <div class="form-grid">
+                    <div class="form-grupo">
+                        <label>Modelo</label>
+                        <input type="text" name="modelo" maxlength="64"
+                               th:value="${producto != null ? producto.modelo : ''}" placeholder="Oversize">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Estampado</label>
+                        <input type="text" name="estampado" maxlength="64"
+                               th:value="${producto != null ? producto.estampado : ''}" placeholder="Logo Flúor">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: ACCESORIO
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-accesorio" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Accesorio</p>
+                <div class="form-grid">
+                    <div class="form-grupo full-width">
+                        <label>Tipo de Accesorio</label>
+                        <input type="text" name="tipoAccesorio" maxlength="64"
+                               th:value="${producto != null ? producto.tipoAccesorio : ''}"
+                               placeholder="Ej: Gorra ajustable metálica">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 SECCIÓN: OTROS
+             ══════════════════════════════════════════════════════ -->
+            <div id="seccion-otros" class="seccion-tipo">
+                <p class="seccion-titulo">Datos Otros</p>
+                <div class="form-grid">
+                    <div class="form-grupo full-width">
+                        <label>Descripción adicional</label>
+                        <textarea name="descripcionOtros" rows="2" maxlength="256"
+                                  placeholder="Información extra del producto..."
+                                  th:text="${producto != null ? producto.descripcion : ''}"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+                 ACCIONES
+             ══════════════════════════════════════════════════════ -->
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">
+                    <span th:text="${producto != null ? 'Guardar Cambios' : 'Crear Producto'}">Guardar</span>
+                </button>
+                <a th:href="@{/producto/listar}" class="btn-neutro">← Cancelar</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    const TIPO_INICIAL = /*[[${tipoProducto}]]*/ null;
+
+    const SECCIONES_ENTRADA = ['vip', 'estandar', 'beca'];
+    const SECCIONES_TEXTIL  = ['camiseta', 'accesorio'];
+
+    function mostrarSeccion(tipo) {
+        document.querySelectorAll('.seccion-tipo').forEach(s => s.style.display = 'none');
+        if (!tipo) return;
+        const t = tipo.toLowerCase();
+        if (['vip', 'estandar', 'beca'].includes(t)) {
+            document.getElementById('seccion-entrada').style.display = 'block';
+        }
+        if (['camiseta', 'accesorio'].includes(t)) {
+            document.getElementById('seccion-textil').style.display = 'block';
+        }
+        const sec = document.getElementById('seccion-' + t);
+        if (sec) sec.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const sel = document.getElementById('selTipo');
+        if (sel) {
+            mostrarSeccion(sel.value || TIPO_INICIAL);
+            sel.addEventListener('change', () => mostrarSeccion(sel.value));
+        }
+    });
+</script>
+
+</body>
+</html>

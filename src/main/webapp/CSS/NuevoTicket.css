@@ -1,0 +1,332 @@
+/* ==========================================================================
+   NuevoTicket.css — Proceso de nueva venta con carrito lateral
+   ========================================================================== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container { display: flex; align-items: center; }
+#logo { height: 100px; width: auto; object-fit: contain; }
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #2d97d0;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.contenedorBotonInicio button:hover { background-color: #3348cb; color: #fff; transform: scale(1.05); }
+
+.cajaDeBotones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.botones {
+    min-width: 160px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3348cb;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.botones:hover { background-color: #7f85d7; color: #000; transform: translateY(-2px); }
+.botones.activo { background-color: #1e3a8a; }
+
+/* ── Contenido ───────────────────────────────────────────────────────────── */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    padding: 30px 20px;
+}
+
+.contenido-ventas {
+    width: 100%;
+    max-width: 1200px;
+    background-color: rgba(255,255,255,0.97);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.contenido-ventas h2 {
+    font-size: 26px;
+    color: #3348cb;
+    margin-bottom: 22px;
+    border-bottom: 3px solid #2d97d0;
+    padding-bottom: 10px;
+}
+
+/* ── Layout dos columnas ─────────────────────────────────────────────────── */
+.layout-dos-columnas {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 25px;
+    align-items: start;
+}
+
+/* ── Selector de producto ────────────────────────────────────────────────── */
+.selector-producto {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.selector-producto h3 {
+    font-size: 16px;
+    color: #3348cb;
+    margin-bottom: 16px;
+    border-bottom: 1px dashed #cbd5e1;
+    padding-bottom: 8px;
+}
+
+.selector-fila {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.selector-fila .form-grupo { flex: 1; min-width: 180px; }
+
+/* ── Bloque de datos del ticket ──────────────────────────────────────────── */
+.bloque-datos-ticket {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.bloque-datos-ticket h3 {
+    font-size: 16px;
+    color: #3348cb;
+    margin-bottom: 16px;
+    border-bottom: 1px dashed #cbd5e1;
+    padding-bottom: 8px;
+}
+
+/* ── Formulario ──────────────────────────────────────────────────────────── */
+.form-ventas { display: flex; flex-direction: column; gap: 0; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-grupo { display: flex; flex-direction: column; gap: 5px; }
+
+.form-grupo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    padding: 10px 13px;
+    font-size: 14px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    background-color: #fff;
+    color: #1e293b;
+    transition: border-color 0.3s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus { border-color: #2d97d0; }
+
+.form-grupo textarea { resize: vertical; min-height: 70px; }
+.form-grupo.full-width { grid-column: 1 / -1; }
+
+/* ── Botones de acción del formulario ────────────────────────────────────── */
+.form-acciones {
+    display: flex;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+}
+
+.btn-primario {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    background-color: #3348cb;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+}
+
+.btn-primario:hover { background-color: #2d97d0; transform: translateY(-1px); }
+.btn-primario:disabled { background-color: #94a3b8; cursor: not-allowed; transform: none; }
+
+.btn-neutro {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 2px solid #cbd5e1;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #475569;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-neutro:hover { background-color: #f1f5f9; border-color: #2d97d0; color: #2d97d0; }
+
+/* ── Carrito lateral ─────────────────────────────────────────────────────── */
+.carrito-lateral {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 22px;
+    position: sticky;
+    top: 20px;
+}
+
+.carrito-lateral h3 {
+    font-size: 17px;
+    font-weight: bold;
+    color: #3348cb;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #2d97d0;
+    padding-bottom: 8px;
+}
+
+.carrito-vacio {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+    padding: 24px 0;
+    line-height: 2;
+}
+
+.carrito-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #cbd5e1;
+    font-size: 14px;
+}
+
+.carrito-item:last-of-type { border-bottom: none; }
+
+.carrito-item .nombre { font-weight: 600; color: #1e293b; margin-bottom: 3px; }
+.carrito-item .qty    { color: #64748b; font-size: 12px; }
+.carrito-item .subtotal { font-weight: bold; color: #3348cb; white-space: nowrap; }
+
+.carrito-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 2px solid #2d97d0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e3a8a;
+}
+
+/* ── Alertas ─────────────────────────────────────────────────────────────── */
+.alerta {
+    padding: 13px 18px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alerta-aviso { background-color: #fef9c3; color: #854d0e; border-left: 4px solid #eab308; }
+.alerta-error { background-color: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .layout-dos-columnas { grid-template-columns: 1fr; }
+    .carrito-lateral { position: static; }
+}
+
+@media (max-width: 768px) {
+    .header-superior { flex-direction: column; gap: 15px; text-align: center; }
+    h1 { font-size: 26px; margin: 10px 0; }
+    .cajaDeBotones { flex-direction: column; align-items: center; }
+    .botones { width: 100%; max-width: 280px; }
+    .contenido-ventas { padding: 20px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grupo.full-width { grid-column: 1; }
+    .selector-fila { flex-direction: column; }
+    .selector-fila .form-grupo { width: 100%; }
+}

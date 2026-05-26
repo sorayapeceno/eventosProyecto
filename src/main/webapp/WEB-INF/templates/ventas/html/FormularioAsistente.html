@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Formulario Asistente</title>
+    <link rel="stylesheet" th:href="@{/CSS/FormularioAsistente.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones activo">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2 th:text="${asistente != null ? ' Editar Asistente' : ' Nuevo Asistente'}">
+           Formulario Asistente
+        </h2>
+
+        <div th:if="${error != null}" class="alerta alerta-error">
+             <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/asistente/guardar}" method="post" class="form-ventas">
+
+            <!-- ID oculto si es edición -->
+            <input th:if="${asistente != null}" type="hidden" name="id"
+                  th:value="${asistente.id_Asistente}">
+
+            <div class="form-grid">
+
+                <div class="form-grupo">
+                    <label for="bio">Nombre / Bio *</label>
+                    <input type="text" id="bio" name="bio"
+                          th:value="${asistente != null ? asistente.bio : ''}"
+                          placeholder="Ej: Productor musical" required maxlength="512">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="tematica">Temática *</label>
+                    <input type="text" id="tematica" name="tematica"
+                          th:value="${asistente != null ? asistente.tematica : ''}"
+                          placeholder="Ej: Música, Tecnología, Arte..." required maxlength="64">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="nivelImparticion">Nivel de Impartición *</label>
+                    <select id="nivelImparticion" name="nivelImparticion" required>
+                        <option value="Básico"
+                               th:selected="${asistente != null and asistente.nivelImparticion == 'Básico'}">
+                           Básico
+                        </option>
+                        <option value="Medio"
+                               th:selected="${asistente != null and asistente.nivelImparticion == 'Medio'}">
+                           Medio
+                        </option>
+                        <option value="Experto"
+                               th:selected="${asistente != null and asistente.nivelImparticion == 'Experto'}">
+                           Experto
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-grupo">
+                    <label for="totalGastado">Total Gastado (€)</label>
+                    <input type="number" id="totalGastado" name="totalGastado"
+                          step="0.01" min="0"
+                          th:value="${asistente != null ? asistente.totalGastado : '0'}"
+                          placeholder="0.00">
+                </div>
+
+                <div class="form-grupo full-width">
+                    <label for="direccion">Dirección</label>
+                    <input type="text" id="direccion" name="direccion"
+                          th:value="${asistente != null ? asistente.direccion : ''}"
+                          placeholder="Calle, número, ciudad..." maxlength="128">
+                </div>
+
+                <div class="form-grupo full-width">
+                    <label for="observaciones">Observaciones</label>
+                    <textarea id="observaciones" name="observaciones" rows="3"
+                             maxlength="256"
+                             placeholder="Alergias, necesidades especiales, VIP, prensa..."
+                             th:text="${asistente != null ? asistente.observaciones : ''}"></textarea>
+                </div>
+
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">
+                     <span th:text="${asistente != null ? 'Guardar Cambios' : 'Crear Asistente'}">Guardar</span>
+                </button>
+                <a th:href="@{/asistente/listar}" class="btn-neutro">← Cancelar</a>
+            </div>
+
+        </form>
+
+    </div>
+</main>
+
+</body>
+</html>

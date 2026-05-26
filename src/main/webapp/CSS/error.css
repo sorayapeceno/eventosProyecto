@@ -1,0 +1,205 @@
+/* ==========================================================================
+   error.css — Página de error genérica del módulo de ventas
+   ========================================================================== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container { display: flex; align-items: center; }
+#logo { height: 100px; width: auto; object-fit: contain; }
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #2d97d0;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.contenedorBotonInicio button:hover { background-color: #3348cb; color: #fff; transform: scale(1.05); }
+
+.cajaDeBotones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.botones {
+    min-width: 160px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3348cb;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.botones:hover { background-color: #7f85d7; color: #000; transform: translateY(-2px); }
+
+/* ── Contenido ───────────────────────────────────────────────────────────── */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 30px 20px;
+}
+
+.contenido-ventas {
+    width: 100%;
+    max-width: 600px;
+    background-color: rgba(255,255,255,0.97);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ── Bloque de error centrado ────────────────────────────────────────────── */
+.error-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.error-container .error-icono {
+    font-size: 72px;
+    margin-bottom: 22px;
+    display: block;
+    /* Sutil rebote de entrada */
+    animation: rebotar 0.6s ease;
+}
+
+@keyframes rebotar {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+.error-container h2 {
+    font-size: 26px;
+    color: #991b1b;
+    margin-bottom: 14px;
+    border: none;
+}
+
+.error-container p {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── Botones de recuperación ─────────────────────────────────────────────── */
+.error-acciones {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primario {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    background-color: #3348cb;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+}
+
+.btn-primario:hover { background-color: #2d97d0; transform: translateY(-1px); }
+
+.btn-neutro {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid #cbd5e1;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-neutro:hover { background-color: #f1f5f9; border-color: #2d97d0; color: #2d97d0; }
+
+/* ── Separador visual ────────────────────────────────────────────────────── */
+.separador-error {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #2d97d0, #3348cb);
+    border-radius: 2px;
+    margin: 0 auto 24px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .header-superior { flex-direction: column; gap: 15px; text-align: center; }
+    h1 { font-size: 26px; margin: 10px 0; }
+    .cajaDeBotones { flex-direction: column; align-items: center; }
+    .botones { width: 100%; max-width: 280px; }
+    .contenido-ventas { padding: 28px 20px; }
+    .error-acciones { flex-direction: column; align-items: center; }
+    .btn-primario, .btn-neutro { width: 100%; max-width: 280px; justify-content: center; }
+}
