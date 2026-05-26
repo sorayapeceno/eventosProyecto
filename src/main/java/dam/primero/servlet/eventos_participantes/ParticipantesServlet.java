@@ -100,7 +100,7 @@ public class ParticipantesServlet extends HttpServlet {
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
 						context.setVariable("eventos", eventos);
-						templateEngine.process("html/Listado_Eventos", context, response.getWriter());
+						templateEngine.process("Listado_Eventos", context, response.getWriter());
 						break;
 					case "Listado_Ponencias":
 						try {
