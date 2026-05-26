@@ -3,6 +3,15 @@ package dam.primero.modelos.logistica.modelo;
 import java.time.LocalDate;
 
 public class Mercancia {
+    public Mercancia(int idMercancia, String descripcion, double precioUnitario, String categoria, int stockMinimo, int stockActual, LocalDate fechaCreacion) {
+        this.idMercancia = idMercancia;
+        this.descripcion = descripcion;
+        this.precioUnitario = precioUnitario;
+        this.categoria = categoria;
+        this.stockMinimo = stockMinimo;
+        this.stockActual = stockActual;
+        this.fechaCreacion = fechaCreacion;
+    }
 
     private int idMercancia;
     private String descripcion;

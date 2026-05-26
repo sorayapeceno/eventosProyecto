@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Albaranes - Gestion de Almacen</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+    <nav>
+        <span>Gestion de Almacen</span>
+        <a href="../index.html">Inicio</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="mercancias.html">Mercancias</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="albaranes.html" class="activo">Albaranes</a>
+    </nav>
+
+    <div class="contenido">
+
+        <h2>Albaranes</h2>
+
+        <table>
+            <tr>
+                <th>ID Albaran</th>
+                <th>Fecha albaran</th>
+                <th>Estado</th>
+                <th>ID Pedido</th>
+                <th>Num. factura</th>
+                <th>Transportista</th>
+                <th>Fecha recepcion</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><span class="estado estado-completo"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><span class="estado estado-parcial"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <h2>Lineas de albaran</h2>
+
+        <table>
+            <tr>
+                <th>ID Linea</th>
+                <th>ID Albaran</th>
+                <th>ID Mercancia</th>
+                <th>Cantidad recibida</th>
+                <th>Estado producto</th>
+                <th>Lote</th>
+                <th>Fecha caducidad</th>
+                <th>Diferencia</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span class="estado estado-correcto"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span class="estado estado-correcto"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span class="estado estado-faltante"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>
