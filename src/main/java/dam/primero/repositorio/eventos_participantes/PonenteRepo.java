@@ -1,6 +1,7 @@
 package dam.primero.repositorio.eventos_participantes;
 
 import dam.primero.config.MySqlConector;
+import dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes;
 import dam.primero.exception.MyException;
 import dam.primero.modelos.eventos_participantes.Modelo.*;
 
@@ -12,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PonenteRepo {
-    private MySqlConector conector;
+    private MySqlConectorEventosParticipantes conector;
 
     //Constructor
     public PonenteRepo() {
         try {
-            this.conector = new MySqlConector();
+            this.conector = new MySqlConectorEventosParticipantes();
         } catch (MyException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
