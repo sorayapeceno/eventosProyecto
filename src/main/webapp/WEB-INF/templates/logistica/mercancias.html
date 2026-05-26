@@ -92,26 +92,6 @@
 
     <p th:if="${mensaje}" class="mensaje-ok" th:text="${mensaje}"></p>
 
-    <h3>Registrar entrada de mercancía</h3>
-
-    <!-- FORMULARIO CORREGIDO -->
-    <form th:action="@{/logistica/entradaMercancia}" method="post">
-
-        <label>ID Mercancía:</label>
-        <input type="number" name="id" required>
-
-        <br><br>
-
-        <label>Cantidad a añadir:</label>
-        <input type="number" name="cantidad" required>
-
-        <br><br>
-
-        <button type="submit" class="botones">
-            Registrar entrada
-        </button>
-
-    </form>
 
     <hr>
 
