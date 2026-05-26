@@ -1,14 +1,12 @@
 package dam.primero.modelos.eventos_participantes.controller;
 
-import dam.primero.modelos.eventos_participantes.Modelo.Estado;
-import dam.primero.modelos.eventos_participantes.Modelo.Evento;
-import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
-import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
+import dam.primero.modelos.eventos_participantes.Modelo.*;
 import dam.primero.repositorio.eventos_participantes.EstadoRepo;
 import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
 import dam.primero.repositorio.eventos_participantes.RepoEventos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +103,34 @@ public class GestionaEvento {
                 "Fira Tecnológica Barcelona"
         );
 
-        rep2.crearEvento(evento6);
+       // rep2.crearEvento(evento6);
+
+        Tematica t = new Tematica(12,"Tema de la Ponencia");
+
+
+        Ponencia ponencia = new Ponencia(
+
+                1,
+                "Título",
+                t,
+                120,
+                LocalDate.now(),
+                LocalDateTime.now(),
+                "Ubicación",
+                Nivel.INTERMEDIO,
+                Tipo.CHARLA,
+                Formato.HIBRIDO
+        );
+        t.setId_Tematica(ponencia.getTematica().getId_Tematica()); // o 12 directamente
+        t.setTema(ponencia.getTematica().getTema());
+
+        ponencia.setTematica(t);
+
+
+        PonenciaRepo repo = new PonenciaRepo();
+        repo.crearPonencia(ponencia);
+
+
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -113,20 +138,20 @@ public class GestionaEvento {
 
 
 
-        eventos = repE.listarEvento();
+        /*eventos = repE.listarEvento();
         System.out.println(eventos);
 
 
 
          List<Estado> estados = new ArrayList<Estado>();
-         EstadoRepo repo = new EstadoRepo();
-         estados = repo.listarEstados();
+         EstadoRepo repo3 = new EstadoRepo();
+         estados = repo3.listarEstados();
         System.out.println(estados);
 
         List<Ponencia> ponencias = new ArrayList<Ponencia>();
         PonenciaRepo ponenciaRepo = new PonenciaRepo();
         ponencias = ponenciaRepo.listarPonencias();
-        System.out.println(ponencias);
+        System.out.println(ponencias);*/
 
 
     }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Asignar Ponente a Evento</title>
+
+        <!--Estilo Lili-->
+        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+    </head>
+    <body>
+
+    <header>
+        <h1>Gestión de Eventos Educativos</h1>
+        <nav>
+            <ul>
+                <li><a href="participantes/Listado_Eventos">Eventos</a></li>
+                <li><a href="participantes/Listado_Ponencias">Ponencias</a></li>
+                <li><a href="participantes/Listado_Ponentes">Ponentes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <aside>
+        <h2>Casos de uso</h2>
+        <ul>
+            <li><a href="participantes/Crear_Evento">Crear evento</a></li>
+            <li><a href="participantes/Modificar_Evento">Modificar evento</a></li>
+            <li><a href="participantes/Listado_Eventos">Listado de eventos</a></li>
+            <li><a href="participantes/Detalle_Evento">Detalle de evento</a></li>
+            <li><a href="participantes/Crear_Ponencia">Crear ponencia</a></li>
+            <li><a href="participantes/Asignacion_Ponencia-Evento">Asignar ponencia a evento</a></li>
+            <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a ponencia</a></li>
+            <li><a href="participantes/Listado_Ponencias">Listado de ponencias</a></li>
+            <li><a href="participantes/Registrar_Ponente">Registrar ponente</a></li>
+            <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a evento</a></li>
+            <li><a href="participantes/Listado_Ponentes">Listado de ponentes</a></li>
+        </ul>
+    </aside>
+        <main>
+            <section class="contenido-secundario">
+                <h2>Asignar ponente a evento</h2>
+
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de asignación</legend>
+
+                        <!-- EVENTO -->
+                        <label for="evento">Selecciona un evento:</label>
+                        <select id="evento" name="evento">
+                            <option value="">Elige una opción:</option>
+                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
+                        </select>
+
+                        <!-- PONENTE -->
+                        <label for="ponente">Selecciona un ponente:</label>
+                        <select id="ponente" name="ponente">
+                            <option value="">Elige una opción:</option>
+                            <option th:each="ponente : ${ponentes}" th:value="${ponente.id}" th:text="${ponente.nombre}"></option>
+                        </select>
+
+                        <button type="submit">Asignar ponente</button>
+                    </fieldset>
+                </form>
+            </section>
+        </main>
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+    </body>
+</html>
