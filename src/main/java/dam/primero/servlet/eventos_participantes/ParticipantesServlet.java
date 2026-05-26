@@ -86,13 +86,16 @@ public class ParticipantesServlet extends HttpServlet {
 					case "eventos":
 						break;
 					case "Crear_Evento":
-						RepoEventos repo = new RepoEventos();
-						templateEngine.process("html/Crear_Evento", context, response.getWriter());
+						EstadoRepo repo = new EstadoRepo();
+						List <Estado> estados = repo.listarEstados();
+						context.setVariable("estados", estados);
+
+						templateEngine.process("Crear_Evento", context, response.getWriter());
 						break;
 
 					case "Crear_Ponencia":
 						PonenciaRepo repo1 = new PonenciaRepo();
-						templateEngine.process("html/Crear_Ponencia",context,response.getWriter());
+						templateEngine.process("Crear_Ponencia",context,response.getWriter());
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
