@@ -107,7 +107,7 @@ public class ParticipantesServlet extends HttpServlet {
 							PonenciaRepo rep = new PonenciaRepo();
 							List<Ponencia> ponencias = rep.listarPonencias();
 							context.setVariable("ponencias", ponencias);
-							templateEngine.process("html/Listado_Ponencias", context, response.getWriter());
+							templateEngine.process("Listado_Ponencias", context, response.getWriter());
 						} catch (Exception e) {
 							response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en Base de Datos: " + e.getMessage());
 						}
@@ -116,7 +116,7 @@ public class ParticipantesServlet extends HttpServlet {
 						PonenteRepo repPonentes = new PonenteRepo();
 						List<Ponente> ponentes = new ArrayList<Ponente>();
 						context.setVariable("ponentes", ponentes);
-						templateEngine.process("html/Listado_Ponentes", context, response.getWriter());
+						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
 					default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);

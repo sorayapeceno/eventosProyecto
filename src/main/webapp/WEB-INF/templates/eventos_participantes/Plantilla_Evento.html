@@ -5,7 +5,7 @@
     <title th:text="${evento.nombre}">Título del Evento</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/modulo1.css">
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
 </head>
 <body>
 
@@ -42,14 +42,12 @@
     <section class="contenido-evento">
 
         <!-- Título -->
-        <h2 th:text="${evento.nombre}">Título del Evento</h2>
-        <h3 th:text="${evento.subtitulo}">Subtítulo del evento</h3>
+        <h2>Título del Evento</h2>
+        <h3>Subtítulo del evento</h3>
 
         <!-- Imagen principal -->
         <figure>
-            <img th:src="${evento.imagenPrincipal}"
-                 th:alt="${evento.descripcionImagenPrincipal}"
-                 alt="Imagen principal del evento">
+            <img alt="Imagen principal del evento">
 
             <figcaption th:text="${evento.descripcionImagenPrincipal}">
                 Descripción de la imagen principal.

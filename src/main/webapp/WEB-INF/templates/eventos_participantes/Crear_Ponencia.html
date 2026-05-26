@@ -79,12 +79,8 @@
                             <option th:each="formato : ${formatos}" th:value="${formato}" th:text="${formato}"></option>
                         </select>
 
-                        <label for="tematica">Temática:</label>
-                        <select id="tematica" name="tematica">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="tematica: ${tematicas}" th:value="${tematica.id}" th:text="${tematica.tema}">
-                            </option>
-                        </select>
+                        <label for="tematica">Temática</label>
+                        <input type="text" id="tematica" name="tematica" required>
 
                         <label for="evento">Evento asociado:</label>
                         <select id="evento" name="evento">
