@@ -1,36 +1,66 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>DASHBOARDS</title>
+	<meta charset="UTF-8"/>
+	<title>Dashboards</title>
 	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-	<style>
-		body  { text-align: center; }
-		main  { display: flex; justify-content: center; align-items: center; }
-	</style>
+	<link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
 </head>
 <body>
+
 <header>
-	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-	   target="_blank">
-		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-	</a>
-
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        opacity: 0.3; z-index: -1;">
+	<div class="header-superior">
+		<div class="logo-container">
+			<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+				<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+			</a>
+		</div>
+		<h1>Panel de Dashboards</h1>
+		<div class="contenedorBotonInicio">
+			<a th:href="@{/}"><button type="button">&#8592; Inicio</button></a>
+		</div>
 	</div>
-
-	<h1 align="center">DASHBOARDS</h1>
-
-	<!-- Botón atrás: navega a la raíz del contexto -->
-	<a th:href="@{/}">
-		<button type="button">&#8592; Atrás</button>
-	</a>
+	<div class="cajaDeBotones">
+		<a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+		<a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+		<a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+		<a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+	</div>
 </header>
 
-<main>
-	<div></div>
+<main class="principal">
+	<div class="grid-dashboards">
+
+		<a class="card-dashboard" th:href="@{/dashboards/eventos}">
+			<div class="icono">📅</div>
+			<h2>Eventos</h2>
+			<p>Estados, modalidades y ciudades</p>
+		</a>
+
+		<a class="card-dashboard" th:href="@{/dashboards/ponencias}">
+			<div class="icono">🎤</div>
+			<h2>Ponencias</h2>
+			<p>Tipos, niveles, formatos y temáticas</p>
+		</a>
+
+		<a class="card-dashboard" th:href="@{/dashboards/ponentes}">
+			<div class="icono">👤</div>
+			<h2>Ponentes</h2>
+			<p>Especialidades y nivel de impartición</p>
+		</a>
+
+		<a class="card-dashboard" th:href="@{/dashboards/ventas}">
+			<div class="icono">🛒</div>
+			<h2>Ventas</h2>
+			<p>Clientes y distribución geográfica</p>
+		</a>
+
+	</div>
 </main>
+
+<footer>
+	<p>© 2026 Gestión de Eventos</p>
+</footer>
+
 </body>
 </html>
