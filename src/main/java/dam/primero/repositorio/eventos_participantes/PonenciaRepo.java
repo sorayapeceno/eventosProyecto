@@ -31,8 +31,8 @@ public class PonenciaRepo {
         String query = """
         INSERT INTO ponencia
         (id_Evento, Titulo, id_Tematica, Duracion, Fecha,
-         Hora, Ubicacion, Tema, Nivel, Tipo, Formato)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         Hora, Ubicacion,Nivel, Tipo, Formato)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
         try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
@@ -46,15 +46,13 @@ public class PonenciaRepo {
             ps.setDate(5, java.sql.Date.valueOf(ponencia.getFecha()));
 
             // LocalDateTime -> SQL Timestamp
-            ps.setTimestamp(6, java.sql.Timestamp.valueOf(ponencia.getHora()));
-
+            ps.setString(6, ponencia.getHora().toString());
             ps.setString(7, ponencia.getUbicacion());
-            ps.setString(8, ponencia.getTematica().getTema());
 
             // Enum -> String (IMPORTANTE: coincide con BD)
-            ps.setString(9, ponencia.getNivel().name().toUpperCase());
-            ps.setString(10, ponencia.getTipo().name().toUpperCase());
-            ps.setString(11, ponencia.getFormato().name().toUpperCase());
+            ps.setString(8, ponencia.getNivel().name().toUpperCase());
+            ps.setString(9, ponencia.getTipo().name().toUpperCase());
+            ps.setString(10, ponencia.getFormato().name().toUpperCase());
 
             int numActualizado = ps.executeUpdate();
 

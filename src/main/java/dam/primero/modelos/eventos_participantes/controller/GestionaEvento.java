@@ -117,7 +117,6 @@ public class GestionaEvento {
                 LocalDate.now(),
                 LocalDateTime.now(),
                 "Ubicación",
-                t,
                 Nivel.INTERMEDIO,
                 Tipo.CHARLA,
                 Formato.HIBRIDO

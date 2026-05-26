@@ -1,14 +1,8 @@
 package dam.primero.servlet.eventos_participantes;
 
-import dam.primero.modelos.eventos_participantes.Modelo.Estado;
-import dam.primero.modelos.eventos_participantes.Modelo.Evento;
-import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
-import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
+import dam.primero.modelos.eventos_participantes.Modelo.*;
 
-import dam.primero.repositorio.eventos_participantes.EstadoRepo;
-import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
-import dam.primero.repositorio.eventos_participantes.PonenteRepo;
-import dam.primero.repositorio.eventos_participantes.RepoEventos;
+import dam.primero.repositorio.eventos_participantes.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -87,9 +81,11 @@ public class ParticipantesServlet extends HttpServlet {
 						break;
 					case "Crear_Evento":
 						EstadoRepo repo = new EstadoRepo();
+						ModalidadRepo r = new ModalidadRepo();
 						List <Estado> estados = repo.listarEstados();
+						List<Modalidad> modalidades = r.listarModalidad();
 						context.setVariable("estados", estados);
-
+						context.setVariable("modalidades",modalidades);
 						templateEngine.process("Crear_Evento", context, response.getWriter());
 						break;
 
