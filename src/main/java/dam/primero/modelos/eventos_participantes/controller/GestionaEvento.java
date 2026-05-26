@@ -89,8 +89,23 @@ public class GestionaEvento {
         );
 
         RepoEventos rep2 = new RepoEventos();
-        rep2.crearEvento(evento5);/**/ /**/
+        //rep2.crearEvento(evento5);
 
+        Evento evento6 = new Evento(
+                4,
+                "AI & Data Future Expo 2026",
+                "Evento sobre inteligencia artificial, big data y desarrollo de soluciones cloud",
+                LocalDate.of(2026, 9, 20),
+                LocalDate.of(2026, 9, 22),
+                "Avenida de la Tecnología 45",
+                "Barcelona",
+                600,
+                Estado.ABIERTO,
+                Modalidad.PRESENCIAL,
+                "Fira Tecnológica Barcelona"
+        );
+
+        rep2.crearEvento(evento6);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
