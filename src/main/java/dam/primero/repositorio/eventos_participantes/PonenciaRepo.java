@@ -1,9 +1,11 @@
 package dam.primero.repositorio.eventos_participantes;
 
 import dam.primero.config.MySqlConector;
+import dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes;
 import dam.primero.exception.MyException;
 import dam.primero.modelos.eventos_participantes.Modelo.*;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,16 +15,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PonenciaRepo {
-    private MySqlConector conector;
+    private MySqlConectorEventosParticipantes conector;
 
     //Constructor
     public PonenciaRepo() {
         try {
-            this.conector = new MySqlConector();
+            this.conector = new MySqlConectorEventosParticipantes();
         } catch (MyException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
+
+    public Ponencia crearPonencia(Ponencia ponencia) {
+
+        String query = """
+        INSERT INTO ponencia
+        (id_Evento, Titulo, Tematica, Duracion, Fecha,
+         Hora, Ubicacion, Tema, Nivel, Tipo, Formato)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+        try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
+
+            ps.setInt(1, ponencia.getId_Evento());
+            ps.setString(2, ponencia.getTitulo());
+            ps.setInt(3, ponencia.getTematica());
+            ps.setInt(4, ponencia.getDuracion());
+
+            // LocalDate -> SQL Date
+            ps.setDate(5, java.sql.Date.valueOf(ponencia.getFecha()));
+
+            // LocalDateTime -> SQL Timestamp
+            ps.setTimestamp(6, java.sql.Timestamp.valueOf(ponencia.getHora()));
+
+            ps.setString(7, ponencia.getUbicacion());
+            ps.setString(8, ponencia.getTema());
+
+            // Enum -> String (IMPORTANTE: coincide con BD)
+            ps.setString(9, ponencia.getNivel().name().toUpperCase());
+            ps.setString(10, ponencia.getTipo().name().toUpperCase());
+            ps.setString(11, ponencia.getFormato().name().toUpperCase());
+
+            int numActualizado = ps.executeUpdate();
+
+            if (numActualizado != 1) {
+                throw new MyException("Error al crear ponencia: " + ponencia);
+            }
+
+        } catch (SQLException | MyException e) {
+            System.out.println("Error al crear ponencia: " + e.getMessage());
+        }
+
+        return ponencia;
+    }
+
+
+
     public List<Ponencia> listarPonencias() {
 
         List<Ponencia> ponencias = new ArrayList<>();
