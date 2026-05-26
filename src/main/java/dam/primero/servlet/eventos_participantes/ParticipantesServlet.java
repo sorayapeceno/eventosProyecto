@@ -1,14 +1,8 @@
 package dam.primero.servlet.eventos_participantes;
 
-import dam.primero.modelos.eventos_participantes.Modelo.Estado;
-import dam.primero.modelos.eventos_participantes.Modelo.Evento;
-import dam.primero.modelos.eventos_participantes.Modelo.Ponencia;
-import dam.primero.modelos.eventos_participantes.Modelo.Ponente;
+import dam.primero.modelos.eventos_participantes.Modelo.*;
 
-import dam.primero.repositorio.eventos_participantes.EstadoRepo;
-import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
-import dam.primero.repositorio.eventos_participantes.PonenteRepo;
-import dam.primero.repositorio.eventos_participantes.RepoEventos;
+import dam.primero.repositorio.eventos_participantes.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -87,9 +81,11 @@ public class ParticipantesServlet extends HttpServlet {
 						break;
 					case "Crear_Evento":
 						EstadoRepo repo = new EstadoRepo();
+						ModalidadRepo r = new ModalidadRepo();
 						List <Estado> estados = repo.listarEstados();
+						List<Modalidad> modalidades = r.listarModalidad();
 						context.setVariable("estados", estados);
-
+						context.setVariable("modalidades",modalidades);
 						templateEngine.process("Crear_Evento", context, response.getWriter());
 						break;
 
@@ -100,14 +96,14 @@ public class ParticipantesServlet extends HttpServlet {
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
 						context.setVariable("eventos", eventos);
-						templateEngine.process("html/Listado_Eventos", context, response.getWriter());
+						templateEngine.process("Listado_Eventos", context, response.getWriter());
 						break;
 					case "Listado_Ponencias":
 						try {
 							PonenciaRepo rep = new PonenciaRepo();
 							List<Ponencia> ponencias = rep.listarPonencias();
 							context.setVariable("ponencias", ponencias);
-							templateEngine.process("html/Listado_Ponencias", context, response.getWriter());
+							templateEngine.process("Listado_Ponencias", context, response.getWriter());
 						} catch (Exception e) {
 							response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en Base de Datos: " + e.getMessage());
 						}
@@ -116,7 +112,7 @@ public class ParticipantesServlet extends HttpServlet {
 						PonenteRepo repPonentes = new PonenteRepo();
 						List<Ponente> ponentes = new ArrayList<Ponente>();
 						context.setVariable("ponentes", ponentes);
-						templateEngine.process("html/Listado_Ponentes", context, response.getWriter());
+						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
 					default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
