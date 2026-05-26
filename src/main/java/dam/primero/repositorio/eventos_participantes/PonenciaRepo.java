@@ -30,7 +30,7 @@ public class PonenciaRepo {
 
         String query = """
         INSERT INTO ponencia
-        (id_Evento, Titulo, Tematica, Duracion, Fecha,
+        (id_Evento, Titulo, id_Tematica, Duracion, Fecha,
          Hora, Ubicacion, Tema, Nivel, Tipo, Formato)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
@@ -39,7 +39,7 @@ public class PonenciaRepo {
 
             ps.setInt(1, ponencia.getId_Evento());
             ps.setString(2, ponencia.getTitulo());
-            ps.setInt(3, ponencia.getTematica());
+            ps.setInt(3, ponencia.getTematica().getId_Tematica());
             ps.setInt(4, ponencia.getDuracion());
 
             // LocalDate -> SQL Date
@@ -49,7 +49,7 @@ public class PonenciaRepo {
             ps.setTimestamp(6, java.sql.Timestamp.valueOf(ponencia.getHora()));
 
             ps.setString(7, ponencia.getUbicacion());
-            ps.setString(8, ponencia.getTema());
+            ps.setString(8, ponencia.getTematica().getTema());
 
             // Enum -> String (IMPORTANTE: coincide con BD)
             ps.setString(9, ponencia.getNivel().name().toUpperCase());

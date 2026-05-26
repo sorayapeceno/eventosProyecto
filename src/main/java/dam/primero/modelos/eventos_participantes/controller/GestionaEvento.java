@@ -105,22 +105,31 @@ public class GestionaEvento {
 
        // rep2.crearEvento(evento6);
 
-        Ponencia ponencia1 = new Ponencia(
+        Tematica t = new Tematica(12,"Tema de la Ponencia");
+
+
+        Ponencia ponencia = new Ponencia(
+
                 1,
-                "Introducción a la Inteligencia Artificial en 2026",
-                2, // tematica
-                60, // duración en minutos
-                LocalDate.of(2026, 10, 12),
-                LocalDateTime.of(2026, 10, 12, 10, 30),
-                "Sala Principal - Centro Tecnológico Madrid",
-                "IA aplicada en la vida real",
-                Nivel.AVANZADO,
+                "Título",
+                t,
+                120,
+                LocalDate.now(),
+                LocalDateTime.now(),
+                "Ubicación",
+                t,
+                Nivel.INTERMEDIO,
                 Tipo.CHARLA,
-                Formato.PRESENCIAL
+                Formato.HIBRIDO
         );
+        t.setId_Tematica(ponencia.getTematica().getId_Tematica()); // o 12 directamente
+        t.setTema(ponencia.getTematica().getTema());
+
+        ponencia.setTematica(t);
+
 
         PonenciaRepo repo = new PonenciaRepo();
-        repo.crearPonencia(ponencia1);
+        repo.crearPonencia(ponencia);
 
 
 

@@ -10,21 +10,22 @@ public class Ponencia {
     private int id_Ponencia; // Modificado para que coincida exactamente con tu HTML y Repo
     private int id_Evento;   // Añadido para que puedas guardar y listar el evento
     private String titulo;
-    private int tematica;
+    private Tematica tematica;
     private int duracion;
     private LocalDate fecha;
     private LocalDateTime hora;
     private String ubicacion;
-    private String tema;
+    private Tematica tema;
     private Nivel nivel;
     private Tipo tipo;
     private Formato formato;
 
+
     // Constructor vacío por buena práctica
-    public Ponencia() {}
+    public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, String sala, Nivel nivel, Tipo tipo, Formato formato) {}
 
     // Constructor completo modificado para aceptar y respetar el ID real de la base de datos
-    public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, String tema, Nivel nivel, Tipo tipo, Formato formato) {
+    public Ponencia(int id_Ponencia, String titulo, Tematica tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, Tematica tema, Nivel nivel, Tipo tipo, Formato formato) {
         contador++;
         this.id_Ponencia = id_Ponencia; // Guardamos el ID real de la BBDD
         this.titulo = titulo;
@@ -72,11 +73,11 @@ public class Ponencia {
         this.titulo = titulo;
     }
 
-    public int getTematica() {
+    public Tematica getTematica() {
         return tematica;
     }
 
-    public void setTematica(int tematica) {
+    public void setTematica(Tematica tematica) {
         this.tematica = tematica;
     }
 
@@ -112,11 +113,11 @@ public class Ponencia {
         this.ubicacion = ubicacion;
     }
 
-    public String getTema() {
+    public Tematica getTema() {
         return tema;
     }
 
-    public void setTema(String tema) {
+    public void setTema(Tematica tema) {
         this.tema = tema;
     }
 
