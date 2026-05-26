@@ -56,3 +56,7 @@
 0:0:0:0:0:0:0:1 - - [26/May/2026:12:23:59 +0200] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 611
 0:0:0:0:0:0:0:1 - - [26/May/2026:12:24:45 +0200] "GET /eventosProyecto/participantes/Crear_Evento HTTP/1.1" 500 1592
 0:0:0:0:0:0:0:1 - - [26/May/2026:12:24:45 +0200] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [26/May/2026:12:29:09 +0200] "GET /eventosProyecto/participantes/Crear_Evento HTTP/1.1" 500 3193
+0:0:0:0:0:0:0:1 - - [26/May/2026:12:29:09 +0200] "GET /eventosProyecto/CSS/modulo1.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [26/May/2026:12:29:09 +0200] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [26/May/2026:12:29:09 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611
