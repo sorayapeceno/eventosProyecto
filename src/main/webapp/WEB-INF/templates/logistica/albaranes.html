@@ -1,101 +1,111 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Albaranes - Gestion de Almacen</title>
-    <link rel="stylesheet" href="../css/estilos.css">
+
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+
+    <style>
+
+        .contenido {
+            width: 90%;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #2d97d0;
+            color: white;
+        }
+
+        .mensaje-ok {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+    </style>
 </head>
+
 <body>
 
-    <nav>
-        <span>Gestion de Almacen</span>
-        <a href="../index.html">Inicio</a>
-        <a href="proveedores.html">Proveedores</a>
-        <a href="mercancias.html">Mercancias</a>
-        <a href="pedidos.html">Pedidos</a>
-        <a href="albaranes.html" class="activo">Albaranes</a>
-    </nav>
+<header>
 
-    <div class="contenido">
+    <div class="header-superior">
 
-        <h2>Albaranes</h2>
+        <div class="logo-container">
+            <img th:src="@{/Fotos/logo.svg}" id="logo" alt="Logo">
+        </div>
 
-        <table>
-            <tr>
-                <th>ID Albaran</th>
-                <th>Fecha albaran</th>
-                <th>Estado</th>
-                <th>ID Pedido</th>
-                <th>Num. factura</th>
-                <th>Transportista</th>
-                <th>Fecha recepcion</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-completo"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-parcial"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        <h1>GESTIÓN DE ALBARANES</h1>
 
-        <h2>Lineas de albaran</h2>
-
-        <table>
-            <tr>
-                <th>ID Linea</th>
-                <th>ID Albaran</th>
-                <th>ID Mercancia</th>
-                <th>Cantidad recibida</th>
-                <th>Estado producto</th>
-                <th>Lote</th>
-                <th>Fecha caducidad</th>
-                <th>Diferencia</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-correcto"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-correcto"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-faltante"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}">
+                <button type="button">Inicio</button>
+            </a>
+        </div>
 
     </div>
+
+    <div class="cajaDeBotones">
+
+        <a class="botones" th:href="@{/logistica}">
+            Logística
+        </a>
+
+    </div>
+
+</header>
+
+<div class="contenido">
+
+    <h2>Albaranes</h2>
+
+    <p th:if="${mensaje}" class="mensaje-ok" th:text="${mensaje}"></p>
+
+    <hr>
+
+    <table>
+
+        <tr>
+            <th>ID Albarán</th>
+            <th>Fecha Albarán</th>
+            <th>Estado</th>
+            <th>Nº Factura</th>
+            <th>Transportista</th>
+            <th>Fecha Recepción</th>
+        </tr>
+
+        <tr th:each="a : ${albaranes}">
+
+            <td th:text="${a.idAlbaran}"></td>
+            <td th:text="${a.fechaAlbaran}"></td>
+            <td th:text="${a.estadopedido}"></td>
+            <td th:text="${a.numeroFactura}"></td>
+            <td th:text="${a.transportista}"></td>
+            <td th:text="${a.fechaRecepcion}"></td>
+
+        </tr>
+
+    </table>
+
+</div>
 
 </body>
 </html>

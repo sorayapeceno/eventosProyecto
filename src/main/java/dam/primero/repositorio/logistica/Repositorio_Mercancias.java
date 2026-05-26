@@ -15,36 +15,38 @@ public class Repositorio_Mercancias {
     public Repositorio_Mercancias() throws MyException {
         this.conector = new MySqlConector();
     }
-    
-    public void registrarEntradaMercancia(int idMercancia, int cantidad) throws SQLException {
+
+    public void registrarEntradaMercancia(int idMercancia, int cantidad) throws SQLException, MyException {
 
         // 1- Aumenta el stock
-        String sql = """
+        String consultaSql = """
                 UPDATE eventos.Mercancia
                 SET stock_actual = stock_actual + ?
                 WHERE id_mercancia = ?
         """;
 
-        try (PreparedStatement ps = conector.getConnect().prepareStatement(sql)) {
+        try (PreparedStatement sentencia = conector.getConnect().prepareStatement(consultaSql)) {
 
-            ps.setInt(1, cantidad);
-            ps.setInt(2, idMercancia);
+            sentencia.setInt(1, cantidad);
+            sentencia.setInt(2, idMercancia);
 
-            int filas = ps.executeUpdate();
+            int filasAfectadas = sentencia.executeUpdate();
 
-            if (filas == 0) {
-                throw new SQLException("No existe mercancía con id " + idMercancia);
+            // Si no se ha modificado ninguna fila, es porque el ID no existe en la BD
+            if (filasAfectadas == 0) {
+                throw new MyException("No existe ninguna mercancía registrada con el ID: " + idMercancia);
             }
         }
 
         // 2. Obtiene la mercancía actualizada
-        Mercancia m = obtenerPorId(idMercancia);
+        Mercancia mercancíaModificada = obtenerPorId(idMercancia);
 
-        // 3. Comprueba necesita Stock
-        if (m.necesitaReposicion()) {
-            reponerStock(m);
+        // 3. Comprueba si necesita Stock
+        if (mercancíaModificada.necesitaReposicion()) {
+            reponerStock(mercancíaModificada);
         }
     }
+
     //El stock se repone automáticamente cuando baja de su mínimo.
     // stockActual = stockActual + stockMinimo
     private void reponerStock(Mercancia m) throws SQLException {

@@ -64,7 +64,17 @@ public class Pedido {
                 '}';
     }
 
-    //TODO public double calcularTotal(){
+    public double calcularTotal() {
+        double devuelve = 0.0;
+
+        if (this.lineasPedidos != null) {
+            for (LineaPedido linea : this.lineasPedidos) {
+                devuelve += linea.calcularSubtotal();
+            }
+        }
+
+        return devuelve;
+    }
 
     //}
 }

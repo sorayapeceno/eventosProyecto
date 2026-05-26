@@ -1,87 +1,88 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pedidos - Gestion de Almacen</title>
-    <link rel="stylesheet" href="../css/estilos.css">
+    <title>Consultar Pedidos - Gestión de Almacén</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        .contenido { width: 90%; margin: 40px auto; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; }
+        .buscador-box { background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #2d97d0; }
+        .form-grupo { display: flex; gap: 15px; align-items: center; }
+        input[type="text"] { padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
+        button.btn-buscar { background: #2d97d0; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background: #2d97d0; color: white; }
+        .mensaje-error { color: #d9534f; background: #fdf7f7; padding: 15px; border-radius: 4px; border: 1px solid #d9534f; font-weight: bold; margin-top: 20px; }
+        .info-pedido { background: #eef7fc; padding: 15px; border-radius: 6px; margin-top: 20px; display: flex; gap: 30px; }
+        .txt-total { text-align: right; font-size: 1.2em; font-weight: bold; margin-top: 15px; color: #2d97d0; }
+    </style>
 </head>
 <body>
 
-    <nav>
-        <span>Gestion de Almacen</span>
-        <a href="../index.html">Inicio</a>
-        <a href="proveedores.html">Proveedores</a>
-        <a href="mercancias.html">Mercancias</a>
-        <a href="pedidos.html" class="activo">Pedidos</a>
-        <a href="albaranes.html">Albaranes</a>
-    </nav>
-
-    <div class="contenido">
-
-        <h2>Pedidos</h2>
-
-        <table>
-            <tr>
-                <th>ID Pedido</th>
-                <th>Fecha pedido</th>
-                <th>Fecha entrega prevista</th>
-                <th>ID Proveedor</th>
-                <th>Estado</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-pendiente"></span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-enviado"></span></td>
-            </tr>
-        </table>
-
-        <h2>Lineas de pedido</h2>
-
-        <table>
-            <tr>
-                <th>ID Linea</th>
-                <th>ID Pedido</th>
-                <th>ID Mercancia</th>
-                <th>Cantidad</th>
-                <th>Precio unitario</th>
-                <th>Descuento</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <img th:src="@{/Fotos/logo.svg}" id="logo" alt="Logo">
+        </div>
+        <h1>CONSULTAR MERCANCÍAS DE PEDIDO</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}"><button type="button">Inicio</button></a>
+        </div>
     </div>
+    <div class="cajaDeBotones">
+        <a class="botones" th:href="@{/logistica}">Logística</a>
+    </div>
+</header>
+
+<div class="contenido">
+    <h2>Consulta Detallada de Pedidos</h2>
+    <hr>
+
+    <div class="buscador-box">
+        <form th:action="@{/logistica/pedidos}" method="get" class="form-grupo">
+            <label th:for="idPedido">Introduce el ID del Pedido:</label>
+            <input type="text" id="idPedido" name="idPedido" placeholder="Ej: 1" required>
+            <button type="submit" class="btn-buscar">Buscar</button>
+        </form>
+    </div>
+
+    <div th:if="${error}" class="mensaje-error" th:text="${error}"></div>
+
+    <div th:if="${pedido}">
+
+        <div class="info-pedido">
+            <p><strong>ID Pedido:</strong> <span th:text="${pedido.idPedido}"></span></p>
+            <p><strong>Fecha Pedido:</strong> <span th:text="${pedido.fechaPedido}"></span></p>
+            <p><strong>Fecha Prevista:</strong> <span th:text="${pedido.fechaEntregaPrevista}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estadoPedido}"></span></p>
+        </div>
+
+        <h3>Líneas de Mercancía Incluidas</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID Línea</th>
+                <th>Cantidad Pedida</th>
+                <th>Precio Unitario (€)</th>
+                <th>Descuento (%)</th>
+                <th>Subtotal (€)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="linea : ${pedido.lineasPedidos}">
+                <td th:text="${linea.idLineaPedido}"></td>
+                <td th:text="${linea.cantidad}"></td>
+                <td th:text="${linea.precioUnitarioEnPedido}"></td>
+                <td th:text="${linea.descuentoAplicado}"></td>
+                <td th:text="${#numbers.formatDecimal(linea.subtotal, 1, 2)}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p class="txt-total">TOTAL DEL PEDIDO: <span th:text="${#numbers.formatDecimal(totalPedido, 1, 2)} + ' €'"></span></p>
+    </div>
+</div>
 
 </body>
 </html>
