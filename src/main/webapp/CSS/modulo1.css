@@ -12,7 +12,7 @@ html, body {
     font-family: 'Roboto', sans-serif;
 
     background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
-                url('/imagen/instituto.jpg') no-repeat center center fixed;
+                url('/Fotos/instituto.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 

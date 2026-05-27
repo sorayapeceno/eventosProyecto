@@ -92,6 +92,7 @@ public class ParticipantesServlet extends HttpServlet {
 					case "Crear_Ponencia":
 						PonenciaRepo repo1 = new PonenciaRepo();
 						templateEngine.process("Crear_Ponencia",context,response.getWriter());
+						break;
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
@@ -114,6 +115,19 @@ public class ParticipantesServlet extends HttpServlet {
 						context.setVariable("ponentes", ponentes);
 						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
+
+					case "Detalle_Evento":
+						RepoEventos rep = new RepoEventos();
+						String idParam = request.getParameter("id");
+
+						if (idParam != null && !idParam.isEmpty()) {
+							int idEvento = Integer.parseInt(idParam);
+							Evento evento = rep.mostrarEvento(idEvento);
+							context.setVariable("evento", evento);
+							templateEngine.process("Detalle_Evento", context, response.getWriter());
+						}
+						break;
+
 					default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}
