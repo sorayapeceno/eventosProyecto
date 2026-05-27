@@ -6,18 +6,11 @@ import dam.primero.exception.MyException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Repositorio de consultas agregadas para los Dashboards.
- * Lee de la base de datos "proyectofinaljud" (eventos/ponencias/ponentes)
- * y de "eventos" (ventas/clientes), usando el mismo MySqlConector
- * que el resto del proyecto.
- *
- * Cada método devuelve un Map<String, Integer> con la etiqueta y el valor,
- * listo para serializar a JSON en la plantilla Thymeleaf y pintarlo con Chart.js.
- */
 public class RepoDashboards {
 
     private MySqlConector conector;
@@ -31,173 +24,168 @@ public class RepoDashboards {
     }
 
     // ══════════════════════════════════════════════════════
-    //  EVENTOS
+    //  EVENTOS - resumen
     // ══════════════════════════════════════════════════════
 
-    /** Número total de eventos registrados. */
     public int contarEventos() {
         return contarFila("SELECT COUNT(*) FROM proyectofinaljud.Evento");
     }
 
-    /** Eventos agrupados por Estado (Borrador, Abierto, Cerrado…). */
     public Map<String, Integer> eventosPorEstado() {
         return agrupar(
-                "SELECT Estado, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Evento " +
-                        "GROUP BY Estado ORDER BY total DESC",
-                "Estado", "total"
-        );
+                "SELECT Estado, COUNT(*) AS total FROM proyectofinaljud.Evento " +
+                        "GROUP BY Estado ORDER BY total DESC", "Estado", "total");
     }
 
-    /** Eventos agrupados por Modalidad (Presencial, Online, Híbrido). */
     public Map<String, Integer> eventosPorModalidad() {
         return agrupar(
-                "SELECT Modalidad, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Evento " +
-                        "GROUP BY Modalidad ORDER BY total DESC",
-                "Modalidad", "total"
-        );
+                "SELECT Modalidad, COUNT(*) AS total FROM proyectofinaljud.Evento " +
+                        "GROUP BY Modalidad ORDER BY total DESC", "Modalidad", "total");
     }
 
-    /** Eventos agrupados por Ciudad. */
     public Map<String, Integer> eventosPorCiudad() {
         return agrupar(
-                "SELECT Ciudad, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Evento " +
-                        "WHERE Ciudad IS NOT NULL " +
-                        "GROUP BY Ciudad ORDER BY total DESC",
-                "Ciudad", "total"
-        );
+                "SELECT Ciudad, COUNT(*) AS total FROM proyectofinaljud.Evento " +
+                        "WHERE Ciudad IS NOT NULL GROUP BY Ciudad ORDER BY total DESC",
+                "Ciudad", "total");
+    }
+
+    // ── Detalle eventos ──────────────────────────────────
+    public List<Map<String, String>> detalleEventos() {
+        return listar(
+                "SELECT Nombre, DATE_FORMAT(Fecha_Inicio,'%d/%m/%Y') AS Fecha_Inicio, " +
+                        "DATE_FORMAT(Fecha_Fin,'%d/%m/%Y') AS Fecha_Fin, " +
+                        "Ciudad, Estado, Modalidad, Capacidad, Lugar " +
+                        "FROM proyectofinaljud.Evento ORDER BY Fecha_Inicio",
+                new String[]{"Nombre","Fecha_Inicio","Fecha_Fin","Ciudad","Estado","Modalidad","Capacidad","Lugar"});
     }
 
     // ══════════════════════════════════════════════════════
-    //  PONENCIAS
+    //  PONENCIAS - resumen
     // ══════════════════════════════════════════════════════
 
-    /** Número total de ponencias. */
     public int contarPonencias() {
         return contarFila("SELECT COUNT(*) FROM proyectofinaljud.Ponencia");
     }
 
-    /** Ponencias agrupadas por Tipo (Charla, Taller, Mesa, Podcast). */
     public Map<String, Integer> ponenciasPorTipo() {
         return agrupar(
-                "SELECT Tipo, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Ponencia " +
-                        "GROUP BY Tipo ORDER BY total DESC",
-                "Tipo", "total"
-        );
+                "SELECT Tipo, COUNT(*) AS total FROM proyectofinaljud.Ponencia " +
+                        "GROUP BY Tipo ORDER BY total DESC", "Tipo", "total");
     }
 
-    /** Ponencias agrupadas por Nivel (Basico, Intermedio, Avanzado). */
     public Map<String, Integer> ponenciasPorNivel() {
         return agrupar(
-                "SELECT Nivel, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Ponencia " +
-                        "WHERE Nivel IS NOT NULL " +
-                        "GROUP BY Nivel ORDER BY total DESC",
-                "Nivel", "total"
-        );
+                "SELECT Nivel, COUNT(*) AS total FROM proyectofinaljud.Ponencia " +
+                        "WHERE Nivel IS NOT NULL GROUP BY Nivel ORDER BY total DESC",
+                "Nivel", "total");
     }
 
-    /** Ponencias agrupadas por Formato (Presencial, Online, Híbrido). */
     public Map<String, Integer> ponenciasPorFormato() {
         return agrupar(
-                "SELECT Formato, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Ponencia " +
-                        "GROUP BY Formato ORDER BY total DESC",
-                "Formato", "total"
-        );
+                "SELECT Formato, COUNT(*) AS total FROM proyectofinaljud.Ponencia " +
+                        "GROUP BY Formato ORDER BY total DESC", "Formato", "total");
     }
 
-    /** Ponencias agrupadas por Temática. */
     public Map<String, Integer> ponenciasPorTematica() {
         return agrupar(
                 "SELECT t.Tema, COUNT(*) AS total " +
                         "FROM proyectofinaljud.Ponencia p " +
                         "JOIN proyectofinaljud.Tematica t ON p.id_Tematica = t.id_Tematica " +
-                        "GROUP BY t.Tema ORDER BY total DESC",
-                "Tema", "total"
-        );
+                        "GROUP BY t.Tema ORDER BY total DESC", "Tema", "total");
+    }
+
+    // ── Detalle ponencias ────────────────────────────────
+    public List<Map<String, String>> detallePonencias() {
+        return listar(
+                "SELECT p.Titulo, t.Tema, p.Tipo, p.Nivel, p.Formato, " +
+                        "p.Duracion, DATE_FORMAT(p.Fecha,'%d/%m/%Y') AS Fecha, p.Hora, " +
+                        "p.Sala, e.Nombre AS Evento " +
+                        "FROM proyectofinaljud.Ponencia p " +
+                        "JOIN proyectofinaljud.Tematica t ON p.id_Tematica = t.id_Tematica " +
+                        "JOIN proyectofinaljud.Evento e ON p.id_Evento = e.id_Evento " +
+                        "ORDER BY p.Fecha, p.Hora",
+                new String[]{"Titulo","Tema","Tipo","Nivel","Formato","Duracion","Fecha","Hora","Sala","Evento"});
     }
 
     // ══════════════════════════════════════════════════════
-    //  PONENTES
+    //  PONENTES - resumen
     // ══════════════════════════════════════════════════════
 
-    /** Número total de ponentes. */
     public int contarPonentes() {
         return contarFila("SELECT COUNT(*) FROM proyectofinaljud.Ponente");
     }
 
-    /** Ponentes agrupados por Especialidad. */
     public Map<String, Integer> ponentesPorEspecialidad() {
         return agrupar(
-                "SELECT Especialidad, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Ponente " +
-                        "GROUP BY Especialidad ORDER BY total DESC",
-                "Especialidad", "total"
-        );
+                "SELECT Especialidad, COUNT(*) AS total FROM proyectofinaljud.Ponente " +
+                        "GROUP BY Especialidad ORDER BY total DESC", "Especialidad", "total");
     }
 
-    /** Ponentes agrupados por Nivel de Impartición. */
     public Map<String, Integer> ponentesPorNivelImparticion() {
         return agrupar(
-                "SELECT Nivel_Imparticion, COUNT(*) AS total " +
-                        "FROM proyectofinaljud.Ponente " +
+                "SELECT Nivel_Imparticion, COUNT(*) AS total FROM proyectofinaljud.Ponente " +
                         "GROUP BY Nivel_Imparticion ORDER BY total DESC",
-                "Nivel_Imparticion", "total"
-        );
+                "Nivel_Imparticion", "total");
     }
 
-    /**
-     * Top ponentes por número de ponencias impartidas.
-     * Devuelve nombre completo → número de ponencias.
-     */
     public Map<String, Integer> topPonentes() {
         return agrupar(
                 "SELECT CONCAT(per.Nombre, ' ', per.Ap1) AS nombre, " +
-                        "       COUNT(pp.id_Ponencia) AS total " +
+                        "COUNT(pp.id_Ponencia) AS total " +
                         "FROM proyectofinaljud.Ponente_Ponencia pp " +
                         "JOIN proyectofinaljud.Ponente po ON pp.id_Ponente = po.id_Ponente " +
                         "JOIN proyectofinaljud.Persona per ON po.id_Persona = per.id_Persona " +
-                        "GROUP BY nombre ORDER BY total DESC LIMIT 10",
-                "nombre", "total"
-        );
+                        "GROUP BY per.Nombre, per.Ap1 ORDER BY total DESC LIMIT 10",
+                "nombre", "total");
+    }
+
+    // ── Detalle ponentes ─────────────────────────────────
+    public List<Map<String, String>> detallePonentes() {
+        return listar(
+                "SELECT CONCAT(per.Nombre,' ',per.Ap1) AS Nombre, " +
+                        "po.Especialidad, po.Nivel_Imparticion, " +
+                        "COUNT(pp.id_Ponencia) AS Ponencias, " +
+                        "per.Correo, per.Ciudad " +
+                        "FROM proyectofinaljud.Ponente po " +
+                        "JOIN proyectofinaljud.Persona per ON po.id_Persona = per.id_Persona " +
+                        "LEFT JOIN proyectofinaljud.Ponente_Ponencia pp ON po.id_Ponente = pp.id_Ponente " +
+                        "GROUP BY po.id_Ponente, per.Nombre, per.Ap1, po.Especialidad, " +
+                        "po.Nivel_Imparticion, per.Correo, per.Ciudad " +
+                        "ORDER BY Ponencias DESC",
+                new String[]{"Nombre","Especialidad","Nivel_Imparticion","Ponencias","Correo","Ciudad"});
     }
 
     // ══════════════════════════════════════════════════════
-    //  VENTAS / CLIENTES
+    //  VENTAS - resumen
     // ══════════════════════════════════════════════════════
 
-    /** Número total de clientes en la BD de ventas. */
     public int contarClientes() {
-        return contarFila("SELECT COUNT(*) FROM eventos.Cliente");
+        return contarFila(
+                "SELECT COUNT(*) FROM proyectofinaljud.Persona WHERE Ciudad IS NOT NULL");
     }
 
-    /**
-     * Clientes por ciudad (campo Ciudad en Persona de proyectofinaljud).
-     * Se usa como proxy demográfico ya que la tabla Cliente de ventas
-     * solo tiene nombre/correo/teléfono.
-     */
     public Map<String, Integer> clientesPorCiudad() {
         return agrupar(
-                "SELECT Ciudad, COUNT(*) AS total " +
+                "SELECT Ciudad, COUNT(*) AS total FROM proyectofinaljud.Persona " +
+                        "WHERE Ciudad IS NOT NULL GROUP BY Ciudad ORDER BY total DESC",
+                "Ciudad", "total");
+    }
+
+    // ── Detalle participantes ────────────────────────────
+    public List<Map<String, String>> detalleParticipantes() {
+        return listar(
+                "SELECT CONCAT(Nombre,' ',Ap1) AS Nombre, Correo, " +
+                        "Telefono, Ciudad, Pais, Genero " +
                         "FROM proyectofinaljud.Persona " +
-                        "WHERE Ciudad IS NOT NULL " +
-                        "GROUP BY Ciudad ORDER BY total DESC",
-                "Ciudad", "total"
-        );
+                        "ORDER BY Ciudad, Nombre",
+                new String[]{"Nombre","Correo","Telefono","Ciudad","Pais","Genero"});
     }
 
     // ══════════════════════════════════════════════════════
     //  UTILIDADES PRIVADAS
     // ══════════════════════════════════════════════════════
 
-    /**
-     * Ejecuta una query que devuelve exactamente una fila con COUNT(*)
-     * y retorna ese entero.
-     */
     private int contarFila(String sql) {
         try {
             Statement stmt = conector.getConnect().createStatement();
@@ -209,14 +197,6 @@ public class RepoDashboards {
         return 0;
     }
 
-    /**
-     * Ejecuta una query de agrupación y construye un Map<etiqueta, valor>
-     * manteniendo el orden de filas del resultado.
-     *
-     * @param sql         La consulta SELECT con dos columnas: etiqueta y número.
-     * @param colEtiqueta Nombre de la columna de texto (eje X / leyenda).
-     * @param colValor    Nombre de la columna numérica.
-     */
     private Map<String, Integer> agrupar(String sql, String colEtiqueta, String colValor) {
         Map<String, Integer> resultado = new LinkedHashMap<>();
         try {
@@ -231,5 +211,25 @@ public class RepoDashboards {
             System.out.println("RepoDashboards agrupar – " + e.getMessage());
         }
         return resultado;
+    }
+
+    /** Devuelve una lista de filas, cada fila es un Map columna→valor. */
+    private List<Map<String, String>> listar(String sql, String[] columnas) {
+        List<Map<String, String>> filas = new ArrayList<>();
+        try {
+            Statement stmt = conector.getConnect().createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Map<String, String> fila = new LinkedHashMap<>();
+                for (String col : columnas) {
+                    String val = rs.getString(col);
+                    fila.put(col, val != null ? val : "-");
+                }
+                filas.add(fila);
+            }
+        } catch (SQLException e) {
+            System.out.println("RepoDashboards listar – " + e.getMessage());
+        }
+        return filas;
     }
 }

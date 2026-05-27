@@ -1,65 +1,228 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Dashboard – Ventas</title>
-    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-    <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
-</head>
-<body>
+/* ==========================================================================
+   Dashboard – Estilos específicos del módulo
+   ========================================================================== */
 
-<header>
-    <div class="header-superior">
-        <div class="logo-container">
-            <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
-                <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-            </a>
-        </div>
-        <h1>Dashboard – Ventas</h1>
-        <div class="contenedorBotonInicio">
-            <a th:href="@{/dashboards}"><button type="button">&#8592; Atrás</button></a>
-        </div>
-    </div>
-    <div class="cajaDeBotones">
-        <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
-        <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
-        <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
-        <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
-    </div>
-</header>
+/* ── Grid de tarjetas (índice) ── */
+.grid-dashboards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 40px auto;
+    max-width: 900px;
+    padding: 0 20px;
+}
 
-<main class="principal">
-    <div class="dashboard-contenido">
+.card-dashboard {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    padding: 36px 30px;
+    width: 200px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #2c3e7a;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-align: center;
+}
 
-        <div class="kpi-row">
-            <div class="kpi">
-                <div class="num" th:text="${totalClientes}">0</div>
-                <div class="lbl">Clientes registrados</div>
-            </div>
-        </div>
+.card-dashboard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
 
-        <div class="charts-grid">
-            <div class="chart-box">
-                <h3>Participantes por Ciudad</h3>
-                <canvas id="chartCiudad"></canvas>
-            </div>
-        </div>
+.card-dashboard .icono {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
 
-    </div>
-</main>
+.card-dashboard h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #3348cb;
+}
 
-<footer>
-    <p>© 2026 Gestión de Eventos</p>
-</footer>
+.card-dashboard p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const ciudadLabels = /*[[${clientesPorCiudad.keySet()}]]*/ [];
-    const ciudadValues = /*[[${clientesPorCiudad.values()}]]*/ [];
-    /*]]>*/
-</script>
-<script th:src="@{/JS/dashboardVentas.js}"></script>
+/* ── Fila de KPIs ── */
+.kpi-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 24px auto;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
 
-</body>
-</html>
+.kpi {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.09);
+    padding: 24px 36px;
+    text-align: center;
+    min-width: 160px;
+}
+
+.kpi .num {
+    font-size: 48px;
+    font-weight: bold;
+    color: #3348cb;
+}
+
+.kpi .lbl {
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+}
+
+/* ── Grid de gráficos ── */
+.charts-grid {
+    display: flex;
+    flex-direction: row;      /* fuerza fila horizontal */
+    flex-wrap: nowrap;        /* no baja a la siguiente línea */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 30px auto;
+    width: 100%;
+    padding: 0 20px 40px;
+    box-sizing: border-box;
+    overflow-x: auto;         /* scroll horizontal si no caben */
+}
+
+.chart-box {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.09);
+    padding: 24px;
+    flex: 1 1 0;              /* todas las cajas crecen igual */
+    min-width: 220px;         /* mínimo para que no se compriman demasiado */
+    max-width: 380px;
+}
+
+.chart-box.wide {
+    flex: 2 1 0;              /* ocupa el doble de espacio */
+    max-width: 700px;
+}
+
+.chart-box h3 {
+    text-align: center;
+    color: #2c3e7a;
+    margin-bottom: 16px;
+    font-size: 15px;
+    border-bottom: 2px solid #2d97d0;
+    padding-bottom: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .card-dashboard {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .chart-box,
+    .chart-box.wide {
+        width: 100%;
+        max-width: 340px;
+    }
+}
+
+/* ── Contenedor principal de cada dashboard ── */
+.dashboard-contenido {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ── Botón Más información ── */
+.mas-info-row {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 30px;
+}
+
+.btn-mas-info {
+    display: inline-block;
+    padding: 12px 32px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #3348cb;
+    color: #ffffff;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: background-color 0.2s, transform 0.15s;
+}
+
+.btn-mas-info:hover {
+    background-color: #2d97d0;
+    transform: translateY(-2px);
+}
+
+/* ── Tabla de detalle ── */
+.tabla-detalle-wrap {
+    width: 100%;
+    max-width: 1200px;
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+    padding: 24px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+}
+
+.tabla-titulo {
+    font-size: 18px;
+    color: #2c3e7a;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #2d97d0;
+    padding-bottom: 8px;
+}
+
+.tabla-detalle {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.tabla-detalle thead tr {
+    background-color: #3348cb;
+    color: white;
+}
+
+.tabla-detalle th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.tabla-detalle td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf8;
+    color: #333;
+}
+
+.tabla-detalle tbody tr:nth-child(even) {
+    background-color: #f0f4ff;
+}
+
+.tabla-detalle tbody tr:hover {
+    background-color: #dce6ff;
+}
+
+/* Badges de estado/tipo */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #2d97d0;
+    color: white;
+}
