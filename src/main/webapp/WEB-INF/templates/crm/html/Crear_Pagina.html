@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Página</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            font-family: Arial, sans-serif;
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ========================= */
+        /* CABECERA */
+        /* ========================= */
+
+        .Cabecera{
+            width: 100%;
+            background-color: #3298d1;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 50px;
+        }
+
+        .Cabecera h1{
+            font-size: 45px;
+            font-style: italic;
+            color: black;
+        }
+
+        .botonVolver{
+            padding: 12px 22px;
+            border: none;
+            border-radius: 30px;
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+
+        .botonVolver:hover{
+            background-color: #2578a5;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ========================= */
+        /* FORMULARIO */
+        /* ========================= */
+
+        #formulario{
+            width: 500px;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* ========================= */
+        /* LABELS */
+        /* ========================= */
+
+        label{
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* ========================= */
+        /* INPUTS */
+        /* ========================= */
+
+        input,
+        textarea{
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #bdbdbd;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus{
+            border: 1px solid #3298d1;
+            box-shadow: 0 0 5px rgba(50,152,209,0.5);
+        }
+
+        textarea{
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ========================= */
+        /* SELECT */
+        /* ========================= */
+
+        select{
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            border: 1px solid #bdbdbd;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        select:focus{
+
+            border: 1px solid #3298d1;
+
+            box-shadow: 0 0 5px rgba(50,152,209,0.5);
+        }
+
+        /* ========================= */
+        /* BOTON */
+        /* ========================= */
+
+        button{
+            margin-top: 15px;
+            padding: 16px;
+            border: none;
+            border-radius: 40px;
+            background-color: #3298d1;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover{
+            background-color: #2578a5;
+            transform: scale(1.02);
+        }
+
+        /* ========================= */
+        /* RESPONSIVE */
+        /* ========================= */
+
+        @media(max-width: 650px){
+            #formulario{
+                width: 90%;
+            }
+            h1{
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="Cabecera">
+        <h1>Crear Página</h1>
+        <a th:href="@{/crm}">
+            <button class="botonVolver" type="button">← Atrás</button>
+        </a>
+    </div>
+
+    <form th:action="@{/crm/guardarPagina}" method="post" id="formulario">
+
+        <label>Título</label>
+        <input type="text" name="titulo" required>
+
+        <label>URL</label>
+        <input type="text" name="url" required>
+
+        <label>Contenido HTML</label>
+        <textarea name="contenidoHTML"></textarea>
+
+        <label>Id Tipo Pagina</label>
+        <select name="idTipoPagina" required>
+
+            <option value="">Selecciona un tipo</option>
+
+            <option value="1">1 - Página</option>
+
+            <option value="2">2 - Post</option>
+
+            <option value="3">3 - Componente</option>
+
+        </select>
+
+        <button type="submit">Crear página</button>
+
+    </form>
+    </body>
+    </html>
