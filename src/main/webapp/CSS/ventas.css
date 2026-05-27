@@ -1,5 +1,39 @@
 /* CSS Módulo Ventas */
 
+/* Nav botones */
+.cajaDeBotones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.botones {
+    display: inline-block;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: #ffffff !important;
+    color: #4a7cbf !important;
+    border: 1px solid #4a7cbf;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.botones:hover {
+    background-color: #4a7cbf;
+    color: #ffffff;
+}
+
+.botones.activo {
+    background-color: #4a7cbf;
+    color: #ffffff;
+}
+
 header {
     flex-direction: column;
     padding: 15px 30px 0;
