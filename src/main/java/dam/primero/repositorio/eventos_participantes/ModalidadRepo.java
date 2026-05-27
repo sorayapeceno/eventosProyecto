@@ -1,35 +1,32 @@
 package dam.primero.repositorio.eventos_participantes;
 
-import dam.primero.config.MySqlConector;
 import dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes;
 import dam.primero.exception.MyException;
-import dam.primero.modelos.eventos_participantes.Modelo.*;
+import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PonenteRepo {
+public class ModalidadRepo {
     private MySqlConectorEventosParticipantes conector;
 
     //Constructor
-    public PonenteRepo() {
+    public ModalidadRepo() {
         try {
             this.conector = new MySqlConectorEventosParticipantes();
         } catch (MyException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
+    public List<Modalidad> listarModalidad() {
 
-    //Metodos
-    public List<Ponente> listarPonente() {
+        List<Modalidad> modalidades = new ArrayList<>();
 
-        List<Ponente> ponentes = new ArrayList<>();
-
-        String query = "select * from ponente;";
+        String query = "SELECT Modalidad FROM Evento;";
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -41,23 +38,15 @@ public class PonenteRepo {
 
             while (rs.next()) {
 
-                int id_Ponente = rs.getInt("id_Ponente");
-                String bio = rs.getString("BIO");
-                String especialidad = rs.getString("Especialidad");
-                String cv  = rs.getString("CV");
-                NivelImparticion nivelImparticion = NivelImparticion.valueOf(rs.getString("Nivel_Imparticion"));
+                Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
 
-                Ponente ponente = new Ponente(id_Ponente,bio,especialidad,
-                        cv,nivelImparticion);
-
-                ponentes.add(ponente);
+                modalidades.add(modalidad);
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return ponentes; /*Metodo listado de Ponentes*/
+        return modalidades;/*Metodo Listado de estados de Eventos*/
     }
-
 }

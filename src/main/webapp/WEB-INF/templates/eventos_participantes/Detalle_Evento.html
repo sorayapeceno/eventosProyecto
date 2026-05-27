@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Detalle del Evento</title>
+        <!--Estilo Lili-->
+        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+    </head>
+    <body>
+
+    <header>
+        <h1>Gestión de Eventos Educativos</h1>
+        <nav>
+            <ul>
+                <li><a href="participantes/Listado_Eventos">Eventos</a></li>
+                <li><a href="participantes/Listado_Ponencias">Ponencias</a></li>
+                <li><a href="participantes/Listado_Ponentes">Ponentes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <aside>
+        <h2>Casos de uso</h2>
+        <ul>
+            <li><a href="participantes/Crear_Evento">Crear evento</a></li>
+            <li><a href="participantes/Modificar_Evento">Modificar evento</a></li>
+            <li><a href="participantes/Listado_Eventos">Listado de eventos</a></li>
+            <li><a href="participantes/Detalle_Evento">Detalle de evento</a></li>
+            <li><a href="participantes/Crear_Ponencia">Crear ponencia</a></li>
+            <li><a href="participantes/Asignacion_Ponencia-Evento">Asignar ponencia a evento</a></li>
+            <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a ponencia</a></li>
+            <li><a href="participantes/Listado_Ponencias">Listado de ponencias</a></li>
+            <li><a href="participantes/Registrar_Ponente">Registrar ponente</a></li>
+            <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a evento</a></li>
+            <li><a href="participantes/Listado_Ponentes">Listado de ponentes</a></li>
+        </ul>
+    </aside>
+        <main>
+            <section>
+                <h2>Detalle del evento</h2>
+                <article class="tarjeta">
+                    <h3>InnovaCode: Jornadas de Programación y BBDD</h3>
+                    <p>
+                        <strong>ID del evento:</strong>
+                        <span>1</span>
+                    </p>
+                    <p>
+                        <strong>Descripción:</strong><br>
+                        <span>Evento centrado en programación, bases de datos y tendencias tecnológicas.</span>
+                    </p>
+                    <p>
+                        <strong>Fecha de inicio:</strong>
+                        <time>20 de junio de 2026</time>
+                    </p>
+                    <p>
+                        <strong>Fecha de fin:</strong>
+                        <time> 21 de junio de 2026</time>
+                    </p>
+                    <p>
+                        <strong>Dirección:</strong>
+                        <span>Calle Leonardo Da Vinci, 18</span>
+                    </p>
+                    <p>
+                        <strong>Ciudad:</strong>
+                        <span>Sevilla</span>
+                    </p>
+                    <p>
+                        <strong>Capacidad:</strong>
+                        <span>150</span>
+                    </p>
+                    <p>
+                        <strong>Estado:</strong>
+                        <span th:text="${evento.estado}">Cerrado</span>
+                    </p>
+                    <p>
+                        <strong>Modalidad:</strong>
+                        <span th:text="${evento.modalidad}">Híbrido</span>
+                    </p>
+                    <p>
+                        <strong>Lugar:</strong>
+                        <span>TecnoIncubadora Marie Curie</span>
+                    </p>
+                    <figure>
+                        <!--Añadir una imágen-->
+                        <img src="" alt="Imagen del evento InnovaCode" width="350">
+                        <figcaption> Imagen representativa del evento InnovaCode.</figcaption>
+                    </figure>
+                </article>
+            </section>
+        </main>
+        <footer>
+            <p>© 2026 Gestión de Eventos</p>
+        </footer>
+    </body>
+</html>

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Gestión de Eventos: Inicio</title>
+        <title>Listado de Ponentes</title>
         <!--Estilo Lili-->
-        <link rel="stylesheet" href="css/modulo1.css">
+        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
     </head>
-
     <body>
 
     <header>
@@ -36,27 +35,38 @@
             <li><a href="participantes/Listado_Ponentes">Listado de ponentes</a></li>
         </ul>
     </aside>
-
-        <main class="principal">
+        <main>
             <section class="contenido-secundario">
-                <h2>Bienvenida</h2>
-                <article>
-                    <p>
-                        <strong>Gestión de Eventos Educativos</strong>.  
-                        Desde aquí puedes acceder a los formularios, listados y vistas detalladas 
-                        de eventos, ponencias y ponentes.
-                    </p>
-
-                    <p>
-                        Usa el menú lateral para navegar entre los distintos casos de uso.
-                    </p>
-                </article>
+                <h2>Listado de ponentes</h2>
+                <table>
+                    <caption>Ponentes registrados</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Especialidad</th>
+                            <th>Nivel de impartición</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Docente</td>
+                            <td>Especializado</td>
+                            <td>BBDD</td>
+                            <td>FP</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
         </main>
-
         <footer>
             <p>© 2026 Gestión de Eventos</p>
         </footer>
-
     </body>
 </html>

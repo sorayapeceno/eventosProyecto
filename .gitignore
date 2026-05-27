@@ -1,1 +1,29 @@
+# Compilados y empaquetados
 target/
+*.class
+*.jar
+*.war
+
+# Logs de Tomcat
+logs/
+*.log
+
+# Tomcat local (no se sube)
+conf/
+webapps/
+src/main/webapp/logs/
+src/main/webapp/conf/
+src/main/webapp/WEB-INF/tickets/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db

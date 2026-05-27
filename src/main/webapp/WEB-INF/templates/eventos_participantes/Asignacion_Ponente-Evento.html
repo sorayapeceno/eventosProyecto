@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Gestión de Eventos: Inicio</title>
-        <!--Estilo Lili-->
-        <link rel="stylesheet" href="css/modulo1.css">
-    </head>
+        <title>Asignar Ponente a Evento</title>
 
+        <!--Estilo Lili-->
+        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+    </head>
     <body>
 
-    <header>
+    <<header>
         <h1>Gestión de Eventos Educativos</h1>
         <nav>
             <ul>
@@ -36,27 +36,35 @@
             <li><a href="participantes/Listado_Ponentes">Listado de ponentes</a></li>
         </ul>
     </aside>
-
-        <main class="principal">
+        <main>
             <section class="contenido-secundario">
-                <h2>Bienvenida</h2>
-                <article>
-                    <p>
-                        <strong>Gestión de Eventos Educativos</strong>.  
-                        Desde aquí puedes acceder a los formularios, listados y vistas detalladas 
-                        de eventos, ponencias y ponentes.
-                    </p>
+                <h2>Asignar ponente a evento</h2>
 
-                    <p>
-                        Usa el menú lateral para navegar entre los distintos casos de uso.
-                    </p>
-                </article>
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Datos de asignación</legend>
+
+                        <!-- EVENTO -->
+                        <label for="evento">Selecciona un evento:</label>
+                        <select id="evento" name="evento">
+                            <option value="">Elige una opción:</option>
+                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
+                        </select>
+
+                        <!-- PONENTE -->
+                        <label for="ponente">Selecciona un ponente:</label>
+                        <select id="ponente" name="ponente">
+                            <option value="">Elige una opción:</option>
+                            <option th:each="ponente : ${ponentes}" th:value="${ponente.id}" th:text="${ponente.nombre}"></option>
+                        </select>
+
+                        <button type="submit">Asignar ponente</button>
+                    </fieldset>
+                </form>
             </section>
         </main>
-
         <footer>
             <p>© 2026 Gestión de Eventos</p>
         </footer>
-
     </body>
 </html>

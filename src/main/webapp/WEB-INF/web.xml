@@ -4,6 +4,7 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!-- CRMServlet -->
     <servlet>
         <servlet-name>CRMServlet</servlet-name>
         <servlet-class>dam.primero.servlet.crm.CRMServlet</servlet-class>
@@ -18,6 +19,7 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- DashBoardsServlet -->
     <servlet>
         <servlet-name>DashBoardsServlet</servlet-name>
         <servlet-class>dam.primero.servlet.dashboards.DashBoardsServlet</servlet-class>
@@ -28,6 +30,7 @@
         <url-pattern>/dashboards/*</url-pattern>
     </servlet-mapping>
 
+    <!-- VentasServlet -->
     <servlet>
         <servlet-name>VentasServlet</servlet-name>
         <servlet-class>dam.primero.servlet.ventas.VentasServlet</servlet-class>
@@ -38,67 +41,40 @@
         <url-pattern>/ventas/*</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>AsistenteServlet</servlet-name>
-        <servlet-class>dam.primero.servlet.ventas.AsistenteServlet</servlet-class>
-        <load-on-startup>4</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AsistenteServlet</servlet-name>
-        <url-pattern>/asistente/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ProductoServlet</servlet-name>
-        <servlet-class>dam.primero.servlet.ventas.ProductoServlet</servlet-class>
-        <load-on-startup>5</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProductoServlet</servlet-name>
-        <url-pattern>/producto/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TicketServlet</servlet-name>
-        <servlet-class>dam.primero.servlet.ventas.TicketServlet</servlet-class>
-        <load-on-startup>6</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TicketServlet</servlet-name>
-        <url-pattern>/ticket/*</url-pattern>
-    </servlet-mapping>
-
+    <!-- ParticipantesServlet -->
     <servlet>
         <servlet-name>ParticipantesServlet</servlet-name>
         <servlet-class>dam.primero.servlet.eventos_participantes.ParticipantesServlet</servlet-class>
-        <load-on-startup>7</load-on-startup>
+        <load-on-startup>4</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>ParticipantesServlet</servlet-name>
         <url-pattern>/participantes/*</url-pattern>
     </servlet-mapping>
 
+    <!-- LogisticaServlet -->
     <servlet>
         <servlet-name>LogisticaServlet</servlet-name>
         <servlet-class>dam.primero.servlet.logistica.LogisticaServlet</servlet-class>
-        <load-on-startup>8</load-on-startup>
+        <load-on-startup>5</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogisticaServlet</servlet-name>
         <url-pattern>/logistica/*</url-pattern>
     </servlet-mapping>
 
+    <!-- RelacionesServlet -->
     <servlet>
         <servlet-name>RelacionesServlet</servlet-name>
         <servlet-class>dam.primero.servlet.institucionales.RelacionesServlet</servlet-class>
-        <load-on-startup>9</load-on-startup>
+        <load-on-startup>6</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>RelacionesServlet</servlet-name>
         <url-pattern>/relaciones/*</url-pattern>
     </servlet-mapping>
 
-    <!-- Recursos estaticos -->
+    <!-- Recursos estáticos -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/CSS/*</url-pattern>
@@ -106,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/Fotos/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/JS/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

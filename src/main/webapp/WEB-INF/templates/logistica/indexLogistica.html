@@ -24,12 +24,38 @@
 	<h1 align="center">LOGISTICA</h1>
 
 	<!-- Botón atrás: navega a la raíz del contexto -->
+	<nav>
+		<nav class="cajaDeBotones">
+
+			<a class="botones" th:href="@{/logistica/entradamercancia}">
+				Entrada Mercancía
+			</a>
+
+			<a class="botones" th:href="@{/logistica/mercancias}">
+				Mercancías
+			</a>
+
+			<a class="botones" th:href="@{/logistica/pedidos}">
+				Pedidos
+			</a>
+
+			<a class="botones" th:href="@{/logistica/albaranes}">
+				Albaranes
+			</a>
+
+			<a class="botones" th:href="@{/logistica/proveedores}">
+				Proveedores
+			</a>
+
+		</nav>
+	</nav>
 	<a th:href="@{/}">
 		<button type="button">&#8592; Atrás</button>
 	</a>
 </header>
 
 <main>
+
 	<div></div>
 </main>
 </body>

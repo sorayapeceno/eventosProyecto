@@ -2,6 +2,10 @@
 CREATE DATABASE IF NOT EXISTS proyectofinaljud;
 USE proyectofinaljud;
 
+CREATE USER IF NOT EXISTS 'alumno'@'localhost' IDENTIFIED BY 'alumnodam#1234';
+GRANT ALL PRIVILEGES ON *.* TO 'alumno'@'localhost';
+FLUSH PRIVILEGES;
+
 CREATE TABLE Persona (
     id_Persona BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 

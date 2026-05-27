@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Ponencias</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
+
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav>
+        <ul>
+            <li><a href="participantes/Listado_Eventos">Eventos</a></li>
+            <li><a href="participantes/Listado_Ponencias">Ponencias</a></li>
+            <li><a href="participantes/Listado_Ponentes">Ponentes</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a href="participantes/Crear_Evento">Crear evento</a></li>
+        <li><a href="participantes/Modificar_Evento">Modificar evento</a></li>
+        <li><a href="participantes/Listado_Eventos">Listado de eventos</a></li>
+        <li><a href="participantes/Detalle_Evento">Detalle de evento</a></li>
+        <li><a href="participantes/Crear_Ponencia">Crear ponencia</a></li>
+        <li><a href="participantes/Asignacion_Ponencia-Evento">Asignar ponencia a evento</a></li>
+        <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a ponencia</a></li>
+        <li><a href="participantes/Listado_Ponencias">Listado de ponencias</a></li>
+        <li><a href="participantes/Registrar_Ponente">Registrar ponente</a></li>
+        <li><a href="participantes/Asignacion_Ponente-Evento">Asignar ponente a evento</a></li>
+        <li><a href="participantes/Listado_Ponentes">Listado de ponentes</a></li>
+    </ul>
+</aside>
+<main>
+    <section class="contenido-secundario">
+        <h2>Listado de ponencias</h2>
+        <table>
+            <caption>Ponencias registradas</caption>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>ID Evento</th>
+                <th>Nivel</th>
+                <th>Tipo</th>
+                <th>Formato</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ponencia: ${ponencias}">
+                <td th:text="${ponencia.id_Ponencia}">1</td>
+                <td th:text="${ponencia.titulo}">Diseño y optimización de BBDD en entornos reales</td>
+                <td th:text="${ponencia.fecha}">2026-06-21</td>
+                <td th:text="${ponencia.hora}">09:00</td>
+                <td th:text="${ponencia.id_Evento}">1</td>
+                <td th:text="${ponencia.nivel}">Intermedio</td>
+                <td th:text="${ponencia.tipo}">Charla</td>
+                <td th:text="${ponencia.formato}">Híbrido</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<footer>
+    <p>© 2026 Gestión de Eventos</p>
+</footer>
+</body>
+</html>

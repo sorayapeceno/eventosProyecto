@@ -1,6 +1,6 @@
 package dam.primero.servlet.dashboards;
 
-
+import dam.primero.repositorio.dashboards.RepoDashboards;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,85 +14,93 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public class DashBoardsServlet extends HttpServlet {
-	private static final long serialVersionUID = 2051990309999713971L;
+
+	private static final long serialVersionUID = 1L;
 	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
 	public static final String TEMPLATES = "/WEB-INF/templates/dashboards/";
 	public static final String SUFFIX = ".html";
+
 	private TemplateEngine templateEngine;
 	private JavaxServletWebApplication application;
 
-
-
 	@Override
 	public void init() throws ServletException {
-		System.out.println("En el init");
 		ServletContext servletContext = getServletContext();
 		application = JavaxServletWebApplication.buildApplication(servletContext);
-		WebApplicationTemplateResolver templateResolver = new WebApplicationTemplateResolver(application);
+		WebApplicationTemplateResolver templateResolver =
+				new WebApplicationTemplateResolver(application);
 		templateResolver.setPrefix(TEMPLATES);
 		templateResolver.setSuffix(SUFFIX);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-		//Inicializa repositorios
 	}
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("En el doGet DashBoardsServlet");
 		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
-
 		IServletWebExchange webExchange = application.buildExchange(request, response);
 		WebContext context = new WebContext(webExchange, request.getLocale());
 
-		String servletPath = (request.getServletPath()!= null) ? request.getServletPath().trim() : "";
-		String pathInfo = request.getPathInfo();          // puede ser null
+		String pathInfo = request.getPathInfo();
 		String path = (pathInfo != null) ? pathInfo.trim() : "";
 
-		System.out.println("doGet servletPath: " + servletPath);
-		System.out.println("doGet pathInfo:    " + pathInfo);
+		RepoDashboards repo = new RepoDashboards();
 
-		if ("/".equals(servletPath) && path.isEmpty()) {
-			templateEngine.process("index", context, response.getWriter());
-
+		// GET /dashboards/  → índice de dashboards
+		if (path.isEmpty() || path.equals("/")) {
+			templateEngine.process("indexDashboards", context, response.getWriter());
+			return;
 		}
-	else if ("/dashboards".equals(servletPath)) {
 
-			// GET /eventosProyectos/crm/   →  pathInfo = null o "/"
-			if (path.isEmpty() || path.equals("/")) {
-				templateEngine.process("indexDashboards", context, response.getWriter());
+		String[] partes = path.substring(1).split("/");
+		String accion = partes[0];
 
-			}
-			else{
+		switch (accion) {
 
-			// Descomponemos el pathInfo para obtener acción y subacción
-			// path ejemplo: "/clientes"  →  partes = ["clientes"]
-			// path ejemplo: "/clientes/editar" →  partes = ["clientes","editar"]
-			String[] partes = path.substring(1).split("/");
-			String accion = partes[0];
-			String subaccion = partes.length > 1 ? partes[1] : null;
+			// ── Dashboard A: Eventos ─────────────────────────────────────────
+			case "eventos":
+				context.setVariable("totalEventos",      repo.contarEventos());
+				context.setVariable("eventosPorEstado",  repo.eventosPorEstado());
+				context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());
+				context.setVariable("eventosPorCiudad",  repo.eventosPorCiudad());
+				templateEngine.process("dashboardEventos", context, response.getWriter());
+				break;
 
-			System.out.println("doGet accion:    " + accion);
-			System.out.println("doGet subaccion: " + subaccion);
+			// ── Dashboard B: Ponencias ───────────────────────────────────────
+			case "ponencias":
+				context.setVariable("totalPonencias",       repo.contarPonencias());
+				context.setVariable("ponenciasPorTipo",     repo.ponenciasPorTipo());
+				context.setVariable("ponenciasPorNivel",    repo.ponenciasPorNivel());
+				context.setVariable("ponenciasPorFormato",  repo.ponenciasPorFormato());
+				context.setVariable("ponenciasPorTematica", repo.ponenciasPorTematica());
+				templateEngine.process("dashboardPonencias", context, response.getWriter());
+				break;
 
-			// Aquí tu lógica de negocio por acción
-			switch (accion.toLowerCase()) {
-				case "clientes":
-					// templateEngine.process("clientes", context, response.getWriter());
-					break;
-				case "eventos":
-					// templateEngine.process("eventos", context, response.getWriter());
-					break;
-				default:
-					response.sendError(HttpServletResponse.SC_NOT_FOUND,
-							"Acción no reconocida: " + accion);
-			}}
+			// ── Dashboard C: Ponentes ────────────────────────────────────────
+			case "ponentes":
+				context.setVariable("totalPonentes",           repo.contarPonentes());
+				context.setVariable("ponentesPorEspecialidad", repo.ponentesPorEspecialidad());
+				context.setVariable("ponentesPorNivelImparticion", repo.ponentesPorNivelImparticion());
+				context.setVariable("topPonentes",             repo.topPonentes());
+				templateEngine.process("dashboardPonentes", context, response.getWriter());
+				break;
 
-		} else {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			// ── Dashboard D: Ventas / Clientes ───────────────────────────────
+			case "ventas":
+				context.setVariable("totalClientes", repo.contarClientes());
+				context.setVariable("clientesPorCiudad", repo.clientesPorCiudad());
+				templateEngine.process("dashboardVentas", context, response.getWriter());
+				break;
+
+			default:
+				response.sendError(HttpServletResponse.SC_NOT_FOUND,
+						"Dashboard no reconocido: " + accion);
 		}
 	}
 }

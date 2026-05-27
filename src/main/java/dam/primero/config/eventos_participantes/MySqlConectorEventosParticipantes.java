@@ -10,7 +10,11 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 
-public class MySqlConectorEventosParticipantes extends MySqlConector {
+public class MySqlConectorEventosParticipantes  {
+	protected Connection connect;
+	protected String url;
+	protected String user;
+	protected String clave;
 	public MySqlConectorEventosParticipantes() throws MyException {
 		try {
 			Properties properties = new Properties();
@@ -39,5 +43,11 @@ public class MySqlConectorEventosParticipantes extends MySqlConector {
         }
     }
 
-	
+	public Connection getConnect() {
+		return connect;
+	}
+
+	public void setConnect(Connection connect) {
+		this.connect = connect;
+	}
 }

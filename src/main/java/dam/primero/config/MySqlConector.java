@@ -17,35 +17,32 @@ public class MySqlConector {
 	protected String clave;
 
 	public MySqlConector() throws MyException {
-		this("eventos_participantes/db.properties");
-	}
-
-	public MySqlConector(String propertiesPath) throws MyException {
 		try {
 			Properties properties = new Properties();
 			var stream = MySqlConector.class.getClassLoader()
-					.getResourceAsStream(propertiesPath);
+					.getResourceAsStream("db.properties");
 			if (stream == null) {
-				throw new MyException("No se encontró " + propertiesPath + " en el classpath");
+				throw new MyException("No se encontró db.properties en el classpath");
 			}
 			properties.load(stream);
-			this.url   = properties.getProperty("url");
-			this.user  = properties.getProperty("user");
+			this.url = properties.getProperty("url");
+			this.user = properties.getProperty("user");
 			this.clave = properties.getProperty("clave");
 
+			// Carga explícita del driver — necesario en Tomcat con classloaders separados
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			this.connect = DriverManager.getConnection(this.url, this.user, this.clave);
 
-			System.out.println("Conectado a: " + this.url);
+			System.out.println("Conectado");
 		} catch (IOException e) {
-			throw new MyException("Error al conectar a la base de datos: " + e.getMessage());
+			throw new MyException("Error al conectar a la base de datos" + e.getMessage());
 		} catch (SQLException e) {
-			throw new MyException("Error al conectar a la base de datos: " + e.getMessage());
+			throw new MyException("Error al conectar a la base de datos" + e.getMessage());
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            throw new RuntimeException(e);
+        }
+    }
 
 	public Connection getConnect() {
 		return connect;
