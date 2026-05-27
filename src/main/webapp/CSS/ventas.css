@@ -51,7 +51,6 @@ header {
     display: flex;
     justify-content: center;
     padding: 30px 20px;
-    background-color: #f0f4f8;
     min-height: calc(100vh - 120px);
 }
 
