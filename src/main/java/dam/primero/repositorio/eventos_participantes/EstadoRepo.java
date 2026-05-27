@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EstadoRepo {
     private MySqlConectorEventosParticipantes conector;
@@ -25,9 +27,9 @@ public class EstadoRepo {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
-    public List<Estado> listarEstados() {
+    public Set<Estado> listarEstados() {
 
-        List<Estado> estados = new ArrayList<>();
+        Set<Estado> estados = new HashSet<>();
 
         String query = "SELECT Estado FROM Evento;";
 

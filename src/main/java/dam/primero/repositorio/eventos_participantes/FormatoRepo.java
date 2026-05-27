@@ -2,7 +2,7 @@ package dam.primero.repositorio.eventos_participantes;
 
 import dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes;
 import dam.primero.exception.MyException;
-import dam.primero.modelos.eventos_participantes.Modelo.Estado;
+import dam.primero.modelos.eventos_participantes.Modelo.Formato;
 import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
 
 import java.sql.ResultSet;
@@ -13,22 +13,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ModalidadRepo {
+public class FormatoRepo {
     private MySqlConectorEventosParticipantes conector;
 
     //Constructor
-    public ModalidadRepo() {
+    public FormatoRepo() {
         try {
             this.conector = new MySqlConectorEventosParticipantes();
         } catch (MyException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
-    public Set<Modalidad> listarModalidad() {
 
-        Set<Modalidad> modalidades = new HashSet<>();
+    public Set<Formato> listarFormato() {
 
-        String query = "SELECT Modalidad FROM Evento;";
+        Set<Formato> formatos = new HashSet<>();
+
+        String query = "SELECT Formato FROM Ponencia;";
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -40,15 +41,15 @@ public class ModalidadRepo {
 
             while (rs.next()) {
 
-                Modalidad modalidad = Modalidad.valueOf(rs.getString("Modalidad").toUpperCase());
+                Formato formato = Formato.valueOf(rs.getString("Formato").toUpperCase());
 
-                modalidades.add(modalidad);
+                formatos.add(formato);
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return modalidades;/*Metodo Listado de estados de Eventos*/
+        return formatos;
     }
 }

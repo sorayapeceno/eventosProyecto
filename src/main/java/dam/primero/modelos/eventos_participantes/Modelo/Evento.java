@@ -66,6 +66,14 @@ public class Evento {
         return fechaInicio;
     }
 
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Evento.contador = contador;
+    }
+
     public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
