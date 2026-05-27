@@ -57,10 +57,13 @@
 
 <header>
     <h1>Entrada de Mercancía</h1>
+    <div class="cajaDeBotones">
 
-    <a th:href="@{/logistica}">
-        ← Volver a logística
-    </a>
+        <a class="botones" th:href="@{/logistica}">
+            Logística
+        </a>
+
+    </div>
 </header>
 
 <div class="contenedor">
@@ -79,5 +82,8 @@
 
 </div>
 
+<div th:if="${error}" style="background-color: #fdf7f7; border: 1px solid #d9534f; border-radius: 4px; padding: 15px; margin-bottom: 20px;">
+    <h3 style="color: #d9534f; margin: 0; font-size: 1.1em;" th:text="${error}"></h3>
+</div>
 </body>
 </html>

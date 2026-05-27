@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>Modificar Evento</title>
         <!--Estilo Lili-->
-        <link rel="stylesheet" href="/css/modulo1.css">
+        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
     </head>
     <body>
 
@@ -39,29 +39,29 @@
             <section class="contenido-secundario">
                 <h2>Modificar evento</h2>
                 <!--Este formulario ya es dinamico -->
-                <form action="#" method="post" th:object="${evento}">
+                <form action="#" method="post">
                     <fieldset>
                         <legend>Datos del evento</legend>
                         <label for="nombre"> Nombre del evento: </label>
-                        <input type="text" id="nombre" name="nombre" th:value="${evento.nombre}" required>
+                        <input type="text" id="nombre" name="nombre" required>
 
                         <label for="descripcion">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" rows="10" th:text="${evento.descripcion}"></textarea>
+                        <textarea id="descripcion" name="descripcion" rows="10"></textarea>
 
                         <label for="fechaInicio">Fecha de inicio:</label>
-                        <input type="date" id="fechaInicio" name="fechaInicio" th:value="${evento.fechaInicio}" required>
+                        <input type="date" id="fechaInicio" name="fechaInicio" required>
 
                         <label for="fechaFin"> Fecha de fin:</label>
-                        <input type="date" id="fechaFin" name="fechaFin" th:value="${evento.fechaFin}" required>
+                        <input type="date" id="fechaFin" name="fechaFin" required>
 
                         <label for="direccion"> Dirección: </label>
-                        <input type="text" id="direccion" name="direccion" th:value="${evento.direccion}" required>
+                        <input type="text" id="direccion" name="direccion" required>
 
                         <label for="ciudad"> Ciudad:</label>
-                        <input type="text" id="ciudad" name="ciudad" th:value="${evento.ciudad}" required>
+                        <input type="text" id="ciudad" name="ciudad" required>
 
                         <label for="capacidad">Capacidad:</label>
-                        <input type="number" id="capacidad" name="capacidad" th:value="${evento.capacidad}" required>
+                        <input type="number" id="capacidad" name="capacidad" required>
 
                         <label for="estado"> Estado: </label>
                         <select id="estado" name="estado">
@@ -76,7 +76,7 @@
                         </select>
 
                         <label for="lugar"> Lugar:</label>
-                        <input type="text" id="lugar" name="lugar" th:value="${evento.lugar}" required>
+                        <input type="text" id="lugar" name="lugar" required>
 
                         <button type="submit"> Guardar cambios</button>
                     </fieldset>

@@ -57,5 +57,11 @@ public class LineaPedido {
                 ", descuentoAplicado=" + descuentoAplicado +
                 '}';
     }
-    //TODO public double calcularSubtotal(){}
+
+    public double calcularSubtotal() {
+        double totalSinDescuento = this.cantidad * this.precioUnitarioEnPedido;
+        this.subtotal = totalSinDescuento - (totalSinDescuento * (this.descuentoAplicado / 100.0));
+        return this.subtotal;
+    }
+    
 }
