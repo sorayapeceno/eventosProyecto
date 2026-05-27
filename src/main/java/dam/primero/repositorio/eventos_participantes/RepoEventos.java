@@ -103,7 +103,7 @@ public class RepoEventos {
                 );
 
 
-                eventos.add(evento);
+                eventos.add(evento);/**/
             }
 
         } catch (SQLException e) {
@@ -113,4 +113,46 @@ public class RepoEventos {
 
         return eventos;
      }
+
+    public Evento mostrarEvento(int idEvento) {
+
+        Evento evento = null;
+
+        String query = "SELECT * FROM evento WHERE id_Evento = ?";
+
+        try (
+                Connection conn = this.conector.getConnect();
+                PreparedStatement stmt = conn.prepareStatement(query)
+
+        ) {
+
+            stmt.setInt(1, idEvento);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    evento = new Evento(
+                            rs.getInt("id_Evento"),
+                            rs.getString("Nombre"),
+                            rs.getString("Descripcion"),
+                            rs.getDate("Fecha_Inicio").toLocalDate(),
+                            rs.getDate("Fecha_Fin").toLocalDate(),
+                            rs.getString("Direccion"),
+                            rs.getString("Ciudad"),
+                            rs.getInt("Capacidad"),
+                            Estado.valueOf(rs.getString("Estado").toUpperCase()),
+                            Modalidad.valueOf(rs.getString("Modalidad").toUpperCase()),
+                            rs.getString("Lugar")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return evento;
+    }
+
     }

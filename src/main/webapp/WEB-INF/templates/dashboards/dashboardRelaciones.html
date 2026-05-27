@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Dashboard – Relaciones Institucionales</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Dashboard – Relaciones Institucionales</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+    <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="num" th:text="${totalOrganizaciones}">0</div>
+        <div class="lbl">Organizaciones</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalOportunidades}">0</div>
+        <div class="lbl">Oportunidades</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalRecintos}">0</div>
+        <div class="lbl">Recintos</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalPatrocinios}">0</div>
+        <div class="lbl">Patrocinios</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Oportunidades por Estado</h3>
+        <canvas id="chartEstado"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Patrocinios por Tipo</h3>
+        <canvas id="chartPatrocinio"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Colaboraciones por Tipo</h3>
+        <canvas id="chartColaboracion"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Organizaciones por Ciudad</h3>
+        <canvas id="chartCiudad"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Capacidad por Recinto</h3>
+        <canvas id="chartRecinto"></canvas>
+      </div>
+    </div>
+
+    <div class="mas-info-row">
+      <a class="btn-mas-info" th:href="@{/dashboards/relaciones/detalle}">
+        &#128269; Más información
+      </a>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const estadoLabels       = /*[[${oportunidadesPorEstado.keySet()}]]*/ [];
+  const estadoValues       = /*[[${oportunidadesPorEstado.values()}]]*/ [];
+  const patrocinioLabels   = /*[[${patrociniosPorTipo.keySet()}]]*/ [];
+  const patrocinioValues   = /*[[${patrociniosPorTipo.values()}]]*/ [];
+  const colaboracionLabels = /*[[${colaboracionesPorTipo.keySet()}]]*/ [];
+  const colaboracionValues = /*[[${colaboracionesPorTipo.values()}]]*/ [];
+  const ciudadLabels       = /*[[${organizacionesPorCiudad.keySet()}]]*/ [];
+  const ciudadValues       = /*[[${organizacionesPorCiudad.values()}]]*/ [];
+  const recintoLabels      = /*[[${recintoPorCapacidad.keySet()}]]*/ [];
+  const recintoValues      = /*[[${recintoPorCapacidad.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/dashboardRelaciones.js}"></script>
+</body>
+</html>

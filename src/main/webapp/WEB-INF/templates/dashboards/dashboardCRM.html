@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Dashboard – CRM</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Dashboard – CRM</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="num" th:text="${totalOrganizaciones}">0</div>
+        <div class="lbl">Organizaciones</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalOportunidades}">0</div>
+        <div class="lbl">Oportunidades</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalProductos}">0</div>
+        <div class="lbl">Productos</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalFichas}">0</div>
+        <div class="lbl">Fichas de cliente</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Organizaciones por Tipo</h3>
+        <canvas id="chartOrgTipo"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Productos por Categoría</h3>
+        <canvas id="chartProdCat"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Stock por Producto</h3>
+        <canvas id="chartStock"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Usuarios por Rol</h3>
+        <canvas id="chartRol"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Páginas Web por Tipo</h3>
+        <canvas id="chartPaginas"></canvas>
+      </div>
+    </div>
+
+    <div class="mas-info-row">
+      <a class="btn-mas-info" th:href="@{/dashboards/crm/detalle}">
+        &#128269; Más información
+      </a>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const orgTipoLabels  = /*[[${organizacionesPorTipo.keySet()}]]*/ [];
+  const orgTipoValues  = /*[[${organizacionesPorTipo.values()}]]*/ [];
+  const prodCatLabels  = /*[[${productosPorCategoria.keySet()}]]*/ [];
+  const prodCatValues  = /*[[${productosPorCategoria.values()}]]*/ [];
+  const stockLabels    = /*[[${stockPorProducto.keySet()}]]*/ [];
+  const stockValues    = /*[[${stockPorProducto.values()}]]*/ [];
+  const rolLabels      = /*[[${usuariosPorRol.keySet()}]]*/ [];
+  const rolValues      = /*[[${usuariosPorRol.values()}]]*/ [];
+  const paginasLabels  = /*[[${paginasPorTipo.keySet()}]]*/ [];
+  const paginasValues  = /*[[${paginasPorTipo.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/dashboardCRM.js}"></script>
+</body>
+</html>

@@ -4,6 +4,9 @@ target/
 *.jar
 *.war
 
+# Credenciales (no subir nunca)
+src/main/resources/db.properties
+
 # Logs de Tomcat
 logs/
 *.log

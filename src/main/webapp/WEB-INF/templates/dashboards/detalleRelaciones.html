@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Detalle – Relaciones Institucionales</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Detalle – Relaciones Institucionales</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards/relaciones}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+    <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Oportunidades por Estado</h3>
+        <canvas id="chartEstado"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Patrocinios por Tipo</h3>
+        <canvas id="chartPatrocinio"></canvas>
+      </div>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Organizaciones</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Ciudad</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Fecha Registro</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${organizaciones}">
+          <td th:text="${o['Nombre']}"></td>
+          <td th:text="${o['Ciudad']}"></td>
+          <td th:text="${o['Telefono']}"></td>
+          <td th:text="${o['Email']}"></td>
+          <td th:text="${o['Fecha_Registro']}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Oportunidades</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Estado</th>
+          <th>Presupuesto (€)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="op : ${oportunidades}">
+          <td th:text="${op['Descripcion']}"></td>
+          <td th:text="${op['Fecha_Inicio']}"></td>
+          <td th:text="${op['Fecha_Fin']}"></td>
+          <td><span class="badge" th:text="${op['Estado']}"></span></td>
+          <td th:text="${op['Presupuesto']}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Colaboraciones</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Firmado</th>
+          <th>Dinero (€)</th>
+          <th>Convenio</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${colaboraciones}">
+          <td><span class="badge" th:text="${c['Tipo']}"></span></td>
+          <td th:text="${c['Fecha']}"></td>
+          <td th:text="${c['Firma']}"></td>
+          <td th:text="${c['Dinero']}"></td>
+          <td th:text="${c['Convenio']}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const estadoLabels     = /*[[${oportunidadesPorEstado.keySet()}]]*/ [];
+  const estadoValues     = /*[[${oportunidadesPorEstado.values()}]]*/ [];
+  const patrocinioLabels = /*[[${patrociniosPorTipo.keySet()}]]*/ [];
+  const patrocinioValues = /*[[${patrociniosPorTipo.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/detalleRelaciones.js}"></script>
+</body>
+</html>

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ParticipantesServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
@@ -82,8 +83,8 @@ public class ParticipantesServlet extends HttpServlet {
 					case "Crear_Evento":
 						EstadoRepo repo = new EstadoRepo();
 						ModalidadRepo r = new ModalidadRepo();
-						List <Estado> estados = repo.listarEstados();
-						List<Modalidad> modalidades = r.listarModalidad();
+						Set <Estado> estados = repo.listarEstados();
+						Set<Modalidad> modalidades = r.listarModalidad();
 						context.setVariable("estados", estados);
 						context.setVariable("modalidades",modalidades);
 						templateEngine.process("Crear_Evento", context, response.getWriter());
@@ -91,7 +92,19 @@ public class ParticipantesServlet extends HttpServlet {
 
 					case "Crear_Ponencia":
 						PonenciaRepo repo1 = new PonenciaRepo();
+						NivelRepo repo2 = new NivelRepo();
+						TipoRepo repo3 = new TipoRepo();
+						FormatoRepo repo4 = new FormatoRepo();
+						Set<Nivel> niveles = repo2.listarNivel();
+						Set<Tipo> tipos = repo3.listarTipo();
+						Set<Formato> formatos = repo4.listarFormato();
+						context.setVariable("niveles", niveles);
+						context.setVariable("tipos", tipos);
+						context.setVariable("formatos", formatos);
+
 						templateEngine.process("Crear_Ponencia",context,response.getWriter());
+
+						break;/**/
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
@@ -114,6 +127,19 @@ public class ParticipantesServlet extends HttpServlet {
 						context.setVariable("ponentes", ponentes);
 						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
+
+					case "Detalle_Evento":
+						RepoEventos rep = new RepoEventos();
+						String idParam = request.getParameter("id");
+
+						if (idParam != null && !idParam.isEmpty()) {
+							int idEvento = Integer.parseInt(idParam);
+							Evento evento = rep.mostrarEvento(idEvento);
+							context.setVariable("evento", evento);
+							templateEngine.process("Detalle_Evento", context, response.getWriter());
+						}
+						break;
+
 					default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}

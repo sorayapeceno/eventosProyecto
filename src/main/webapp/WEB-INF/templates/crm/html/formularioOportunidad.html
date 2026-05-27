@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Formulario Oportunidad</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        body { text-align: center; }
+        main { display: flex; justify-content: center; }
+        form { width: 420px; display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        input, textarea, button { padding: 10px; font-size: 16px; }
+        .check { text-align: left; }
+        .error { color: darkred; font-weight: bold; }
+        .exito { color: darkgreen; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
+    <h1>Formulario Oportunidad</h1>
+    <a th:href="@{/crm/}"><button type="button">&#8592; Atrás</button></a>
+</header>
+
+<main>
+    <form th:action="@{/crm/oportunidad}" method="post">
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+        <p class="exito" th:if="${exito}" th:text="${exito}"></p>
+
+        <input type="text" name="titulo" placeholder="Título" th:value="${oportunidad != null ? oportunidad.titulo : ''}">
+        <textarea name="descripcion" placeholder="Descripción" rows="4" th:text="${oportunidad != null ? oportunidad.descripcion : ''}"></textarea>
+        <input type="date" name="fechaInicio" th:value="${oportunidad != null ? oportunidad.fechaInicio : ''}">
+
+        <div class="check">
+            <p>Tipos de oportunidad:</p>
+            <label><input type="checkbox" name="tiposOportunidad" value="Colaboración"> Colaboración</label><br>
+            <label><input type="checkbox" name="tiposOportunidad" value="Patrocinio"> Patrocinio</label><br>
+            <label><input type="checkbox" name="tiposOportunidad" value="Evento"> Evento</label><br>
+            <label><input type="checkbox" name="tiposOportunidad" value="Actividad"> Actividad</label>
+        </div>
+
+        <button type="submit">Guardar oportunidad</button>
+    </form>
+</main>
+</body>
+</html>

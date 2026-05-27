@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Formulario Producto</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        body { text-align: center; }
+        main { display: flex; justify-content: center; }
+        form { width: 420px; display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        input, textarea, button { padding: 10px; font-size: 16px; }
+        .error { color: darkred; font-weight: bold; }
+        .exito { color: darkgreen; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
+    <h1>Formulario Producto</h1>
+    <a th:href="@{/crm/}"><button type="button">&#8592; Atrás</button></a>
+</header>
+
+<main>
+    <form th:action="@{/crm/producto}" method="post">
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+        <p class="exito" th:if="${exito}" th:text="${exito}"></p>
+
+        <input type="text" name="nombre" placeholder="Nombre del producto" th:value="${producto != null ? producto.nombre : ''}">
+        <textarea name="descripcion" placeholder="Descripción" rows="4" th:text="${producto != null ? producto.descripcion : ''}"></textarea>
+        <input type="number" step="0.01" name="precio" placeholder="Precio" th:value="${producto != null ? producto.precio : ''}">
+        <input type="number" name="stock" placeholder="Stock" th:value="${producto != null ? producto.stock : ''}">
+        <input type="text" name="categoria" placeholder="Categoría" th:value="${producto != null ? producto.categoria : ''}">
+
+        <button type="submit">Guardar producto</button>
+    </form>
+</main>
+</body>
+</html>

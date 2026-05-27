@@ -1,73 +1,89 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Proveedores - Gestion de Almacen</title>
-    <link rel="stylesheet" href="../css/estilos.css">
+    <title>Proveedores - Gestión de Almacén</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        .contenido {
+            width: 90%;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #2d97d0;
+            color: white;
+        }
+        .mensaje-info {
+            color: #2d97d0;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <nav>
-        <span>Gestion de Almacen</span>
-        <a href="../index.html">Inicio</a>
-        <a href="proveedores.html" class="activo">Proveedores</a>
-        <a href="mercancias.html">Mercancias</a>
-        <a href="pedidos.html">Pedidos</a>
-        <a href="albaranes.html">Albaranes</a>
-    </nav>
-
-    <div class="contenido">
-
-        <h2>Proveedores</h2>
-
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Direccion</th>
-                <th>Telefono</th>
-                <th>Email</th>
-                <th>CIF</th>
-                <th>Pais</th>
-                <th>Fecha alta</th>
-                <th>Estado</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-activo"></span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-activo"></span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><span class="estado estado-activo"></span></td>
-            </tr>
-        </table>
-
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <img th:src="@{/Fotos/logo.svg}" id="logo" alt="Logo">
+        </div>
+        <h1>GESTIÓN DE PROVEEDORES</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}">
+                <button type="button">Inicio</button>
+            </a>
+        </div>
     </div>
+
+    <div class="cajaDeBotones">
+        <a class="botones" th:href="@{/logistica}">Logística</a>
+    </div>
+</header>
+
+<div class="contenido">
+    <h2>Listado de Proveedores</h2>
+
+    <p th:if="${mensaje}" class="mensaje-info" th:text="${mensaje}"></p>
+    <hr>
+
+    <table th:if="${proveedores}">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>CIF</th>
+            <th>País</th>
+            <th>Fecha Alta</th>
+            <th>Estado</th>
+        </tr>
+        <tr th:each="p : ${proveedores}">
+            <td th:text="${p.idProveedor}"></td>
+            <td th:text="${p.nombre}"></td>
+            <td th:text="${p.direccion}"></td>
+            <td th:text="${p.telefono}"></td>
+            <td th:text="${p.email}"></td>
+            <td th:text="${p.cif}"></td>
+            <td th:text="${p.pais}"></td>
+            <td th:text="${p.fechaAlta}"></td>
+            <td th:text="${p.estadoProveedor}"></td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

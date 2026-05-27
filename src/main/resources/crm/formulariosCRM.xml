@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formularios>
+    <formulario id="organizacion" tabla="FormularioOrganizacion" ruta="/crm/organizacion">
+        <nombre>Formulario Organización</nombre>
+        <campo nombre="nombre" tipo="text" obligatorio="true">Nombre</campo>
+        <campo nombre="direccion" tipo="text" obligatorio="false">Dirección</campo>
+        <campo nombre="telefono" tipo="tel" obligatorio="false">Teléfono</campo>
+        <campo nombre="email" tipo="email" obligatorio="true">Email</campo>
+        <campo nombre="tipoOrganizacion" tipo="select" obligatorio="true">Tipo de organización</campo>
+    </formulario>
+
+    <formulario id="oportunidad" tabla="FormularioOportunidad" ruta="/crm/oportunidad">
+        <nombre>Formulario Oportunidad</nombre>
+        <campo nombre="titulo" tipo="text" obligatorio="true">Título</campo>
+        <campo nombre="descripcion" tipo="textarea" obligatorio="false">Descripción</campo>
+        <campo nombre="fechaInicio" tipo="date" obligatorio="true">Fecha de inicio</campo>
+        <campo nombre="tiposOportunidad" tipo="checkbox" obligatorio="true">Tipos de oportunidad</campo>
+    </formulario>
+
+    <formulario id="producto" tabla="FormularioProducto" ruta="/crm/producto">
+        <nombre>Formulario Producto</nombre>
+        <campo nombre="nombre" tipo="text" obligatorio="true">Nombre</campo>
+        <campo nombre="descripcion" tipo="textarea" obligatorio="false">Descripción</campo>
+        <campo nombre="precio" tipo="number" obligatorio="true">Precio</campo>
+        <campo nombre="stock" tipo="number" obligatorio="true">Stock</campo>
+        <campo nombre="categoria" tipo="select" obligatorio="true">Categoría</campo>
+    </formulario>
+</formularios>

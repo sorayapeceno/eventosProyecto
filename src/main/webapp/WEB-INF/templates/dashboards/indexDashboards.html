@@ -7,7 +7,6 @@
 	<link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
 </head>
 <body>
-
 <header>
 	<div class="header-superior">
 		<div class="logo-container">
@@ -25,42 +24,50 @@
 		<a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
 		<a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
 		<a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+		<a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+		<a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+		<a class="botones" th:href="@{/dashboards/logistica}">Logística</a>
 	</div>
 </header>
-
 <main class="principal">
 	<div class="grid-dashboards">
-
 		<a class="card-dashboard" th:href="@{/dashboards/eventos}">
 			<div class="icono">📅</div>
 			<h2>Eventos</h2>
 			<p>Estados, modalidades y ciudades</p>
 		</a>
-
 		<a class="card-dashboard" th:href="@{/dashboards/ponencias}">
 			<div class="icono">🎤</div>
 			<h2>Ponencias</h2>
 			<p>Tipos, niveles, formatos y temáticas</p>
 		</a>
-
 		<a class="card-dashboard" th:href="@{/dashboards/ponentes}">
 			<div class="icono">👤</div>
 			<h2>Ponentes</h2>
 			<p>Especialidades y nivel de impartición</p>
 		</a>
-
 		<a class="card-dashboard" th:href="@{/dashboards/ventas}">
 			<div class="icono">🛒</div>
 			<h2>Ventas</h2>
-			<p>Clientes y distribución geográfica</p>
+			<p>Tickets, productos y asistentes</p>
 		</a>
-
+		<a class="card-dashboard" th:href="@{/dashboards/crm}">
+			<div class="icono">🤝</div>
+			<h2>CRM</h2>
+			<p>Organizaciones, productos y oportunidades</p>
+		</a>
+		<a class="card-dashboard" th:href="@{/dashboards/relaciones}">
+			<div class="icono">🏛️</div>
+			<h2>Relaciones</h2>
+			<p>Organizaciones, patrocinios y colaboraciones</p>
+		</a>
+		<a class="card-dashboard" th:href="@{/dashboards/logistica}">
+			<div class="icono">📦</div>
+			<h2>Logística</h2>
+			<p>Proveedores, pedidos y mercancías</p>
+		</a>
 	</div>
 </main>
-
-<footer>
-	<p>© 2026 Gestión de Eventos</p>
-</footer>
-
+<footer><p>© 2026 Gestión de Eventos</p></footer>
 </body>
 </html>

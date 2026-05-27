@@ -7,7 +7,6 @@
   <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
 </head>
 <body>
-
 <header>
   <div class="header-superior">
     <div class="logo-container">
@@ -25,41 +24,74 @@
     <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
     <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
     <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
   </div>
 </header>
-
 <main class="principal">
   <div class="dashboard-contenido">
 
     <div class="kpi-row">
       <div class="kpi">
-        <div class="num" th:text="${totalClientes}">0</div>
-        <div class="lbl">Clientes registrados</div>
+        <div class="num" th:text="${totalAsistentes}">0</div>
+        <div class="lbl">Asistentes</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalTickets}">0</div>
+        <div class="lbl">Tickets vendidos</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalProductos}">0</div>
+        <div class="lbl">Productos en catálogo</div>
       </div>
     </div>
 
     <div class="charts-grid">
       <div class="chart-box">
-        <h3>Participantes por Ciudad</h3>
-        <canvas id="chartCiudad"></canvas>
+        <h3>Tickets por Método de Pago</h3>
+        <canvas id="chartMetodoPago"></canvas>
       </div>
+      <div class="chart-box">
+        <h3>Asistentes por Nivel</h3>
+        <canvas id="chartNivel"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Asistentes por Temática</h3>
+        <canvas id="chartTematica"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Stock por Producto</h3>
+        <canvas id="chartStock"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Entradas por Estado</h3>
+        <canvas id="chartEntradas"></canvas>
+      </div>
+    </div>
+
+    <div class="mas-info-row">
+      <a class="btn-mas-info" th:href="@{/dashboards/ventas/detalle}">
+        &#128269; Más información
+      </a>
     </div>
 
   </div>
 </main>
-
-<footer>
-  <p>© 2026 Gestión de Eventos</p>
-</footer>
-
+<footer><p>© 2026 Gestión de Eventos</p></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script th:inline="javascript">
   /*<![CDATA[*/
-  const ciudadLabels = /*[[${clientesPorCiudad.keySet()}]]*/ [];
-  const ciudadValues = /*[[${clientesPorCiudad.values()}]]*/ [];
+  const metodoPagoLabels  = /*[[${ticketsPorMetodoPago.keySet()}]]*/ [];
+  const metodoPagoValues  = /*[[${ticketsPorMetodoPago.values()}]]*/ [];
+  const nivelLabels       = /*[[${asistentePorNivel.keySet()}]]*/ [];
+  const nivelValues       = /*[[${asistentePorNivel.values()}]]*/ [];
+  const tematicaLabels    = /*[[${asistentePorTematica.keySet()}]]*/ [];
+  const tematicaValues    = /*[[${asistentePorTematica.values()}]]*/ [];
+  const stockLabels       = /*[[${stockProductos.keySet()}]]*/ [];
+  const stockValues       = /*[[${stockProductos.values()}]]*/ [];
+  const entradasLabels    = /*[[${entradasPorEstado.keySet()}]]*/ [];
+  const entradasValues    = /*[[${entradasPorEstado.values()}]]*/ [];
   /*]]>*/
 </script>
 <script th:src="@{/JS/dashboardVentas.js}"></script>
-
 </body>
 </html>

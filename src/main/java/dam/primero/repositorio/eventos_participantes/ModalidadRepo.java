@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ModalidadRepo {
     private MySqlConectorEventosParticipantes conector;
@@ -22,9 +24,9 @@ public class ModalidadRepo {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
-    public List<Modalidad> listarModalidad() {
+    public Set<Modalidad> listarModalidad() {
 
-        List<Modalidad> modalidades = new ArrayList<>();
+        Set<Modalidad> modalidades = new HashSet<>();
 
         String query = "SELECT Modalidad FROM Evento;";
 

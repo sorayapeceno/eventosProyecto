@@ -110,4 +110,6 @@ public class PonenciaRepo {
         return ponencias; /*Metodo listado de Ponencias*/
     }
 
+
+
 }
