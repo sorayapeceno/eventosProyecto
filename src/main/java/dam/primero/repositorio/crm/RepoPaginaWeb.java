@@ -1,6 +1,7 @@
 package dam.primero.repositorio.crm;
 
 import dam.primero.config.MySqlConector;
+import dam.primero.config.crm.MySqlConectorCRM;
 import dam.primero.exception.MyException;
 import dam.primero.modelos.crm.PaginaWeb;
 import dam.primero.modelos.eventos_participantes.Modelo.NivelImparticion;
@@ -12,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepoPaginaWeb {
-    private MySqlConector conector;
+    private MySqlConectorCRM conector;
 
     public RepoPaginaWeb() {
         try {
-            this.conector = new MySqlConector();
+            this.conector = new MySqlConectorCRM();
         } catch (MyException e) {
             throw new RuntimeException("Error al conectar a la base de datos" + e.getMessage());
         }
