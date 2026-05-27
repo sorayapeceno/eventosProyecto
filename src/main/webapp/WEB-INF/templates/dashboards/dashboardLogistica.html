@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Dashboard – Logística</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Dashboard – Logística</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+    <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+    <a class="botones" th:href="@{/dashboards/logistica}">Logística</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="num" th:text="${totalProveedores}">0</div>
+        <div class="lbl">Proveedores</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalPedidos}">0</div>
+        <div class="lbl">Pedidos</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalMercancias}">0</div>
+        <div class="lbl">Mercancías</div>
+      </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalAlbaranes}">0</div>
+        <div class="lbl">Albaranes</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Proveedores por Estado</h3>
+        <canvas id="chartProvEstado"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Pedidos por Estado</h3>
+        <canvas id="chartPedEstado"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Mercancías por Categoría</h3>
+        <canvas id="chartCategoria"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Stock por Mercancía</h3>
+        <canvas id="chartStock"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Albaranes por Estado</h3>
+        <canvas id="chartAlbaran"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Pedidos por Proveedor</h3>
+        <canvas id="chartProveedor"></canvas>
+      </div>
+    </div>
+
+    <div class="mas-info-row">
+      <a class="btn-mas-info" th:href="@{/dashboards/logistica/detalle}">
+        &#128269; Más información
+      </a>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const provEstadoLabels  = /*[[${proveedoresPorEstado.keySet()}]]*/ [];
+  const provEstadoValues  = /*[[${proveedoresPorEstado.values()}]]*/ [];
+  const pedEstadoLabels   = /*[[${pedidosPorEstado.keySet()}]]*/ [];
+  const pedEstadoValues   = /*[[${pedidosPorEstado.values()}]]*/ [];
+  const catLabels         = /*[[${mercanciasPorCategoria.keySet()}]]*/ [];
+  const catValues         = /*[[${mercanciasPorCategoria.values()}]]*/ [];
+  const stockLabels       = /*[[${stockMercancias.keySet()}]]*/ [];
+  const stockValues       = /*[[${stockMercancias.values()}]]*/ [];
+  const albaranLabels     = /*[[${albAranesPorEstado.keySet()}]]*/ [];
+  const albaranValues     = /*[[${albAranesPorEstado.values()}]]*/ [];
+  const proveedorLabels   = /*[[${pedidosPorProveedor.keySet()}]]*/ [];
+  const proveedorValues   = /*[[${pedidosPorProveedor.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/dashboardLogistica.js}"></script>
+</body>
+</html>
