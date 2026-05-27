@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 public class DashBoardsServlet extends HttpServlet {
 
@@ -52,50 +51,77 @@ public class DashBoardsServlet extends HttpServlet {
 
 		RepoDashboards repo = new RepoDashboards();
 
-		// GET /dashboards/  → índice de dashboards
 		if (path.isEmpty() || path.equals("/")) {
 			templateEngine.process("indexDashboards", context, response.getWriter());
 			return;
 		}
 
 		String[] partes = path.substring(1).split("/");
-		String accion = partes[0];
+		String accion  = partes[0];
+		String detalle = partes.length > 1 ? partes[1] : null;
 
 		switch (accion) {
 
-			// ── Dashboard A: Eventos ─────────────────────────────────────────
+			// ── Eventos ──────────────────────────────────────────────────────
 			case "eventos":
-				context.setVariable("totalEventos",      repo.contarEventos());
-				context.setVariable("eventosPorEstado",  repo.eventosPorEstado());
-				context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());
-				context.setVariable("eventosPorCiudad",  repo.eventosPorCiudad());
-				templateEngine.process("dashboardEventos", context, response.getWriter());
+				if ("detalle".equals(detalle)) {
+					context.setVariable("eventos", repo.detalleEventos());
+					context.setVariable("eventosPorEstado",    repo.eventosPorEstado());
+					context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());
+					templateEngine.process("detalleEventos", context, response.getWriter());
+				} else {
+					context.setVariable("totalEventos",        repo.contarEventos());
+					context.setVariable("eventosPorEstado",    repo.eventosPorEstado());
+					context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());
+					context.setVariable("eventosPorCiudad",    repo.eventosPorCiudad());
+					templateEngine.process("dashboardEventos", context, response.getWriter());
+				}
 				break;
 
-			// ── Dashboard B: Ponencias ───────────────────────────────────────
+			// ── Ponencias ─────────────────────────────────────────────────────
 			case "ponencias":
-				context.setVariable("totalPonencias",       repo.contarPonencias());
-				context.setVariable("ponenciasPorTipo",     repo.ponenciasPorTipo());
-				context.setVariable("ponenciasPorNivel",    repo.ponenciasPorNivel());
-				context.setVariable("ponenciasPorFormato",  repo.ponenciasPorFormato());
-				context.setVariable("ponenciasPorTematica", repo.ponenciasPorTematica());
-				templateEngine.process("dashboardPonencias", context, response.getWriter());
+				if ("detalle".equals(detalle)) {
+					context.setVariable("ponencias",            repo.detallePonencias());
+					context.setVariable("ponenciasPorTipo",     repo.ponenciasPorTipo());
+					context.setVariable("ponenciasPorNivel",    repo.ponenciasPorNivel());
+					templateEngine.process("detallePonencias", context, response.getWriter());
+				} else {
+					context.setVariable("totalPonencias",       repo.contarPonencias());
+					context.setVariable("ponenciasPorTipo",     repo.ponenciasPorTipo());
+					context.setVariable("ponenciasPorNivel",    repo.ponenciasPorNivel());
+					context.setVariable("ponenciasPorFormato",  repo.ponenciasPorFormato());
+					context.setVariable("ponenciasPorTematica", repo.ponenciasPorTematica());
+					templateEngine.process("dashboardPonencias", context, response.getWriter());
+				}
 				break;
 
-			// ── Dashboard C: Ponentes ────────────────────────────────────────
+			// ── Ponentes ──────────────────────────────────────────────────────
 			case "ponentes":
-				context.setVariable("totalPonentes",           repo.contarPonentes());
-				context.setVariable("ponentesPorEspecialidad", repo.ponentesPorEspecialidad());
-				context.setVariable("ponentesPorNivelImparticion", repo.ponentesPorNivelImparticion());
-				context.setVariable("topPonentes",             repo.topPonentes());
-				templateEngine.process("dashboardPonentes", context, response.getWriter());
+				if ("detalle".equals(detalle)) {
+					context.setVariable("ponentes",                    repo.detallePonentes());
+					context.setVariable("ponentesPorEspecialidad",     repo.ponentesPorEspecialidad());
+					context.setVariable("ponentesPorNivelImparticion", repo.ponentesPorNivelImparticion());
+					templateEngine.process("detallePonentes", context, response.getWriter());
+				} else {
+					context.setVariable("totalPonentes",               repo.contarPonentes());
+					context.setVariable("ponentesPorEspecialidad",     repo.ponentesPorEspecialidad());
+					context.setVariable("ponentesPorNivelImparticion", repo.ponentesPorNivelImparticion());
+					context.setVariable("topPonentes",                 repo.topPonentes());
+					templateEngine.process("dashboardPonentes", context, response.getWriter());
+				}
 				break;
 
-			// ── Dashboard D: Ventas / Clientes ───────────────────────────────
+			// ── Ventas ────────────────────────────────────────────────────────
 			case "ventas":
-				context.setVariable("totalClientes", repo.contarClientes());
-				context.setVariable("clientesPorCiudad", repo.clientesPorCiudad());
-				templateEngine.process("dashboardVentas", context, response.getWriter());
+				if ("detalle".equals(detalle)) {
+					context.setVariable("participantes",   repo.detalleParticipantes());
+					context.setVariable("clientesPorCiudad", repo.clientesPorCiudad());
+					templateEngine.process("detalleVentas", context, response.getWriter());
+				} else {
+					context.setVariable("totalClientes",   repo.contarClientes());
+					context.setVariable("clientesPorCiudad", repo.clientesPorCiudad());
+					templateEngine.process("dashboardVentas", context, response.getWriter());
+				}
 				break;
 
 			default:
