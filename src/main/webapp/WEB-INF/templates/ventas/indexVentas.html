@@ -4,8 +4,70 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Módulo Ventas - Inicio</title>
-	<link rel="stylesheet" th:href="@{/CSS--/indexVentas.css}">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .contenido-index {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255,255,255,.97);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.15);
+        }
+        .bienvenida { margin-bottom: 28px; }
+        .bienvenida p { color: #475569; line-height: 1.6; margin-top: 10px; font-size: 15px; }
+        .seccion-titulo {
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            margin-bottom: 16px;
+        }
+        .grid-accesos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 36px;
+        }
+        .tarjeta-acceso {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 3px 10px rgba(0,0,0,.08);
+            border-top: 4px solid #2d97d0;
+            text-decoration: none;
+            color: inherit;
+            transition: all .3s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tarjeta-acceso:hover  { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,.14); }
+        .tarjeta-acceso.ventas   { border-top-color: #3348cb; }
+        .tarjeta-acceso.nuevo    { border-top-color: #166534; }
+        .tarjeta-acceso.asistente { border-top-color: #c05621; }
+        .tarjeta-acceso.producto  { border-top-color: #7c3aed; }
+        .tarjeta-acceso h3 { font-size: 17px; color: #1e293b; font-weight: 700; }
+        .tarjeta-acceso p  { font-size: 13px; color: #64748b; line-height: 1.5; flex-grow: 1; }
+        .icono { font-size: 26px; }
+        .etiqueta {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+        @media (max-width: 768px) {
+            .contenido-index { padding: 20px; }
+            .grid-accesos { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
@@ -113,27 +175,6 @@
 			</a>
 
 		</div><!-- /grid-accesos -->
-
-		<!-- Estadísticas rápidas estáticas (decorativas, los valores reales vendrían del servlet) -->
-		<div class="stats-rapidas">
-			<div class="stat-item">
-				<span class="num" th:text="${totalTickets != null ? totalTickets : '—'}">—</span>
-				<span class="desc">Tickets emitidos</span>
-			</div>
-			<div class="stat-item">
-				<span class="num" th:text="${totalAsistentes != null ? totalAsistentes : '—'}">—</span>
-				<span class="desc">Asistentes registrados</span>
-			</div>
-			<div class="stat-item">
-				<span class="num" th:text="${totalProductos != null ? totalProductos : '—'}">—</span>
-				<span class="desc">Productos en catálogo</span>
-			</div>
-			<div class="stat-item">
-                <span class="num"
-					 th:text="${totalFacturado != null ? '€' + totalFacturado : '—'}">—</span>
-				<span class="desc">Total facturado</span>
-			</div>
-		</div>
 
 	</div><!-- /contenido-index -->
 </main>

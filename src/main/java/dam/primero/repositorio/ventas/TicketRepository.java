@@ -1,7 +1,7 @@
 package dam.primero.repositorio.ventas;
 
 import dam.primero.modelos.ventas.*;
-import dam.primero.config.MySqlConector;
+import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;
 
 import java.sql.*;
@@ -43,7 +43,7 @@ public class TicketRepository {
                      "JOIN Asistente a ON t.ID_Asistente = a.ID_Asistente " +
                      "ORDER BY t.Fecha_Compra DESC";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -96,7 +96,7 @@ public class TicketRepository {
             "LEFT JOIN Otros o       ON o.ID_Producto  = p.ID_Producto " +
             "WHERE lt.ID_Ticket = ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect()) {
 
             Ticket ticket = null;
@@ -144,33 +144,6 @@ public class TicketRepository {
         }
     }
 
-    public List<Ticket> findByAsistente(long id_Asistente) throws MyException {
-        List<Ticket> lista = new ArrayList<>();
-        String sql = "SELECT t.*, a.Tematica, a.Bio, a.Nivel_Imparticion " +
-                     "FROM Ticket t " +
-                     "JOIN Asistente a ON t.ID_Asistente = a.ID_Asistente " +
-                     "WHERE t.ID_Asistente = ? " +
-                     "ORDER BY t.Fecha_Compra DESC";
-
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setLong(1, id_Asistente);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Ticket t = mapTicket(rs);
-                t.getDuenio().setTematica(rs.getString("Tematica"));
-                lista.add(t);
-            }
-        } catch (SQLException e) {
-            throw new MyException("Error al buscar tickets del asistente: " + e.getMessage());
-        } finally {
-            conector.release();
-        }
-        return lista;
-    }
-
     public void saveConLineas(Ticket ticket) throws MyException {
         String sqlTicket = "INSERT INTO Ticket " +
                            "(ID_Ticket, ID_Asistente, Codigo_QR, Fecha_Compra, " +
@@ -185,7 +158,7 @@ public class TicketRepository {
         String sqlStock = "UPDATE Producto SET Stock_Disponible = Stock_Disponible - ? " +
                           "WHERE ID_Producto = ? AND Stock_Disponible >= ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
             con.setAutoCommit(false);
@@ -249,7 +222,7 @@ public class TicketRepository {
         String sqlStock     = "UPDATE Producto SET Stock_Disponible = Stock_Disponible + ? " +
                               "WHERE ID_Producto = ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
             con.setAutoCommit(false);
@@ -289,7 +262,7 @@ public class TicketRepository {
 
     public long getNextTicketId() throws MyException {
         String sql = "SELECT COALESCE(MAX(ID_Ticket), 99) + 1 AS next_id FROM Ticket";
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -304,7 +277,7 @@ public class TicketRepository {
 
     public long getNextLineaId() throws MyException {
         String sql = "SELECT COALESCE(MAX(ID_LineaTicket), 500) + 1 AS next_id FROM Linea_Ticket";
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

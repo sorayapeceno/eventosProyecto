@@ -1,8 +1,6 @@
 package dam.primero.servlet.ventas;
 
 import dam.primero.modelos.ventas.*;
-import dam.primero.repositorio.ventas.AsistenteRepository;
-import dam.primero.repositorio.ventas.ProductoRepository;
 import dam.primero.repositorio.ventas.TicketRepository;
 import dam.primero.exception.MyException;
 
@@ -31,9 +29,7 @@ public class VentasServlet extends HttpServlet {
     private static final String TEMPLATES = "/WEB-INF/templates/ventas/";
     private static final String SUFFIX    = ".html";
 
-    private final TicketRepository    ticketRepo    = new TicketRepository();
-    private final AsistenteRepository asistenteRepo = new AsistenteRepository();
-    private final ProductoRepository  productoRepo  = new ProductoRepository();
+    private final TicketRepository ticketRepo = new TicketRepository();
 
     @Override
     public void init() throws ServletException {
@@ -65,12 +61,6 @@ public class VentasServlet extends HttpServlet {
             case "/detalleTicket":
                 mostrarDetalleTicket(req, resp);
                 break;
-            case "/verAsistentes":
-                mostrarListadoAsistentes(req, resp);
-                break;
-            case "/verProductos":
-                mostrarListadoProductos(req, resp);
-                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ventas/");
         }
@@ -94,24 +84,13 @@ public class VentasServlet extends HttpServlet {
     private void mostrarIndex(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
-            List<Ticket>   tickets   = ticketRepo.findAll();
-            List<Producto> productos = productoRepo.findAll();
-            long         totalAsis = asistenteRepo.findAll().size();
-
-            double totalFacturado = tickets.stream()
-                    .mapToDouble(Ticket::getPrecioFinal).sum();
-
             resp.setContentType("text/html;charset=UTF-8");
             IServletWebExchange webExchange = application.buildExchange(req, resp);
             WebContext context = new WebContext(webExchange, req.getLocale());
-            context.setVariable("totalTickets",    tickets.size());
-            context.setVariable("totalAsistentes", totalAsis);
-            context.setVariable("totalProductos",  productos.size());
-            context.setVariable("totalFacturado",  String.format("%.2f", totalFacturado));
 
             templateEngine.process("indexVentas", context, resp.getWriter());
 
-        } catch (MyException e) {
+        } catch (Exception e) {
             renderError(req, resp, e.getMessage());
         }
     }
@@ -121,15 +100,10 @@ public class VentasServlet extends HttpServlet {
         try {
             List<Ticket> tickets = ticketRepo.findAll();
 
-            double totalFacturado = tickets.stream()
-                    .mapToDouble(Ticket::getPrecioFinal).sum();
-
             resp.setContentType("text/html;charset=UTF-8");
             IServletWebExchange webExchange = application.buildExchange(req, resp);
             WebContext context = new WebContext(webExchange, req.getLocale());
-            context.setVariable("tickets",        tickets);
-            context.setVariable("totalFacturado", String.format("%.2f", totalFacturado));
-            context.setVariable("totalTickets",   tickets.size());
+            context.setVariable("tickets", tickets);
 
             templateEngine.process("html/ListadoVentas", context, resp.getWriter());
 
@@ -164,40 +138,6 @@ public class VentasServlet extends HttpServlet {
 
         } catch (MyException | NumberFormatException e) {
             renderError(req, resp, "Error al cargar el ticket: " + e.getMessage());
-        }
-    }
-
-    private void mostrarListadoAsistentes(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        try {
-            List<Asistente> asistentes = asistenteRepo.findAll();
-
-            resp.setContentType("text/html;charset=UTF-8");
-            IServletWebExchange webExchange = application.buildExchange(req, resp);
-            WebContext context = new WebContext(webExchange, req.getLocale());
-            context.setVariable("asistentes", asistentes);
-
-            templateEngine.process("html/ListadoAsistentes", context, resp.getWriter());
-
-        } catch (MyException e) {
-            renderError(req, resp, e.getMessage());
-        }
-    }
-
-    private void mostrarListadoProductos(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        try {
-            List<Producto> productos = productoRepo.findAll();
-
-            resp.setContentType("text/html;charset=UTF-8");
-            IServletWebExchange webExchange = application.buildExchange(req, resp);
-            WebContext context = new WebContext(webExchange, req.getLocale());
-            context.setVariable("productos", productos);
-
-            templateEngine.process("html/GestionProductos", context, resp.getWriter());
-
-        } catch (MyException e) {
-            renderError(req, resp, e.getMessage());
         }
     }
 

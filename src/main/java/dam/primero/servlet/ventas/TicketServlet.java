@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -225,6 +227,7 @@ public class TicketServlet extends HttpServlet {
             }
 
             ticketRepo.saveConLineas(ticket);
+            exportarTicketJson(ticket);
 
             double nuevoTotal = asistente.getTotalGastado() + ticket.getPrecioFinal();
             asistenteRepo.actualizarTotalGastado(idAsistente, nuevoTotal);
@@ -264,6 +267,47 @@ public class TicketServlet extends HttpServlet {
         templateEngine.process("html/error", context, resp.getWriter());
     }
 
+    // Guarda ticket-{id}.json en WEB-INF/tickets/
+    private void exportarTicketJson(Ticket ticket) {
+        try {
+            String carpeta = getServletContext().getRealPath("/WEB-INF/tickets/");
+            new File(carpeta).mkdirs();
+
+            String lineasJson = "";
+            for (int i = 0; i < ticket.getLineas().size(); i++) {
+                LineaTicket l = ticket.getLineas().get(i);
+                String nombre = l.getProducto() != null ? l.getProducto().getNombreProducto() : "";
+                lineasJson += "    { \"idLinea\": " + l.getId_LineaTicket()
+                           + ", \"producto\": \"" + nombre + "\""
+                           + ", \"cantidad\": " + l.getCantidad()
+                           + ", \"totalLinea\": " + String.format("%.2f", l.getTotalLinea()) + " }";
+                if (i < ticket.getLineas().size() - 1) lineasJson += ",";
+                lineasJson += "\n";
+            }
+
+            String promo = ticket.getCodPromocional();
+            String json = "{\n"
+                + "  \"id\": " + ticket.getId_Ticket() + ",\n"
+                + "  \"codigoQR\": \"" + ticket.getCodigoQR() + "\",\n"
+                + "  \"fecha\": \"" + ticket.getFechaCompra() + "\",\n"
+                + "  \"metodoPago\": \"" + ticket.getMetodoPago().name() + "\",\n"
+                + "  \"codPromocional\": " + (promo != null && !promo.isBlank() ? "\"" + promo + "\"" : "null") + ",\n"
+                + "  \"descuento\": " + String.format("%.2f", ticket.getDescuento()) + ",\n"
+                + "  \"precioFinal\": " + String.format("%.2f", ticket.getPrecioFinal()) + ",\n"
+                + "  \"asistente\": { \"id\": " + ticket.getDuenio().getId_Asistente()
+                +                  ", \"bio\": \"" + ticket.getDuenio().getBio() + "\" },\n"
+                + "  \"lineas\": [\n" + lineasJson + "  ]\n"
+                + "}";
+
+            FileWriter fw = new FileWriter(carpeta + "/ticket-" + ticket.getId_Ticket() + ".json");
+            fw.write(json);
+            fw.close();
+
+        } catch (Exception e) {
+            getServletContext().log("Error guardando ticket JSON: " + e.getMessage());
+        }
+    }
+
     public static class LineaCarrito implements java.io.Serializable {
         private long   idProducto;
         private String nombreProducto;
@@ -280,7 +324,6 @@ public class TicketServlet extends HttpServlet {
             this.cantidad       = cantidad;
         }
 
-        public long   getId_Producto()        { return idProducto; }
         public long   getIdProducto()         { return idProducto; }
         public void   setIdProducto(long v)   { this.idProducto = v; }
         public String getNombreProducto()     { return nombreProducto; }

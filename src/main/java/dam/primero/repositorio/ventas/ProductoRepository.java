@@ -1,7 +1,7 @@
 package dam.primero.repositorio.ventas;
 
 import dam.primero.modelos.ventas.*;
-import dam.primero.config.MySqlConector;
+import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;
 
 import java.sql.*;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class ProductoRepository {
 
-    // Package-private: reusado por TicketRepository
+    // SQL completo con LEFT JOINs a todas las subtablas; también usado en TicketRepository
     static final String SQL_FULL =
         "SELECT p.ID_Producto, p.Nombre_Producto, p.Precio, p.Stock_Disponible, " +
         "  p.Descripcion_Producto, p.Tipo_IVA, p.Descuento, " +
@@ -34,7 +34,7 @@ public class ProductoRepository {
         "LEFT JOIN Accesorios ac ON ac.ID_Textil   = t.ID_Textil " +
         "LEFT JOIN Otros o       ON o.ID_Producto  = p.ID_Producto ";
 
-    // Package-private: reusado por TicketRepository
+    // Convierte una fila del ResultSet (SQL_FULL) al subtipo concreto de Producto; también usado en TicketRepository
     static Producto mapProducto(ResultSet rs) throws SQLException {
         long    idProd = rs.getLong("ID_Producto");
         String  nombre = rs.getString("Nombre_Producto");
@@ -148,11 +148,9 @@ public class ProductoRepository {
         t.setTipoTextil(rs.getString("Tipo_Textil"));
     }
 
-    // ─── Consultas ────────────────────────────────────────────────────────────
-
     public List<Producto> findAll() throws MyException {
         List<Producto> lista = new ArrayList<>();
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(SQL_FULL + "ORDER BY p.ID_Producto");
              ResultSet rs = ps.executeQuery()) {
@@ -166,7 +164,7 @@ public class ProductoRepository {
     }
 
     public Optional<Producto> findById(long id) throws MyException {
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(SQL_FULL + "WHERE p.ID_Producto = ?")) {
             ps.setLong(1, id);
@@ -181,10 +179,8 @@ public class ProductoRepository {
         return Optional.empty();
     }
 
-    // ─── Guardar ──────────────────────────────────────────────────────────────
-
     public void save(Producto p) throws MyException {
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
             con.setAutoCommit(false);
@@ -235,10 +231,8 @@ public class ProductoRepository {
         }
     }
 
-    // ─── Actualizar ───────────────────────────────────────────────────────────
-
     public void update(Producto p) throws MyException {
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
             con.setAutoCommit(false);
@@ -261,10 +255,8 @@ public class ProductoRepository {
         }
     }
 
-    // ─── Eliminar ─────────────────────────────────────────────────────────────
-
     public boolean deleteById(long id) throws MyException {
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
             try (PreparedStatement ps = con.prepareStatement(
@@ -294,40 +286,8 @@ public class ProductoRepository {
         return true;
     }
 
-    // ─── Stock ────────────────────────────────────────────────────────────────
-
-    public void reducirStock(long id, int cantidad) throws MyException {
-        String sql = "UPDATE Producto SET Stock_Disponible = Stock_Disponible - ? " +
-                     "WHERE ID_Producto = ? AND Stock_Disponible >= ?";
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, cantidad); ps.setLong(2, id); ps.setInt(3, cantidad);
-            if (ps.executeUpdate() == 0)
-                throw new MyException("Stock insuficiente para producto id=" + id);
-        } catch (SQLException e) {
-            throw new MyException("Error al reducir stock: " + e.getMessage());
-        } finally {
-            conector.release();
-        }
-    }
-
-    public void restaurarStock(long id, int cantidad) throws MyException {
-        String sql = "UPDATE Producto SET Stock_Disponible = Stock_Disponible + ? WHERE ID_Producto = ?";
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, cantidad); ps.setLong(2, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new MyException("Error al restaurar stock: " + e.getMessage());
-        } finally {
-            conector.release();
-        }
-    }
-
     public long getNextId() throws MyException {
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(
                      "SELECT COALESCE(MAX(ID_Producto), 0) + 1 AS next_id FROM Producto");
@@ -340,8 +300,6 @@ public class ProductoRepository {
         }
         return 1;
     }
-
-    // ─── SQL helpers privados ─────────────────────────────────────────────────
 
     private void exec(Connection con, String sql, long id) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement(sql)) {

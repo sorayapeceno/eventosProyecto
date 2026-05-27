@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulo Ventas - Asistentes</title>
-    <link rel="stylesheet" th:href="@{/CSS/ListadoAsistentes.css}">
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -49,17 +50,6 @@
 
         <!-- Panel herramientas -->
         <div class="panel-herramientas">
-            <div class="buscador">
-                <input type="text" id="inputBuscar" placeholder="Buscar asistente...">
-            </div>
-            <div class="filtros">
-                <select id="selectNivel">
-                    <option value="todos">Todos los niveles</option>
-                    <option value="Básico">Básico</option>
-                    <option value="Medio">Medio</option>
-                    <option value="Experto">Experto</option>
-                </select>
-            </div>
             <div class="acciones-panel">
                 <a th:href="@{/asistente/formulario}" class="btn-primario">Nuevo Asistente</a>
             </div>
@@ -92,14 +82,7 @@
                             <strong th:text="${asistente.bio}">Bio</strong>
                         </td>
                         <td th:text="${asistente.tematica}">Música</td>
-                        <td>
-                            <span class="badge"
-                                 th:classappend="${asistente.nivelImparticion == 'Experto'} ? 'badge-activa' :
-                                                  (${asistente.nivelImparticion == 'Medio'}  ? 'badge-pendiente' : 'badge-usada')"
-                                 th:text="${asistente.nivelImparticion}">
-                               Medio
-                            </span>
-                        </td>
+                        <td th:text="${asistente.nivelImparticion}">Medio</td>
                         <td>
                             <strong style="color:#1e6b22"
                                    th:text="'€' + ${#numbers.formatDecimal(asistente.totalGastado, 1, 2)}">
@@ -136,51 +119,29 @@
 </main>
 
 <script>
-   const inputBuscar  = document.getElementById('inputBuscar');
-   const selectNivel  = document.getElementById('selectNivel');
-   const tabla        = document.getElementById('tablaAsistentes').getElementsByTagName('tbody')[0];
-   const filas        = Array.from(tabla.getElementsByTagName('tr'));
-   const btnAnt       = document.getElementById('btnAnterior');
-   const btnSig       = document.getElementById('btnSiguiente');
-   const infoPag      = document.getElementById('infoPagina');
-   const porPagina    = 8;
-   let pagActual      = 1;
-   let filtradas      = [...filas];
+(function() {
+    const tbody   = document.getElementById('tablaAsistentes').querySelector('tbody');
+    const filas   = Array.from(tbody.querySelectorAll('tr'));
+    const info    = document.getElementById('infoPagina');
+    const ant     = document.getElementById('btnAnterior');
+    const sig     = document.getElementById('btnSiguiente');
+    const POR_PAG = 8;
+    let pag = 1;
 
-   function actualizar() {
-       const total  = filtradas.length;
-       const pages  = Math.ceil(total / porPagina) || 1;
-       if (pagActual >pages) pagActual = pages;
-       if (pagActual < 1)    pagActual = 1;
-       filas.forEach(f =>f.style.display = 'none');
-       const ini = (pagActual - 1) * porPagina;
-       filtradas.slice(ini, ini + porPagina).forEach(f =>f.style.display = '');
-       infoPag.textContent = `Página ${pagActual} de ${pages}`;
-       btnAnt.disabled = pagActual === 1;
-       btnSig.disabled = pagActual === pages;
+    function mostrar() {
+        const pages = Math.ceil(filas.length / POR_PAG) || 1;
+        pag = Math.min(Math.max(pag, 1), pages);
+        filas.forEach(f => f.style.display = 'none');
+        filas.slice((pag - 1) * POR_PAG, pag * POR_PAG).forEach(f => f.style.display = '');
+        info.textContent = `Página ${pag} de ${pages}`;
+        ant.disabled = pag === 1;
+        sig.disabled = pag === pages;
     }
 
-   function filtrar() {
-       const txt   = inputBuscar.value.toLowerCase();
-       const nivel = selectNivel.value.toLowerCase();
-       filtradas = filas.filter(f => {
-           const celdas = f.getElementsByTagName('td');
-           if (celdas.length === 0) return true;
-           const bio  = (celdas[1]?.textContent || '').toLowerCase();
-           const tem  = (celdas[2]?.textContent || '').toLowerCase();
-           const niv  = (celdas[3]?.textContent || '').toLowerCase();
-           return (bio.includes(txt) || tem.includes(txt)) &&
-                   (nivel === 'todos' || niv.includes(nivel));
-        });
-       pagActual = 1;
-       actualizar();
-    }
-
-   btnAnt.addEventListener('click',   () => { pagActual--; actualizar(); });
-   btnSig.addEventListener('click',   () => { pagActual++; actualizar(); });
-   inputBuscar.addEventListener('keyup',    filtrar);
-   selectNivel.addEventListener('change',   filtrar);
-   actualizar();
+    ant.addEventListener('click', () => { pag--; mostrar(); });
+    sig.addEventListener('click', () => { pag++; mostrar(); });
+    mostrar();
+})();
 </script>
 
 </body>

@@ -80,8 +80,6 @@ public class ProductoServlet extends HttpServlet {
         }
     }
 
-    // ─── Listado ──────────────────────────────────────────────────────────────
-
     private void listar(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
@@ -98,8 +96,6 @@ public class ProductoServlet extends HttpServlet {
             renderError(req, resp, e.getMessage());
         }
     }
-
-    // ─── Formulario ───────────────────────────────────────────────────────────
 
     private void formulario(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -150,8 +146,6 @@ public class ProductoServlet extends HttpServlet {
             renderError(req, resp, e.getMessage());
         }
     }
-
-    // ─── Guardar ──────────────────────────────────────────────────────────────
 
     private void guardar(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -278,8 +272,6 @@ public class ProductoServlet extends HttpServlet {
         }
     }
 
-    // ─── Eliminar ─────────────────────────────────────────────────────────────
-
     private void eliminar(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
@@ -294,8 +286,6 @@ public class ProductoServlet extends HttpServlet {
             renderError(req, resp, "Error al eliminar producto: " + e.getMessage());
         }
     }
-
-    // ─── Helpers de relleno de objetos ────────────────────────────────────────
 
     private void fillBase(Producto p, long id, String nombre, double precio,
                           int stock, String desc, TipoIVA iva, double dto) {
@@ -328,8 +318,6 @@ public class ProductoServlet extends HttpServlet {
         t.setTipoTextil(tipoTextil);
     }
 
-    // ─── Helpers de parseo ────────────────────────────────────────────────────
-
     private double parseDouble(String val, double def) {
         if (val == null || val.isBlank()) return def;
         try { return Double.parseDouble(val); } catch (NumberFormatException e) { return def; }
@@ -356,8 +344,6 @@ public class ProductoServlet extends HttpServlet {
         try { return Genero.valueOf(val.toUpperCase()); }
         catch (IllegalArgumentException e) { return null; }
     }
-
-    // ─── Render de error ─────────────────────────────────────────────────────
 
     private void renderError(HttpServletRequest req, HttpServletResponse resp, String mensaje)
             throws IOException {

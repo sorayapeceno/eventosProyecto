@@ -1,7 +1,7 @@
 package dam.primero.repositorio.ventas;
 
 import dam.primero.modelos.ventas.Asistente;
-import dam.primero.config.MySqlConector;
+import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;
 
 import java.sql.*;
@@ -27,7 +27,7 @@ public class AsistenteRepository {
         List<Asistente> lista = new ArrayList<>();
         String sql = "SELECT * FROM Asistente ORDER BY ID_Asistente";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -46,7 +46,7 @@ public class AsistenteRepository {
     public Optional<Asistente> findById(long id) throws MyException {
         String sql = "SELECT * FROM Asistente WHERE ID_Asistente = ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -67,7 +67,7 @@ public class AsistenteRepository {
                      "(ID_Asistente, Tematica, Direccion, Observaciones, Bio, Total_Gastado, Nivel_Imparticion) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -92,7 +92,7 @@ public class AsistenteRepository {
                      "Bio=?, Total_Gastado=?, Nivel_Imparticion=? " +
                      "WHERE ID_Asistente=?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -115,7 +115,7 @@ public class AsistenteRepository {
     public void deleteById(long id) throws MyException {
         String sql = "DELETE FROM Asistente WHERE ID_Asistente = ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -132,7 +132,7 @@ public class AsistenteRepository {
     public void actualizarTotalGastado(long id, double nuevoTotal) throws MyException {
         String sql = "UPDATE Asistente SET Total_Gastado = ? WHERE ID_Asistente = ?";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -150,7 +150,7 @@ public class AsistenteRepository {
     public long getNextId() throws MyException {
         String sql = "SELECT COALESCE(MAX(ID_Asistente), 0) + 1 AS next_id FROM Asistente";
 
-        MySqlConector conector = new MySqlConector("Modulo_Ventas/db.propierties");
+        MySqlConnectorVentas conector = new MySqlConnectorVentas();
         try (Connection con = conector.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
