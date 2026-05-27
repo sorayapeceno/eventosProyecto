@@ -28,10 +28,13 @@ public class AsistenteRepository {
         String sql = "SELECT * FROM Asistente ORDER BY ID_Asistente";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 lista.add(mapRow(rs));
             }
@@ -47,12 +50,16 @@ public class AsistenteRepository {
         String sql = "SELECT * FROM Asistente WHERE ID_Asistente = ?";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return Optional.of(mapRow(rs));
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return Optional.of(mapRow(rs));
             }
         } catch (SQLException e) {
             throw new MyException("Error al buscar asistente id=" + id + ": " + e.getMessage());
@@ -68,9 +75,11 @@ public class AsistenteRepository {
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setLong(1, a.getId_Asistente());
             ps.setString(2, a.getTematica());
             ps.setString(3, a.getDireccion());
@@ -79,7 +88,6 @@ public class AsistenteRepository {
             ps.setDouble(6, a.getTotalGastado());
             ps.setString(7, a.getNivelImparticion());
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new MyException("Error al guardar asistente: " + e.getMessage());
         } finally {
@@ -93,9 +101,11 @@ public class AsistenteRepository {
                      "WHERE ID_Asistente=?";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setString(1, a.getTematica());
             ps.setString(2, a.getDireccion());
             ps.setString(3, a.getObservaciones());
@@ -104,7 +114,6 @@ public class AsistenteRepository {
             ps.setString(6, a.getNivelImparticion());
             ps.setLong(7, a.getId_Asistente());
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new MyException("Error al actualizar asistente: " + e.getMessage());
         } finally {
@@ -116,12 +125,13 @@ public class AsistenteRepository {
         String sql = "DELETE FROM Asistente WHERE ID_Asistente = ?";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setLong(1, id);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new MyException("Error al eliminar asistente id=" + id + ": " + e.getMessage());
         } finally {
@@ -133,13 +143,14 @@ public class AsistenteRepository {
         String sql = "UPDATE Asistente SET Total_Gastado = ? WHERE ID_Asistente = ?";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setDouble(1, nuevoTotal);
             ps.setLong(2, id);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new MyException("Error al actualizar total gastado: " + e.getMessage());
         } finally {
@@ -151,12 +162,16 @@ public class AsistenteRepository {
         String sql = "SELECT COALESCE(MAX(ID_Asistente), 0) + 1 AS next_id FROM Asistente";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            if (rs.next()) return rs.getLong("next_id");
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("next_id");
+            }
         } catch (SQLException e) {
             throw new MyException("Error al obtener siguiente ID: " + e.getMessage());
         } finally {

@@ -2,11 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Ventas - Listado de Ventas</title>
+    <title>Listado de Ventas</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -35,24 +33,19 @@
 
         <h2>Listado de Ventas</h2>
 
-        <!-- Alertas -->
         <div th:if="${param.msg != null}">
             <div th:if="${param.msg[0] == 'cancelado'}" class="alerta alerta-exito">
                 El ticket ha sido cancelado correctamente y el stock restaurado.
             </div>
         </div>
         <div th:if="${error != null}" class="alerta alerta-error">
-             <span th:text="${error}"></span>
+            <span th:text="${error}"></span>
         </div>
 
-        <!-- Panel herramientas -->
         <div class="panel-herramientas">
-            <div class="acciones-panel">
-                <a th:href="@{/ticket/nuevo}" class="btn-primario">Nueva Venta</a>
-            </div>
+            <a th:href="@{/ticket/nuevo}" class="btn-primario">Nueva Venta</a>
         </div>
 
-        <!-- Tabla de tickets -->
         <div class="contenedor-tabla">
             <table class="tabla-ventas" id="tablaTickets">
                 <thead>
@@ -69,44 +62,23 @@
                 </thead>
                 <tbody>
                     <tr th:if="${tickets == null or #lists.isEmpty(tickets)}">
-                        <td colspan="8" style="text-align:center; color:#94a3b8; padding: 30px;">
-                           No hay ventas registradas aún.
+                        <td colspan="8" style="text-align:center; padding:20px;">
+                            No hay ventas registradas.
                         </td>
                     </tr>
                     <tr th:each="ticket : ${tickets}">
-                        <td>
-                            <strong th:text="'#' + ${ticket.id_Ticket}">#100</strong>
-                        </td>
-                        <td>
-                            <code th:text="${ticket.codigoQR}">QR-0000</code>
-                        </td>
-                        <td>
-                            <span th:text="${ticket.duenio != null ? ticket.duenio.bio : 'N/D'}">Bio</span>
-                            <br>
-                            <small style="color:#64748b"
-                                  th:text="'ID: ' + ${ticket.duenio != null ? ticket.duenio.id_Asistente : '-'}"></small>
-                        </td>
-                        <td th:text="${ticket.fechaCompra != null ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy') : '-'}">
-                            01/01/2024
-                        </td>
+                        <td th:text="'#' + ${ticket.id_Ticket}">#100</td>
+                        <td th:text="${ticket.codigoQR}">QR-0000</td>
+                        <td th:text="${ticket.duenio != null ? ticket.duenio.bio : 'N/D'}">Bio</td>
+                        <td th:text="${ticket.fechaCompra != null ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy') : '-'}">01/01/2024</td>
                         <td th:text="${ticket.metodoPago != null ? ticket.metodoPago.name() : '-'}">TARJETA</td>
-                        <td>
-                            <span th:if="${ticket.descuento > 0}" style="color:#1e6b22; font-weight:bold;"
-                                 th:text="'-€' + ${#numbers.formatDecimal(ticket.descuento, 1, 2)}">-€5.00</span>
-                            <span th:if="${ticket.descuento <= 0}" style="color:#94a3b8;">—</span>
-                        </td>
-                        <td>
-                            <strong style="color:#3348cb"
-                                   th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">
-                                €150.00
-                            </strong>
-                        </td>
+                        <td th:text="${ticket.descuento > 0 ? '-€' + #numbers.formatDecimal(ticket.descuento, 1, 2) : '-'}">-</td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">€0.00</td>
                         <td>
                             <div class="acciones">
-                                <a th:href="@{/ventas/detalleTicket(id=${ticket.id_Ticket})}"
-                                  class="btn-secundario">Ver</a>
+                                <a th:href="@{/ventas/detalleTicket(id=${ticket.id_Ticket})}" class="btn-secundario">Ver</a>
                                 <form th:action="@{/ventas/cancelarTicket}" method="post"
-                                     onsubmit="return confirm('¿Seguro que quieres cancelar este ticket? Se restaurará el stock.');">
+                                      onsubmit="return confirm('¿Seguro que quieres cancelar este ticket?');">
                                     <input type="hidden" name="id" th:value="${ticket.id_Ticket}">
                                     <button type="submit" class="btn-peligro">Cancelar</button>
                                 </form>
@@ -117,40 +89,44 @@
             </table>
         </div>
 
-        <!-- Paginación JS -->
         <div class="paginacion">
-            <button id="btnAnterior">Anterior</button>
+            <button id="btnAnterior" onclick="anterior()">Anterior</button>
             <span id="infoPagina">Página 1 de 1</span>
-            <button id="btnSiguiente">Siguiente</button>
+            <button id="btnSiguiente" onclick="siguiente()">Siguiente</button>
         </div>
 
     </div>
 </main>
 
 <script>
-(function() {
-    const tbody   = document.getElementById('tablaTickets').querySelector('tbody');
-    const filas   = Array.from(tbody.querySelectorAll('tr'));
-    const info    = document.getElementById('infoPagina');
-    const ant     = document.getElementById('btnAnterior');
-    const sig     = document.getElementById('btnSiguiente');
-    const POR_PAG = 8;
-    let pag = 1;
+    var filas = document.getElementById('tablaTickets').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var pag = 1;
+    var POR_PAG = 8;
 
     function mostrar() {
-        const pages = Math.ceil(filas.length / POR_PAG) || 1;
-        pag = Math.min(Math.max(pag, 1), pages);
-        filas.forEach(f => f.style.display = 'none');
-        filas.slice((pag - 1) * POR_PAG, pag * POR_PAG).forEach(f => f.style.display = '');
-        info.textContent = `Página ${pag} de ${pages}`;
-        ant.disabled = pag === 1;
-        sig.disabled = pag === pages;
+        var total = filas.length;
+        var paginas = Math.ceil(total / POR_PAG);
+        if (paginas < 1) paginas = 1;
+        if (pag > paginas) pag = paginas;
+        if (pag < 1) pag = 1;
+
+        for (var i = 0; i < filas.length; i++) {
+            if (i >= (pag - 1) * POR_PAG && i < pag * POR_PAG) {
+                filas[i].style.display = '';
+            } else {
+                filas[i].style.display = 'none';
+            }
+        }
+
+        document.getElementById('infoPagina').innerHTML = 'Página ' + pag + ' de ' + paginas;
+        document.getElementById('btnAnterior').disabled = (pag == 1);
+        document.getElementById('btnSiguiente').disabled = (pag == paginas);
     }
 
-    ant.addEventListener('click', () => { pag--; mostrar(); });
-    sig.addEventListener('click', () => { pag++; mostrar(); });
+    function anterior() { pag--; mostrar(); }
+    function siguiente() { pag++; mostrar(); }
+
     mostrar();
-})();
 </script>
 
 </body>

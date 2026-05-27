@@ -137,12 +137,16 @@ public class TicketServlet extends HttpServlet {
             HttpSession        session  = req.getSession();
             List<LineaCarrito> carrito  = getCarrito(session);
 
-            Optional<LineaCarrito> existente = carrito.stream()
-                .filter(lc -> lc.getIdProducto() == idProducto)
-                .findFirst();
+            LineaCarrito existente = null;
+            for (LineaCarrito lc : carrito) {
+                if (lc.getIdProducto() == idProducto) {
+                    existente = lc;
+                    break;
+                }
+            }
 
-            if (existente.isPresent()) {
-                existente.get().setCantidad(existente.get().getCantidad() + cantidad);
+            if (existente != null) {
+                existente.setCantidad(existente.getCantidad() + cantidad);
             } else {
                 carrito.add(new LineaCarrito(idProducto, producto.getNombreProducto(),
                                              producto.getPrecioConDescuento(), cantidad));
@@ -254,9 +258,11 @@ public class TicketServlet extends HttpServlet {
     }
 
     private double calcularTotalCarrito(List<LineaCarrito> carrito) {
-        return carrito.stream()
-                      .mapToDouble(lc -> lc.getPrecioUnitario() * lc.getCantidad())
-                      .sum();
+        double total = 0;
+        for (LineaCarrito lc : carrito) {
+            total += lc.getPrecioUnitario() * lc.getCantidad();
+        }
+        return total;
     }
 
     private void renderError(HttpServletRequest req, HttpServletResponse resp, String mensaje)

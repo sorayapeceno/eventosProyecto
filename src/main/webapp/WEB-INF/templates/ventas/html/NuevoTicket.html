@@ -2,79 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Ventas - Nueva Venta</title>
+    <title>Nueva Venta</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        .layout-dos-columnas {
-            display: grid;
-            grid-template-columns: 1fr 360px;
-            gap: 24px;
-            align-items: start;
-        }
-        .selector-producto {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
-        .selector-producto h3 {
-            font-size: 15px;
-            color: #3348cb;
-            margin-bottom: 14px;
-            font-weight: 700;
-        }
-        .selector-fila {
-            display: grid;
-            grid-template-columns: 1fr 100px auto;
-            gap: 12px;
-            align-items: end;
-        }
-        .carrito-lateral {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid #e2e8f0;
-            position: sticky;
-            top: 20px;
-        }
-        .carrito-lateral h3 {
-            font-size: 16px;
-            color: #3348cb;
-            margin-bottom: 16px;
-            font-weight: 700;
-            border-bottom: 2px solid #2d97d0;
-            padding-bottom: 8px;
-        }
-        .carrito-vacio { text-align: center; padding: 30px 0; color: #94a3b8; }
-        .carrito-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 14px;
-        }
-        .carrito-item .nombre { font-weight: 600; color: #1e293b; }
-        .carrito-item .qty    { font-size: 12px; color: #64748b; margin-top: 2px; }
-        .carrito-item .subtotal { font-weight: 700; color: #3348cb; white-space: nowrap; }
-        .carrito-total {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 0 0;
-            font-weight: 700;
-            font-size: 16px;
-            color: #1e293b;
-        }
-        @media (max-width: 900px) {
-            .layout-dos-columnas { grid-template-columns: 1fr; }
-            .selector-fila { grid-template-columns: 1fr; }
-            .carrito-lateral { position: static; }
-        }
-    </style>
 </head>
 <body>
 
@@ -103,158 +33,112 @@
 
         <h2>Nueva Venta</h2>
 
-        <!-- Alertas de error -->
         <div th:if="${param.error != null}">
-            <div th:if="${param.error[0] == 'carritoVacio'}" class="alerta alerta-aviso">
-                El carrito está vacío. Añade al menos un producto antes de confirmar.
-            </div>
-            <div th:if="${param.error[0] == 'sinStock'}" class="alerta alerta-error">
-                No hay stock suficiente para ese producto.
-            </div>
-            <div th:if="${param.error[0] == 'cantidadInvalida'}" class="alerta alerta-error">
-                La cantidad debe ser mayor a 0.
-            </div>
+            <div th:if="${param.error[0] == 'carritoVacio'}"     class="alerta alerta-aviso">El carrito está vacío. Añade al menos un producto antes de confirmar.</div>
+            <div th:if="${param.error[0] == 'sinStock'}"         class="alerta alerta-error">No hay stock suficiente para ese producto.</div>
+            <div th:if="${param.error[0] == 'cantidadInvalida'}" class="alerta alerta-error">La cantidad debe ser mayor a 0.</div>
         </div>
 
-        <div class="layout-dos-columnas">
-
-            <!-- Columna izquierda: formulario -->
-            <div>
-
-                <!-- 1. Selector de producto para añadir -->
-                <div class="selector-producto">
-                    <h3>Añadir Producto al Carrito</h3>
-                    <form th:action="@{/ticket/carritoAgregar}" method="get">
-                        <div class="selector-fila">
-                            <div class="form-grupo">
-                                <label for="idProducto">Producto</label>
-                                <select id="idProducto" name="idProducto" required>
-                                    <option value="">-- Selecciona un producto --</option>
-                                    <option th:each="prod : ${productos}"
-                                           th:value="${prod.id_Producto}"
-                                           th:text="${prod.nombreProducto + ' — €' + #numbers.formatDecimal(prod.precioConDescuento, 1, 2) + ' (Stock: ' + prod.stockDisponible + ')'}">
-                                       Producto
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-grupo" style="max-width:100px;">
-                                <label for="cantidad">Cantidad</label>
-                                <input type="number" id="cantidad" name="cantidad"
-                                      min="1" value="1" required>
-                            </div>
-                            <div class="form-grupo" style="justify-content:flex-end;">
-                                <button type="submit" class="btn-primario">Añadir</button>
-                            </div>
-                        </div>
-                    </form>
+        <!-- Añadir producto al carrito -->
+        <h3>Añadir Producto al Carrito</h3>
+        <form th:action="@{/ticket/carritoAgregar}" method="get" class="form-ventas">
+            <div class="form-grid">
+                <div class="form-grupo">
+                    <label for="idProducto">Producto</label>
+                    <select id="idProducto" name="idProducto" required>
+                        <option value="">-- Selecciona un producto --</option>
+                        <option th:each="prod : ${productos}"
+                                th:value="${prod.id_Producto}"
+                                th:text="${prod.nombreProducto + ' — €' + #numbers.formatDecimal(prod.precioConDescuento, 1, 2) + ' (Stock: ' + prod.stockDisponible + ')'}">
+                            Producto
+                        </option>
+                    </select>
                 </div>
-
-                <!-- 2. Datos del ticket -->
-                <form th:action="@{/ticket/confirmar}" method="post" class="form-ventas">
-
-                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px;">
-                        <h3 style="font-size:16px; color:#3348cb; margin-bottom:16px;">Datos del Ticket</h3>
-
-                        <div class="form-grid">
-
-                            <div class="form-grupo">
-                                <label for="idAsistente">Asistente *</label>
-                                <select id="idAsistente" name="idAsistente" required>
-                                    <option value="">-- Selecciona asistente --</option>
-                                    <option th:each="asistente : ${asistentes}"
-                                           th:value="${asistente.id_Asistente}"
-                                           th:text="${asistente.bio + ' (ID: ' + asistente.id_Asistente + ')'}">
-                                       Asistente
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-grupo">
-                                <label for="metodoPago">Método de Pago *</label>
-                                <select id="metodoPago" name="metodoPago" required>
-                                    <option th:each="mp : ${metodoPagos}"
-                                           th:value="${mp.name()}"
-                                           th:text="${mp.name()}">
-                                       TARJETA
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-grupo full-width">
-                                <label for="codPromocional">Código Promocional (opcional)</label>
-                                <input type="text" id="codPromocional" name="codPromocional"
-                                      placeholder="Ej: BIENVENIDA, PROMO_DEPOR"
-                                      maxlength="32">
-                                <small style="color:#64748b; font-size:12px;">
-                                   Códigos disponibles: BIENVENIDA (-€5), PROMO_DEPOR (-€10)
-                                </small>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="form-acciones">
-                        <button type="submit" class="btn-primario"
-                               th:disabled="${carrito == null or #lists.isEmpty(carrito)}">
-                            Confirmar Compra
-                        </button>
-                        <a th:href="@{/ticket/carritoClear}" class="btn-neutro">Vaciar Carrito</a>
-                        <a th:href="@{/ventas/verListadoVentas}" class="btn-neutro">← Cancelar</a>
-                    </div>
-
-                </form>
-
-            </div><!-- /columna izquierda -->
-
-            <!-- Columna derecha: carrito -->
-            <div class="carrito-lateral">
-                <h3>Carrito de Compra</h3>
-
-                <!-- Carrito vacío -->
-                <div th:if="${carrito == null or #lists.isEmpty(carrito)}" class="carrito-vacio">
-                    <p></p>
-                    <p>El carrito está vacío.</p>
-                    <p>Añade productos desde el panel de la izquierda.</p>
+                <div class="form-grupo">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
                 </div>
+            </div>
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">Añadir</button>
+            </div>
+        </form>
 
-                <!-- Ítems del carrito -->
-                <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+        <hr style="margin: 20px 0;">
 
-                    <div class="carrito-item" th:each="item : ${carrito}">
-                        <div>
-                            <div class="nombre" th:text="${item.nombreProducto}">Producto</div>
-                            <div class="qty"
-                                th:text="'x' + ${item.cantidad} + ' × €' + ${#numbers.formatDecimal(item.precioUnitario, 1, 2)}">
-                               x1 × €150.00
-                            </div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span class="subtotal"
-                                 th:text="'€' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">
-                                €150.00
-                            </span>
-                            <a th:href="@{/ticket/carritoEliminar(idProducto=${item.idProducto})}"
-                              title="Eliminar"
-                              style="color:#b91c1c; text-decoration:none; font-size:16px;"></a>
-                        </div>
-                    </div>
+        <!-- Carrito actual -->
+        <h3>Carrito</h3>
+        <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
+            <p>El carrito está vacío.</p>
+        </div>
+        <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+            <div class="contenedor-tabla">
+                <table class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${carrito}">
+                            <td th:text="${item.nombreProducto}">Producto</td>
+                            <td th:text="${item.cantidad}">1</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(item.precioUnitario, 1, 2)}">€0.00</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">€0.00</td>
+                            <td>
+                                <a th:href="@{/ticket/carritoEliminar(idProducto=${item.idProducto})}" class="btn-peligro" style="text-decoration:none; padding:4px 10px;">X</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Total estimado: €<span th:text="${#numbers.formatDecimal(totalCarrito, 1, 2)}">0.00</span></strong></p>
+        </div>
 
-                    <div class="carrito-total">
-                        <span>Total estimado:</span>
-                        <span th:text="'€' + ${#numbers.formatDecimal(totalCarrito, 1, 2)}">
-                            €0.00
-                        </span>
-                    </div>
+        <hr style="margin: 20px 0;">
 
-                    <p style="font-size:12px; color:#94a3b8; margin-top:10px; text-align:center;">
-                        * IVA y descuentos aplicados al confirmar
-                    </p>
-
+        <!-- Datos del ticket -->
+        <h3>Datos del Ticket</h3>
+        <form th:action="@{/ticket/confirmar}" method="post" class="form-ventas">
+            <div class="form-grid">
+                <div class="form-grupo">
+                    <label for="idAsistente">Asistente *</label>
+                    <select id="idAsistente" name="idAsistente" required>
+                        <option value="">-- Selecciona asistente --</option>
+                        <option th:each="asistente : ${asistentes}"
+                                th:value="${asistente.id_Asistente}"
+                                th:text="${asistente.bio + ' (ID: ' + asistente.id_Asistente + ')'}">
+                            Asistente
+                        </option>
+                    </select>
                 </div>
-
-            </div><!-- /carrito lateral -->
-
-        </div><!-- /layout dos columnas -->
+                <div class="form-grupo">
+                    <label for="metodoPago">Método de Pago *</label>
+                    <select id="metodoPago" name="metodoPago" required>
+                        <option th:each="mp : ${metodoPagos}"
+                                th:value="${mp.name()}"
+                                th:text="${mp.name()}">
+                            TARJETA
+                        </option>
+                    </select>
+                </div>
+                <div class="form-grupo full-width">
+                    <label for="codPromocional">Código Promocional (opcional)</label>
+                    <input type="text" id="codPromocional" name="codPromocional"
+                           placeholder="Ej: BIENVENIDA, PROMO_DEPOR" maxlength="32">
+                    <small>Códigos disponibles: BIENVENIDA (-€5), PROMO_DEPOR (-€10)</small>
+                </div>
+            </div>
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">Confirmar Compra</button>
+                <a th:href="@{/ticket/carritoClear}" class="btn-neutro">Vaciar Carrito</a>
+                <a th:href="@{/ventas/verListadoVentas}" class="btn-neutro">Cancelar</a>
+            </div>
+        </form>
 
     </div>
 </main>

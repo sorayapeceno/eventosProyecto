@@ -2,11 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Ventas - Gestión de Productos</title>
+    <title>Gestión de Productos</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -35,14 +33,9 @@
 
         <h2>Catálogo de Productos</h2>
 
-        <!-- Alertas -->
         <div th:if="${param.msg != null}">
-            <div th:if="${param.msg[0] == 'guardado'}" class="alerta alerta-exito">
-                Producto guardado correctamente.
-            </div>
-            <div th:if="${param.msg[0] == 'eliminado'}" class="alerta alerta-exito">
-                Producto eliminado correctamente.
-            </div>
+            <div th:if="${param.msg[0] == 'guardado'}"  class="alerta alerta-exito">Producto guardado correctamente.</div>
+            <div th:if="${param.msg[0] == 'eliminado'}" class="alerta alerta-exito">Producto eliminado correctamente.</div>
         </div>
         <div th:if="${param.error != null}">
             <div th:if="${param.error[0] == 'tieneVentas'}" class="alerta alerta-error">
@@ -50,17 +43,13 @@
             </div>
         </div>
         <div th:if="${error != null}" class="alerta alerta-error">
-             <span th:text="${error}"></span>
+            <span th:text="${error}"></span>
         </div>
 
-        <!-- Panel herramientas -->
         <div class="panel-herramientas">
-            <div class="acciones-panel">
-                <a th:href="@{/producto/formulario}" class="btn-primario">Nuevo Producto</a>
-            </div>
+            <a th:href="@{/producto/formulario}" class="btn-primario">Nuevo Producto</a>
         </div>
 
-        <!-- Tabla de productos -->
         <div class="contenedor-tabla">
             <table class="tabla-ventas" id="tablaProductos">
                 <thead>
@@ -79,46 +68,27 @@
                 </thead>
                 <tbody>
                     <tr th:if="${productos == null or #lists.isEmpty(productos)}">
-                        <td colspan="10" style="text-align:center; color:#94a3b8; padding:30px;">
-                           No hay productos en el catálogo.
+                        <td colspan="10" style="text-align:center; padding:20px;">
+                            No hay productos en el catálogo.
                         </td>
                     </tr>
                     <tr th:each="prod : ${productos}">
                         <td th:text="${prod.id_Producto}">1</td>
-                        <td><strong th:text="${prod.nombreProducto}">Producto</strong></td>
+                        <td th:text="${prod.nombreProducto}">Producto</td>
                         <td th:text="${prod.tipoProducto.displayName}">Tipo</td>
                         <td th:text="'€' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">€0.00</td>
-                        <td>
-                            <span th:if="${prod.descuento > 0}" style="color:#b91c1c;"
-                                 th:text="'-€' + ${#numbers.formatDecimal(prod.descuento, 1, 2)}">-€0.00</span>
-                            <span th:if="${prod.descuento <= 0}" style="color:#94a3b8;">—</span>
-                        </td>
-                        <td>
-                            <strong style="color:#3348cb"
-                                   th:text="'€' + ${#numbers.formatDecimal(prod.precioConDescuento, 1, 2)}">
-                                €0.00
-                            </strong>
-                        </td>
-                        <td>
-                            <span th:if="${prod.stockDisponible > 10}" style="color:#1e6b22; font-weight:bold;"
-                                 th:text="${prod.stockDisponible}">100</span>
-                            <span th:if="${prod.stockDisponible > 0 and prod.stockDisponible <= 10}"
-                                 style="color:#c05621; font-weight:bold;"
-                                 th:text="${prod.stockDisponible}">5</span>
-                            <span th:if="${prod.stockDisponible <= 0}"
-                                 style="color:#b91c1c; font-weight:bold;">Sin stock</span>
-                        </td>
+                        <td th:text="${prod.descuento > 0 ? '-€' + #numbers.formatDecimal(prod.descuento, 1, 2) : '-'}">-</td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(prod.precioConDescuento, 1, 2)}">€0.00</td>
+                        <td th:text="${prod.stockDisponible > 0 ? prod.stockDisponible : 'Sin stock'}">0</td>
                         <td th:text="${prod.tipoIVA != null ? prod.tipoIVA.porcentaje + '%' : '21%'}">21%</td>
-                        <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
-                           th:text="${prod.descripcionProducto}">Descripción</td>
+                        <td th:text="${prod.descripcionProducto}">Descripción</td>
                         <td>
                             <div class="acciones">
-                                <a th:href="@{/producto/formulario(id=${prod.id_Producto})}"
-                                  class="btn-neutro">Editar</a>
+                                <a th:href="@{/producto/formulario(id=${prod.id_Producto})}" class="btn-neutro">Editar</a>
                                 <form th:action="@{/producto/eliminar}" method="post"
-                                     onsubmit="return confirm('¿Eliminar este producto? Solo es posible si no tiene ventas.');">
+                                      onsubmit="return confirm('¿Eliminar este producto?');">
                                     <input type="hidden" name="id" th:value="${prod.id_Producto}">
-                                    <button type="submit" class="btn-peligro"></button>
+                                    <button type="submit" class="btn-peligro">Eliminar</button>
                                 </form>
                             </div>
                         </td>
@@ -127,40 +97,44 @@
             </table>
         </div>
 
-        <!-- Paginación -->
         <div class="paginacion">
-            <button id="btnAnterior">Anterior</button>
+            <button id="btnAnterior" onclick="anterior()">Anterior</button>
             <span id="infoPagina">Página 1 de 1</span>
-            <button id="btnSiguiente">Siguiente</button>
+            <button id="btnSiguiente" onclick="siguiente()">Siguiente</button>
         </div>
 
     </div>
 </main>
 
 <script>
-(function() {
-    const tbody   = document.getElementById('tablaProductos').querySelector('tbody');
-    const filas   = Array.from(tbody.querySelectorAll('tr'));
-    const info    = document.getElementById('infoPagina');
-    const ant     = document.getElementById('btnAnterior');
-    const sig     = document.getElementById('btnSiguiente');
-    const POR_PAG = 8;
-    let pag = 1;
+    var filas = document.getElementById('tablaProductos').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var pag = 1;
+    var POR_PAG = 8;
 
     function mostrar() {
-        const pages = Math.ceil(filas.length / POR_PAG) || 1;
-        pag = Math.min(Math.max(pag, 1), pages);
-        filas.forEach(f => f.style.display = 'none');
-        filas.slice((pag - 1) * POR_PAG, pag * POR_PAG).forEach(f => f.style.display = '');
-        info.textContent = `Página ${pag} de ${pages}`;
-        ant.disabled = pag === 1;
-        sig.disabled = pag === pages;
+        var total = filas.length;
+        var paginas = Math.ceil(total / POR_PAG);
+        if (paginas < 1) paginas = 1;
+        if (pag > paginas) pag = paginas;
+        if (pag < 1) pag = 1;
+
+        for (var i = 0; i < filas.length; i++) {
+            if (i >= (pag - 1) * POR_PAG && i < pag * POR_PAG) {
+                filas[i].style.display = '';
+            } else {
+                filas[i].style.display = 'none';
+            }
+        }
+
+        document.getElementById('infoPagina').innerHTML = 'Página ' + pag + ' de ' + paginas;
+        document.getElementById('btnAnterior').disabled = (pag == 1);
+        document.getElementById('btnSiguiente').disabled = (pag == paginas);
     }
 
-    ant.addEventListener('click', () => { pag--; mostrar(); });
-    sig.addEventListener('click', () => { pag++; mostrar(); });
+    function anterior() { pag--; mostrar(); }
+    function siguiente() { pag++; mostrar(); }
+
     mostrar();
-})();
 </script>
 
 </body>

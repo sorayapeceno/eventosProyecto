@@ -1,273 +1,199 @@
-/* VENTAS MODULE — extensión de unificacion.css */
+/* CSS Módulo Ventas */
 
-/* ── Header dos filas ─────────────────────────────────────────────── */
 header {
     flex-direction: column;
     padding: 15px 30px 0;
     gap: 0;
 }
+
 .header-superior {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
-    padding-bottom: 15px;
 }
-.cajaDeBotones {
+
+.principal {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(255,255,255,.3);
-    width: 100%;
+    padding: 30px 20px;
+    background-color: #f0f4f8;
+    min-height: calc(100vh - 120px);
 }
-.botones {
-    min-width: 130px;
-    padding: 8px 18px;
-    background: #3348cb;
-    color: #fff;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 15px;
-    text-align: center;
-    transition: all .3s;
-    display: inline-block;
-}
-.botones:hover { background: #7f85d7; color: #000; transform: translateY(-2px); }
-.botones.activo { background: #1e3a8a; }
 
-/* ── Contenido ventas ─────────────────────────────────────────────── */
 .contenido-ventas {
     width: 100%;
-    max-width: 1200px;
-    background: rgba(255,255,255,.97);
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    max-width: 1100px;
+    background: white;
+    padding: 30px;
+    border: 1px solid #ccc;
 }
+
 .contenido-ventas h2 {
-    font-size: 26px;
-    color: #3348cb;
-    margin-bottom: 22px;
-    border-bottom: 3px solid #2d97d0;
-    padding-bottom: 10px;
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #4a7cbf;
 }
 
-/* ── Alertas ──────────────────────────────────────────────────────── */
+/* Alertas */
 .alerta {
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid;
 }
-.alerta-exito  { background: #dcfce7; color: #166534; border-left: 4px solid #22c55e; }
-.alerta-error  { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
-.alerta-aviso  { background: #fef9c3; color: #713f12; border-left: 4px solid #ca8a04; }
+.alerta-exito  { background-color: #d4edda; border-color: #28a745; color: #155724; }
+.alerta-error  { background-color: #f8d7da; border-color: #dc3545; color: #721c24; }
+.alerta-aviso  { background-color: #fff3cd; border-color: #ffc107; color: #856404; }
 
-/* ── Badges ───────────────────────────────────────────────────────── */
-.badge {
-    display: inline-block;
-    padding: 3px 9px;
-    border-radius: 50px;
-    font-size: 12px;
-    font-weight: bold;
+/* Panel herramientas */
+.panel-herramientas {
+    margin-bottom: 15px;
 }
-.badge-activa, .badge-exito   { background: #dcfce7; color: #166534; }
-.badge-pendiente, .badge-aviso { background: #fef9c3; color: #713f12; }
-.badge-usada                   { background: #f1f5f9; color: #475569; }
-.badge-tarjeta   { background: #dbeafe; color: #1e40af; }
-.badge-paypal    { background: #ede9fe; color: #4c1d95; }
-.badge-efectivo  { background: #dcfce7; color: #166534; }
-.badge-transfer  { background: #fce7f3; color: #9d174d; }
-.badge-vip       { background: #fef9c3; color: #713f12; }
-.badge-estandar  { background: #dbeafe; color: #1e40af; }
-.badge-beca      { background: #dcfce7; color: #166534; }
-.badge-camiseta  { background: #fce7f3; color: #9d174d; }
-.badge-accesorio { background: #ede9fe; color: #4c1d95; }
-.badge-otros     { background: #f1f5f9; color: #475569; }
 
-/* ── Tabla ────────────────────────────────────────────────────────── */
+/* Tablas */
 .contenedor-tabla {
     overflow-x: auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.07);
-    border: 1px solid #e2e8f0;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
 }
+
 .tabla-ventas {
     width: 100%;
     border-collapse: collapse;
-    background: #fff;
     font-size: 14px;
+}
+
+.tabla-ventas th {
+    background-color: #4a7cbf;
+    color: white;
+    padding: 10px 8px;
     text-align: left;
 }
-.tabla-ventas th,
-.tabla-ventas td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; }
-.tabla-ventas th {
-    background: #2d97d0;
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: .5px;
-    white-space: nowrap;
+
+.tabla-ventas td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
-.tabla-ventas tbody tr:nth-child(even) { background: #f8fafc; }
-.tabla-ventas tbody tr:hover { background: rgba(45,151,208,.07); }
-.acciones { display: flex; gap: 8px; align-items: center; }
 
-/* ── Botones ──────────────────────────────────────────────────────── */
-form .btn-primario,
-form .btn-neutro,
-form .btn-peligro,
-form .btn-secundario { margin-top: 0; }
+.tabla-ventas tr:hover {
+    background-color: #f5f5f5;
+}
 
+/* Botones */
 .btn-primario {
-    padding: 10px 22px;
-    font-size: 14px;
-    font-weight: bold;
+    background-color: #4a7cbf;
+    color: white;
+    padding: 8px 16px;
     border: none;
-    border-radius: 50px;
-    background: #3348cb;
-    color: #fff;
     cursor: pointer;
+    font-size: 14px;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all .3s;
-    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    display: inline-block;
 }
-.btn-primario:hover { background: #2d97d0; transform: translateY(-1px); }
+
 .btn-secundario {
-    padding: 7px 13px;
-    font-size: 13px;
-    font-weight: bold;
-    border: 2px solid #2d97d0;
-    border-radius: 50px;
-    background: #fff;
-    color: #2d97d0;
+    background-color: #5a8db5;
+    color: white;
+    padding: 6px 12px;
+    border: none;
     cursor: pointer;
+    font-size: 13px;
     text-decoration: none;
-    transition: all .3s;
-    white-space: nowrap;
+    display: inline-block;
 }
-.btn-secundario:hover { background: #2d97d0; color: #fff; }
+
 .btn-neutro {
-    padding: 7px 13px;
-    font-size: 13px;
-    font-weight: bold;
-    border: 2px solid #cbd5e1;
-    border-radius: 50px;
-    background: #fff;
-    color: #475569;
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
     cursor: pointer;
+    font-size: 14px;
     text-decoration: none;
-    transition: all .3s;
-    white-space: nowrap;
+    display: inline-block;
 }
-.btn-neutro:hover { border-color: #2d97d0; color: #2d97d0; background: #f1f5f9; }
+
 .btn-peligro {
-    padding: 7px 13px;
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
     font-size: 13px;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    background: #b91c1c;
-    color: #fff;
-    cursor: pointer;
-    transition: all .3s;
 }
-.btn-peligro:hover { background: #991b1b; transform: translateY(-1px); }
 
-/* ── Panel herramientas ───────────────────────────────────────────── */
-.panel-herramientas {
+/* Acciones en tabla */
+.acciones {
     display: flex;
-    justify-content: space-between;
+    gap: 5px;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
 }
-.buscador input,
-.filtros select {
-    padding: 10px 14px;
-    font-size: 14px;
-    border: 2px solid #cbd5e1;
-    border-radius: 8px;
-    outline: none;
-    background: #fff;
-    transition: border-color .3s;
-}
-.buscador input:focus,
-.filtros select:focus { border-color: #2d97d0; }
-.acciones-panel { display: flex; gap: 10px; }
 
-/* ── Paginación ───────────────────────────────────────────────────── */
-.paginacion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin: 15px 0;
+.acciones form {
+    margin: 0;
 }
-.paginacion button {
-    background: #3348cb;
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all .3s;
-}
-.paginacion button:hover:not(:disabled) { background: #2d97d0; }
-.paginacion button:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
-#infoPagina { font-size: 14px; font-weight: bold; color: #475569; }
 
-/* ── Formularios ventas ───────────────────────────────────────────── */
+/* Formularios */
+.form-ventas {
+    max-width: 800px;
+}
+
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
 }
-.form-grupo { display: flex; flex-direction: column; gap: 4px; }
-.form-grupo.full-width { grid-column: 1 / -1; }
-.form-grupo label { font-weight: 600; color: #444; font-size: 14px; margin-top: 0; }
-.form-grupo input,
-.form-grupo textarea,
-.form-grupo select {
-    padding: 10px 12px;
-    border: 2px solid #cbd5e1;
-    border-radius: 8px;
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-grupo.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-grupo label {
+    font-weight: bold;
+    margin-bottom: 4px;
     font-size: 14px;
-    outline: none;
-    transition: border-color .3s;
-    background: #fff;
-    margin-top: 0;
 }
-.form-grupo input:focus,
-.form-grupo textarea:focus,
-.form-grupo select:focus { border-color: #2d97d0; }
-.form-acciones { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
 
-/* ── Error ────────────────────────────────────────────────────────── */
-.error-container { text-align: center; padding: 60px 20px; }
-.error-icono { font-size: 48px; margin-bottom: 20px; }
-.error-container h2 { border: none; }
-.error-container p { color: #64748b; margin-bottom: 24px; }
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    padding: 7px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
 
-/* ── Responsive ───────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-    .cajaDeBotones { flex-direction: column; align-items: center; }
-    .botones { width: 100%; max-width: 250px; }
-    .contenido-ventas { padding: 20px; }
-    .panel-herramientas { flex-direction: column; align-items: stretch; }
-    .buscador input { width: 100%; }
-    h1 { font-size: 26px; }
+/* Paginación */
+.paginacion {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.paginacion button {
+    padding: 6px 14px;
+    background-color: #4a7cbf;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.paginacion button:disabled {
+    background-color: #aaa;
+}
+
+/* Acciones formulario */
+.form-acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
 }

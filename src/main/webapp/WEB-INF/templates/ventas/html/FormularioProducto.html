@@ -2,38 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Ventas - Formulario Producto</title>
+    <title>Formulario Producto</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        .seccion-tipo {
-            display: none;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            margin-top: 1.2rem;
-            padding: 1rem 1.2rem 1.2rem;
-        }
-        .seccion-titulo {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #3348cb;
-            margin-bottom: .8rem;
-            padding-bottom: .4rem;
-            border-bottom: 2px solid #2d97d0;
-        }
-        .badge-tipo {
-            display: inline-block;
-            padding: .2rem .6rem;
-            border-radius: .4rem;
-            background: #3348cb;
-            color: #fff;
-            font-size: .85rem;
-            margin-left: .5rem;
-        }
-    </style>
 </head>
 <body>
 
@@ -60,12 +31,7 @@
 <main class="principal">
     <div class="contenido-ventas">
 
-        <h2>
-            <span th:if="${producto != null}">Editar Producto
-                <span class="badge-tipo" th:text="${producto.tipoProducto.displayName}"></span>
-            </span>
-            <span th:if="${producto == null}">Nuevo Producto</span>
-        </h2>
+        <h2 th:text="${producto != null ? 'Editar Producto' : 'Nuevo Producto'}">Nuevo Producto</h2>
 
         <div th:if="${error != null}" class="alerta alerta-error">
             <span th:text="${error}"></span>
@@ -73,66 +39,54 @@
 
         <form th:action="@{/producto/guardar}" method="post" class="form-ventas">
 
-            <!-- ID oculto (edición) -->
             <input th:if="${producto != null}" type="hidden" name="id" th:value="${producto.id_Producto}">
 
-            <!-- IDs de subtipo (edición): se usan en el update() -->
-            <input type="hidden" name="idEntrada"   th:if="${idEntrada   != null}" th:value="${idEntrada}">
-            <input type="hidden" name="idVip"       th:if="${idVip       != null}" th:value="${idVip}">
-            <input type="hidden" name="idEstandar"  th:if="${idEstandar  != null}" th:value="${idEstandar}">
-            <input type="hidden" name="idBeca"      th:if="${idBeca      != null}" th:value="${idBeca}">
-            <input type="hidden" name="idTextil"    th:if="${idTextil    != null}" th:value="${idTextil}">
-            <input type="hidden" name="idCamisetas" th:if="${idCamisetas != null}" th:value="${idCamisetas}">
-            <input type="hidden" name="idAccesorios"th:if="${idAccesorios!= null}" th:value="${idAccesorios}">
-            <input type="hidden" name="idOtros"     th:if="${idOtros     != null}" th:value="${idOtros}">
+            <input type="hidden" name="idEntrada"    th:if="${idEntrada   != null}" th:value="${idEntrada}">
+            <input type="hidden" name="idVip"        th:if="${idVip       != null}" th:value="${idVip}">
+            <input type="hidden" name="idEstandar"   th:if="${idEstandar  != null}" th:value="${idEstandar}">
+            <input type="hidden" name="idBeca"       th:if="${idBeca      != null}" th:value="${idBeca}">
+            <input type="hidden" name="idTextil"     th:if="${idTextil    != null}" th:value="${idTextil}">
+            <input type="hidden" name="idCamisetas"  th:if="${idCamisetas != null}" th:value="${idCamisetas}">
+            <input type="hidden" name="idAccesorios" th:if="${idAccesorios!= null}" th:value="${idAccesorios}">
+            <input type="hidden" name="idOtros"      th:if="${idOtros     != null}" th:value="${idOtros}">
 
-            <!-- ══════════════════════════════════════════════════════
-                 TIPO DE PRODUCTO
-                 Selector activo al crear; deshabilitado + hidden al editar
-             ══════════════════════════════════════════════════════ -->
+            <!-- Tipo de producto -->
             <div class="form-grupo">
                 <label for="selTipo">Tipo de Producto *</label>
-                <!-- Al editar: select deshabilitado (solo visual) + hidden que envía el valor -->
                 <select id="selTipo" th:disabled="${producto != null}"
-                        th:name="${producto == null ? 'tipoProducto' : '_ignorado'}">
-                    <option value=""         th:selected="${tipoProducto == null}">-- Selecciona tipo --</option>
-                    <option value="VIP"      th:selected="${tipoProducto == 'VIP'}">VIP</option>
-                    <option value="ESTANDAR" th:selected="${tipoProducto == 'ESTANDAR'}">Estándar</option>
-                    <option value="BECA"     th:selected="${tipoProducto == 'BECA'}">Beca</option>
-                    <option value="CAMISETA" th:selected="${tipoProducto == 'CAMISETA'}">Camiseta</option>
-                    <option value="ACCESORIO"th:selected="${tipoProducto == 'ACCESORIO'}">Accesorio</option>
-                    <option value="OTROS"    th:selected="${tipoProducto == 'OTROS'}">Otros</option>
+                        th:name="${producto == null ? 'tipoProducto' : '_ignorado'}"
+                        onchange="mostrarSeccion(this.value)">
+                    <option value=""          th:selected="${tipoProducto == null}">-- Selecciona tipo --</option>
+                    <option value="VIP"       th:selected="${tipoProducto == 'VIP'}">VIP</option>
+                    <option value="ESTANDAR"  th:selected="${tipoProducto == 'ESTANDAR'}">Estándar</option>
+                    <option value="BECA"      th:selected="${tipoProducto == 'BECA'}">Beca</option>
+                    <option value="CAMISETA"  th:selected="${tipoProducto == 'CAMISETA'}">Camiseta</option>
+                    <option value="ACCESORIO" th:selected="${tipoProducto == 'ACCESORIO'}">Accesorio</option>
+                    <option value="OTROS"     th:selected="${tipoProducto == 'OTROS'}">Otros</option>
                 </select>
-                <!-- Hidden que envía el tipo cuando estamos editando -->
                 <input type="hidden" name="tipoProducto" th:if="${producto != null}" th:value="${tipoProducto}">
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 CAMPOS BASE (comunes a todos)
-             ══════════════════════════════════════════════════════ -->
+            <!-- Campos base -->
             <div class="form-grid">
-
                 <div class="form-grupo">
                     <label for="nombreProducto">Nombre *</label>
                     <input type="text" id="nombreProducto" name="nombreProducto"
                            th:value="${producto != null ? producto.nombreProducto : ''}"
                            placeholder="Ej: Pase VIP Premium" required maxlength="64">
                 </div>
-
                 <div class="form-grupo">
                     <label for="precio">Precio (€) *</label>
                     <input type="number" id="precio" name="precio" step="0.01" min="0"
                            th:value="${producto != null ? producto.precio : ''}"
                            placeholder="0.00" required>
                 </div>
-
                 <div class="form-grupo">
                     <label for="stockDisponible">Stock *</label>
                     <input type="number" id="stockDisponible" name="stockDisponible" min="0"
                            th:value="${producto != null ? producto.stockDisponible : ''}"
                            placeholder="0" required>
                 </div>
-
                 <div class="form-grupo">
                     <label for="tipoIVA">IVA *</label>
                     <select id="tipoIVA" name="tipoIVA" required>
@@ -143,14 +97,12 @@
                         </option>
                     </select>
                 </div>
-
                 <div class="form-grupo">
                     <label for="descuento">Descuento (€)</label>
                     <input type="number" id="descuento" name="descuento" step="0.01" min="0"
                            th:value="${producto != null ? producto.descuento : '0'}"
                            placeholder="0.00">
                 </div>
-
                 <div class="form-grupo full-width">
                     <label for="descripcionProducto">Descripción *</label>
                     <textarea id="descripcionProducto" name="descripcionProducto"
@@ -160,11 +112,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: ENTRADA (común a VIP, Estándar, Beca)
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-entrada" class="seccion-tipo">
-                <p class="seccion-titulo">Datos de Entrada</p>
+            <!-- Sección: Entrada -->
+            <div id="seccion-entrada" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos de Entrada</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo">
                         <label>Zona</label>
@@ -206,11 +156,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: VIP
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-vip" class="seccion-tipo">
-                <p class="seccion-titulo">Datos VIP</p>
+            <!-- Sección: VIP -->
+            <div id="seccion-vip" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos VIP</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo full-width">
                         <label>Beneficios Incluidos</label>
@@ -232,11 +180,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: ESTÁNDAR
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-estandar" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Estándar</p>
+            <!-- Sección: Estándar -->
+            <div id="seccion-estandar" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Estándar</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo full-width">
                         <label>Incluye Regalo</label>
@@ -247,11 +193,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: BECA
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-beca" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Beca</p>
+            <!-- Sección: Beca -->
+            <div id="seccion-beca" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Beca</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo">
                         <label>Motivo de la Beca</label>
@@ -274,11 +218,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: TEXTIL (común a Camiseta y Accesorio)
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-textil" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Textil</p>
+            <!-- Sección: Textil -->
+            <div id="seccion-textil" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Textil</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo">
                         <label>Talla</label>
@@ -315,11 +257,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: CAMISETA
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-camiseta" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Camiseta</p>
+            <!-- Sección: Camiseta -->
+            <div id="seccion-camiseta" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Camiseta</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo">
                         <label>Modelo</label>
@@ -334,11 +274,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: ACCESORIO
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-accesorio" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Accesorio</p>
+            <!-- Sección: Accesorio -->
+            <div id="seccion-accesorio" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Accesorio</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo full-width">
                         <label>Tipo de Accesorio</label>
@@ -349,11 +287,9 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 SECCIÓN: OTROS
-             ══════════════════════════════════════════════════════ -->
-            <div id="seccion-otros" class="seccion-tipo">
-                <p class="seccion-titulo">Datos Otros</p>
+            <!-- Sección: Otros -->
+            <div id="seccion-otros" style="display:none; border:1px solid #ccc; padding:15px; margin-top:15px;">
+                <p><strong>Datos Otros</strong></p>
                 <div class="form-grid">
                     <div class="form-grupo full-width">
                         <label>Descripción adicional</label>
@@ -364,14 +300,10 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════════════════════
-                 ACCIONES
-             ══════════════════════════════════════════════════════ -->
             <div class="form-acciones">
-                <button type="submit" class="btn-primario">
-                    <span th:text="${producto != null ? 'Guardar Cambios' : 'Crear Producto'}">Guardar</span>
-                </button>
-                <a th:href="@{/producto/listar}" class="btn-neutro">← Cancelar</a>
+                <button type="submit" class="btn-primario"
+                        th:text="${producto != null ? 'Guardar Cambios' : 'Crear Producto'}">Guardar</button>
+                <a th:href="@{/producto/listar}" class="btn-neutro">Cancelar</a>
             </div>
 
         </form>
@@ -379,32 +311,38 @@
 </main>
 
 <script th:inline="javascript">
-    const TIPO_INICIAL = /*[[${tipoProducto}]]*/ null;
-
-    const SECCIONES_ENTRADA = ['vip', 'estandar', 'beca'];
-    const SECCIONES_TEXTIL  = ['camiseta', 'accesorio'];
+    var TIPO_INICIAL = /*[[${tipoProducto}]]*/ null;
 
     function mostrarSeccion(tipo) {
-        document.querySelectorAll('.seccion-tipo').forEach(s => s.style.display = 'none');
+        var secciones = document.getElementsByClassName('seccion-tipo-oculto');
+
+        document.getElementById('seccion-entrada').style.display  = 'none';
+        document.getElementById('seccion-vip').style.display      = 'none';
+        document.getElementById('seccion-estandar').style.display = 'none';
+        document.getElementById('seccion-beca').style.display     = 'none';
+        document.getElementById('seccion-textil').style.display   = 'none';
+        document.getElementById('seccion-camiseta').style.display = 'none';
+        document.getElementById('seccion-accesorio').style.display = 'none';
+        document.getElementById('seccion-otros').style.display    = 'none';
+
         if (!tipo) return;
-        const t = tipo.toLowerCase();
-        if (['vip', 'estandar', 'beca'].includes(t)) {
+
+        var t = tipo.toLowerCase();
+
+        if (t == 'vip' || t == 'estandar' || t == 'beca') {
             document.getElementById('seccion-entrada').style.display = 'block';
         }
-        if (['camiseta', 'accesorio'].includes(t)) {
+        if (t == 'camiseta' || t == 'accesorio') {
             document.getElementById('seccion-textil').style.display = 'block';
         }
-        const sec = document.getElementById('seccion-' + t);
-        if (sec) sec.style.display = 'block';
+
+        var sec = document.getElementById('seccion-' + t);
+        if (sec != null) {
+            sec.style.display = 'block';
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const sel = document.getElementById('selTipo');
-        if (sel) {
-            mostrarSeccion(sel.value || TIPO_INICIAL);
-            sel.addEventListener('change', () => mostrarSeccion(sel.value));
-        }
-    });
+    mostrarSeccion(document.getElementById('selTipo').value || TIPO_INICIAL);
 </script>
 
 </body>

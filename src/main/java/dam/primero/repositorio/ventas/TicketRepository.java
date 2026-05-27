@@ -44,10 +44,13 @@ public class TicketRepository {
                      "ORDER BY t.Fecha_Compra DESC";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 Ticket t = mapTicket(rs);
                 t.getDuenio().setTematica(rs.getString("Tematica"));
@@ -97,42 +100,43 @@ public class TicketRepository {
             "WHERE lt.ID_Ticket = ?";
 
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect()) {
-
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
             Ticket ticket = null;
 
-            try (PreparedStatement ps = con.prepareStatement(sqlTicket)) {
-                ps.setLong(1, id);
-                ResultSet rs = ps.executeQuery();
-                if (!rs.next()) return Optional.empty();
+            ps = con.prepareStatement(sqlTicket);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+            if (!rs.next()) return Optional.empty();
 
-                ticket = mapTicket(rs);
-                Asistente a = ticket.getDuenio();
-                a.setTematica(rs.getString("Tematica"));
-                a.setBio(rs.getString("Bio"));
-                a.setNivelImparticion(rs.getString("Nivel_Imparticion"));
-                a.setDireccion(rs.getString("Direccion"));
-                a.setObservaciones(rs.getString("Observaciones"));
-                a.setTotalGastado(rs.getDouble("Total_Gastado"));
-            }
+            ticket = mapTicket(rs);
+            Asistente a = ticket.getDuenio();
+            a.setTematica(rs.getString("Tematica"));
+            a.setBio(rs.getString("Bio"));
+            a.setNivelImparticion(rs.getString("Nivel_Imparticion"));
+            a.setDireccion(rs.getString("Direccion"));
+            a.setObservaciones(rs.getString("Observaciones"));
+            a.setTotalGastado(rs.getDouble("Total_Gastado"));
 
-            try (PreparedStatement ps = con.prepareStatement(sqlLineas)) {
-                ps.setLong(1, id);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    Producto prod = ProductoRepository.mapProducto(rs);
+            PreparedStatement ps2 = con.prepareStatement(sqlLineas);
+            ps2.setLong(1, id);
+            ResultSet rs2 = ps2.executeQuery();
+            while (rs2.next()) {
+                Producto prod = ProductoRepository.mapProducto(rs2);
 
-                    LineaTicket linea = new LineaTicket();
-                    linea.setId_LineaTicket(rs.getLong("ID_LineaTicket"));
-                    linea.setId_Ticket(id);
-                    linea.setProducto(prod);
-                    linea.setCantidad(rs.getInt("Cantidad"));
-                    linea.setIvaCuota(rs.getDouble("IVA_Cuota"));
-                    linea.setSubtotalBase(rs.getDouble("Subtotal_Base"));
-                    linea.setTotalLinea(rs.getDouble("Total_Linea"));
+                LineaTicket linea = new LineaTicket();
+                linea.setId_LineaTicket(rs2.getLong("ID_LineaTicket"));
+                linea.setId_Ticket(id);
+                linea.setProducto(prod);
+                linea.setCantidad(rs2.getInt("Cantidad"));
+                linea.setIvaCuota(rs2.getDouble("IVA_Cuota"));
+                linea.setSubtotalBase(rs2.getDouble("Subtotal_Base"));
+                linea.setTotalLinea(rs2.getDouble("Total_Linea"));
 
-                    ticket.addLinea(linea);
-                }
+                ticket.addLinea(linea);
             }
 
             return Optional.of(ticket);
@@ -163,54 +167,51 @@ public class TicketRepository {
         try {
             con.setAutoCommit(false);
 
-            try (PreparedStatement ps = con.prepareStatement(sqlTicket)) {
-                ps.setLong(1, ticket.getId_Ticket());
-                ps.setLong(2, ticket.getDuenio().getId_Asistente());
-                ps.setString(3, ticket.getCodigoQR());
-                ps.setDate(4, ticket.getFechaCompra() != null
-                              ? Date.valueOf(ticket.getFechaCompra()) : null);
-                ps.setDouble(5, ticket.getPrecioFinal());
-                ps.setString(6, ticket.getMetodoPago() != null
-                                ? ticket.getMetodoPago().name() : "TARJETA");
-                ps.setDouble(7, ticket.getDescuento());
-                ps.setString(8, ticket.getCodPromocional());
-                ps.executeUpdate();
-            }
+            PreparedStatement psTicket = con.prepareStatement(sqlTicket);
+            psTicket.setLong(1, ticket.getId_Ticket());
+            psTicket.setLong(2, ticket.getDuenio().getId_Asistente());
+            psTicket.setString(3, ticket.getCodigoQR());
+            psTicket.setDate(4, ticket.getFechaCompra() != null
+                                ? Date.valueOf(ticket.getFechaCompra()) : null);
+            psTicket.setDouble(5, ticket.getPrecioFinal());
+            psTicket.setString(6, ticket.getMetodoPago() != null
+                                  ? ticket.getMetodoPago().name() : "TARJETA");
+            psTicket.setDouble(7, ticket.getDescuento());
+            psTicket.setString(8, ticket.getCodPromocional());
+            psTicket.executeUpdate();
 
             for (LineaTicket linea : ticket.getLineas()) {
                 linea.calcularTotales();
 
-                try (PreparedStatement ps = con.prepareStatement(sqlLinea)) {
-                    ps.setLong(1, linea.getId_LineaTicket());
-                    ps.setLong(2, ticket.getId_Ticket());
-                    ps.setLong(3, linea.getProducto().getId_Producto());
-                    ps.setInt(4, linea.getCantidad());
-                    ps.setDouble(5, linea.getIvaCuota());
-                    ps.setDouble(6, linea.getSubtotalBase());
-                    ps.setDouble(7, linea.getTotalLinea());
-                    ps.executeUpdate();
-                }
+                PreparedStatement psLinea = con.prepareStatement(sqlLinea);
+                psLinea.setLong(1, linea.getId_LineaTicket());
+                psLinea.setLong(2, ticket.getId_Ticket());
+                psLinea.setLong(3, linea.getProducto().getId_Producto());
+                psLinea.setInt(4, linea.getCantidad());
+                psLinea.setDouble(5, linea.getIvaCuota());
+                psLinea.setDouble(6, linea.getSubtotalBase());
+                psLinea.setDouble(7, linea.getTotalLinea());
+                psLinea.executeUpdate();
 
-                try (PreparedStatement ps = con.prepareStatement(sqlStock)) {
-                    ps.setInt(1, linea.getCantidad());
-                    ps.setLong(2, linea.getProducto().getId_Producto());
-                    ps.setInt(3, linea.getCantidad());
-                    int filas = ps.executeUpdate();
-                    if (filas == 0) {
-                        con.rollback();
-                        throw new MyException("Stock insuficiente para: " +
-                                              linea.getProducto().getNombreProducto());
-                    }
+                PreparedStatement psStock = con.prepareStatement(sqlStock);
+                psStock.setInt(1, linea.getCantidad());
+                psStock.setLong(2, linea.getProducto().getId_Producto());
+                psStock.setInt(3, linea.getCantidad());
+                int filas = psStock.executeUpdate();
+                if (filas == 0) {
+                    con.rollback();
+                    throw new MyException("Stock insuficiente para: " +
+                                          linea.getProducto().getNombreProducto());
                 }
             }
 
             con.commit();
 
         } catch (SQLException e) {
-            try { con.rollback(); } catch (SQLException ex) { }
+            try { con.rollback(); } catch (SQLException ex) {}
             throw new MyException("Error al guardar ticket: " + e.getMessage());
         } finally {
-            try { con.setAutoCommit(true); } catch (SQLException e) { }
+            try { con.setAutoCommit(true); } catch (SQLException e) {}
             conector.release();
         }
     }
@@ -227,35 +228,31 @@ public class TicketRepository {
         try {
             con.setAutoCommit(false);
 
-            try (PreparedStatement ps = con.prepareStatement(sqlGetLineas)) {
-                ps.setLong(1, id_Ticket);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    try (PreparedStatement psStock = con.prepareStatement(sqlStock)) {
-                        psStock.setInt(1, rs.getInt("Cantidad"));
-                        psStock.setLong(2, rs.getLong("ID_Producto"));
-                        psStock.executeUpdate();
-                    }
-                }
+            PreparedStatement psLineas = con.prepareStatement(sqlGetLineas);
+            psLineas.setLong(1, id_Ticket);
+            ResultSet rs = psLineas.executeQuery();
+            while (rs.next()) {
+                PreparedStatement psStock = con.prepareStatement(sqlStock);
+                psStock.setInt(1, rs.getInt("Cantidad"));
+                psStock.setLong(2, rs.getLong("ID_Producto"));
+                psStock.executeUpdate();
             }
 
-            try (PreparedStatement ps = con.prepareStatement(sqlDelLineas)) {
-                ps.setLong(1, id_Ticket);
-                ps.executeUpdate();
-            }
+            PreparedStatement psDel1 = con.prepareStatement(sqlDelLineas);
+            psDel1.setLong(1, id_Ticket);
+            psDel1.executeUpdate();
 
-            try (PreparedStatement ps = con.prepareStatement(sqlDelTicket)) {
-                ps.setLong(1, id_Ticket);
-                ps.executeUpdate();
-            }
+            PreparedStatement psDel2 = con.prepareStatement(sqlDelTicket);
+            psDel2.setLong(1, id_Ticket);
+            psDel2.executeUpdate();
 
             con.commit();
 
         } catch (SQLException e) {
-            try { con.rollback(); } catch (SQLException ex) { }
+            try { con.rollback(); } catch (SQLException ex) {}
             throw new MyException("Error al cancelar ticket: " + e.getMessage());
         } finally {
-            try { con.setAutoCommit(true); } catch (SQLException e) { }
+            try { con.setAutoCommit(true); } catch (SQLException e) {}
             conector.release();
         }
     }
@@ -263,9 +260,13 @@ public class TicketRepository {
     public long getNextTicketId() throws MyException {
         String sql = "SELECT COALESCE(MAX(ID_Ticket), 99) + 1 AS next_id FROM Ticket";
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             if (rs.next()) return rs.getLong("next_id");
         } catch (SQLException e) {
             throw new MyException("Error al obtener siguiente ID ticket: " + e.getMessage());
@@ -278,9 +279,13 @@ public class TicketRepository {
     public long getNextLineaId() throws MyException {
         String sql = "SELECT COALESCE(MAX(ID_LineaTicket), 500) + 1 AS next_id FROM Linea_Ticket";
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             if (rs.next()) return rs.getLong("next_id");
         } catch (SQLException e) {
             throw new MyException("Error al obtener siguiente ID línea: " + e.getMessage());

@@ -2,11 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Ventas - Formulario Asistente</title>
+    <title>Formulario Asistente</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -33,9 +31,7 @@
 <main class="principal">
     <div class="contenido-ventas">
 
-        <h2 th:text="${asistente != null ? ' Editar Asistente' : ' Nuevo Asistente'}">
-           Formulario Asistente
-        </h2>
+        <h2 th:text="${asistente != null ? 'Editar Asistente' : 'Nuevo Asistente'}">Formulario Asistente</h2>
 
         <div th:if="${error != null}" class="alerta alerta-error">
              <span th:text="${error}"></span>
@@ -107,10 +103,9 @@
             </div>
 
             <div class="form-acciones">
-                <button type="submit" class="btn-primario">
-                     <span th:text="${asistente != null ? 'Guardar Cambios' : 'Crear Asistente'}">Guardar</span>
-                </button>
-                <a th:href="@{/asistente/listar}" class="btn-neutro">← Cancelar</a>
+                <button type="submit" class="btn-primario"
+                        th:text="${asistente != null ? 'Guardar Cambios' : 'Crear Asistente'}">Guardar</button>
+                <a th:href="@{/asistente/listar}" class="btn-neutro">Cancelar</a>
             </div>
 
         </form>

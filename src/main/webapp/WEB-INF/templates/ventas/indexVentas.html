@@ -1,182 +1,105 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Módulo Ventas - Inicio</title>
+    <meta charset="UTF-8">
+    <title>Módulo Ventas</title>
     <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
     <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .contenido-index {
-            width: 100%;
-            max-width: 1100px;
-            background: rgba(255,255,255,.97);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(0,0,0,.15);
-        }
-        .bienvenida { margin-bottom: 28px; }
-        .bienvenida p { color: #475569; line-height: 1.6; margin-top: 10px; font-size: 15px; }
-        .seccion-titulo {
-            font-size: 13px;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: .6px;
-            margin-bottom: 16px;
-        }
-        .grid-accesos {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 18px;
-            margin-bottom: 36px;
-        }
-        .tarjeta-acceso {
-            background: #fff;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 3px 10px rgba(0,0,0,.08);
-            border-top: 4px solid #2d97d0;
-            text-decoration: none;
-            color: inherit;
-            transition: all .3s;
+        .cajas-acceso {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .tarjeta-acceso:hover  { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,.14); }
-        .tarjeta-acceso.ventas   { border-top-color: #3348cb; }
-        .tarjeta-acceso.nuevo    { border-top-color: #166534; }
-        .tarjeta-acceso.asistente { border-top-color: #c05621; }
-        .tarjeta-acceso.producto  { border-top-color: #7c3aed; }
-        .tarjeta-acceso h3 { font-size: 17px; color: #1e293b; font-weight: 700; }
-        .tarjeta-acceso p  { font-size: 13px; color: #64748b; line-height: 1.5; flex-grow: 1; }
-        .icono { font-size: 26px; }
-        .etiqueta {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            background: #f1f5f9;
-            color: #475569;
-            font-size: 12px;
-            font-weight: bold;
-            align-self: flex-start;
+        .caja-acceso {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 220px;
+            background-color: #f9f9f9;
         }
-        @media (max-width: 768px) {
-            .contenido-index { padding: 20px; }
-            .grid-accesos { grid-template-columns: 1fr; }
+        .caja-acceso h3 {
+            font-size: 16px;
+            color: #4a7cbf;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 6px;
+        }
+        .caja-acceso p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .caja-acceso a {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: white;
+            background-color: #4a7cbf;
+            padding: 7px 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .caja-acceso a:hover {
+            background-color: #3a6aaf;
         }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════════════
-    HEADER — igual al resto del proyecto
-     ══════════════════════════════════════════════════════════════════ -->
 <header>
-	<div class="header-superior">
-		<div class="logo-container">
-			<a th:href="@{/}">
-				<img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
-			</a>
-		</div>
-		<h1>I.E.S. Torre de los Guzmanes</h1>
-		<div class="contenedorBotonInicio">
-			<button onclick="window.location.href='/'">INICIO</button>
-		</div>
-	</div>
-
-	<!-- Navegación del proyecto completo -->
-	<nav class="cajaDeBotones">
-		<a href="/secretaria.html"           class="botones">Secretaría</a>
-		<a href="/RegistroPuntuaciones.html" class="botones">Registro Puntuaciones</a>
-		<a href="/oferta.html"               class="botones">Oferta Educativa</a>
-		<a href="/servicios.html"            class="botones">Servicios</a>
-		<a href="/actividades.html"          class="botones">Actividades</a>
-		<a href="/contacto.html"             class="botones">Contacto</a>
-	</nav>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <button onclick="window.location.href='/'">INICIO</button>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
 </header>
 
-<!-- ══════════════════════════════════════════════════════════════════
-    CONTENIDO PRINCIPAL
-     ══════════════════════════════════════════════════════════════════ -->
 <main class="principal">
-	<div class="contenido-index">
+    <div class="contenido-ventas">
 
-		<!-- Bloque de bienvenida -->
-		<section class="bienvenida">
-			<h2>Módulo de Ventas</h2>
-			<p>
-				Bienvenido al módulo de gestión de ventas del evento.
-				Desde aquí puedes gestionar los <strong>tickets de compra</strong>,
-				consultar el <strong>catálogo de productos</strong>
-				(entradas, textil y otros) y administrar los <strong>asistentes</strong>
-				registrados en el sistema.
-			</p>
-			<p>
-				Usa los accesos rápidos de abajo para navegar entre las secciones
-				o la barra de navegación superior para moverte por el resto del portal.
-			</p>
-		</section>
+        <h2>Módulo de Ventas</h2>
+        <p>Bienvenido al módulo de gestión de ventas. Desde aquí puedes gestionar los tickets, asistentes y productos.</p>
 
-		<!-- Título de la sección de accesos -->
-		<p class="seccion-titulo">Accesos rápidos del módulo</p>
+        <div class="cajas-acceso">
 
-		<!-- Grid de tarjetas de acceso -->
-		<div class="grid-accesos">
+            <div class="caja-acceso">
+                <h3>Ventas</h3>
+                <p>Consulta todos los tickets generados o crea una nueva venta seleccionando productos y asistente.</p>
+                <a th:href="@{/ventas/verListadoVentas}">Ver listado de ventas</a>
+                <a th:href="@{/ticket/nuevo}">Nueva venta</a>
+            </div>
 
-			<!-- Listado de Ventas -->
-			<a th:href="@{/ventas/verListadoVentas}" class="tarjeta-acceso ventas">
-				<span class="icono"></span>
-				<h3>Listado de Ventas</h3>
-				<p>Consulta todos los tickets generados, filtra por método de pago y accede al detalle de cada venta.</p>
-				<span class="etiqueta">Ver ventas</span>
-			</a>
+            <div class="caja-acceso">
+                <h3>Asistentes</h3>
+                <p>Gestiona los asistentes del evento: consulta su información, registra nuevos o edita los existentes.</p>
+                <a th:href="@{/asistente/listar}">Ver asistentes</a>
+                <a th:href="@{/asistente/formulario}">Nuevo asistente</a>
+            </div>
 
-			<!-- Nueva Venta -->
-			<a th:href="@{/ticket/nuevo}" class="tarjeta-acceso nuevo">
-				<span class="icono"></span>
-				<h3>Nueva Venta</h3>
-				<p>Abre el proceso de compra: selecciona productos, añádelos al carrito y confirma el ticket con el asistente y método de pago.</p>
-				<span class="etiqueta">Crear ticket</span>
-			</a>
+            <div class="caja-acceso">
+                <h3>Productos</h3>
+                <p>Administra el catálogo de productos disponibles: entradas, textil y otros artículos del evento.</p>
+                <a th:href="@{/producto/listar}">Ver catálogo de productos</a>
+                <a th:href="@{/producto/formulario}">Nuevo producto</a>
+            </div>
 
-			<!-- Asistentes -->
-			<a th:href="@{/asistente/listar}" class="tarjeta-acceso asistente">
-				<span class="icono"></span>
-				<h3>Asistentes</h3>
-				<p>Gestiona el listado completo de asistentes registrados: consulta, edita sus datos o da de alta nuevos perfiles.</p>
-				<span class="etiqueta">Ver asistentes</span>
-			</a>
+        </div>
 
-			<!-- Nuevo Asistente -->
-			<a th:href="@{/asistente/formulario}" class="tarjeta-acceso asistente">
-				<span class="icono"></span>
-				<h3>Nuevo Asistente</h3>
-				<p>Registra un nuevo asistente en el sistema indicando su temática, nivel de impartición y datos de contacto.</p>
-				<span class="etiqueta">Crear asistente</span>
-			</a>
-
-			<!-- Catálogo de Productos -->
-			<a th:href="@{/producto/listar}" class="tarjeta-acceso producto">
-				<span class="icono"></span>
-				<h3>Catálogo de Productos</h3>
-				<p>Consulta y gestiona el catálogo completo: entradas VIP, estándar, becas, textil y otros artículos del evento.</p>
-				<span class="etiqueta">Ver productos</span>
-			</a>
-
-			<!-- Nuevo Producto -->
-			<a th:href="@{/producto/formulario}" class="tarjeta-acceso producto">
-				<span class="icono"></span>
-				<h3>Nuevo Producto</h3>
-				<p>Añade un nuevo producto al catálogo indicando nombre, precio, stock disponible, IVA y descuento aplicable.</p>
-				<span class="etiqueta">Crear producto</span>
-			</a>
-
-		</div><!-- /grid-accesos -->
-
-	</div><!-- /contenido-index -->
+    </div>
 </main>
 
 </body>

@@ -11,8 +11,7 @@ import java.util.Optional;
 
 public class ProductoRepository {
 
-    // SQL completo con LEFT JOINs a todas las subtablas; también usado en TicketRepository
-    static final String SQL_FULL =
+    private String SQL_FULL =
         "SELECT p.ID_Producto, p.Nombre_Producto, p.Precio, p.Stock_Disponible, " +
         "  p.Descripcion_Producto, p.Tipo_IVA, p.Descuento, " +
         "  e.ID_Entrada, e.Zona, e.Asiento, e.Acceso_Permitido, e.Accesos_Adicionales, " +
@@ -34,7 +33,6 @@ public class ProductoRepository {
         "LEFT JOIN Accesorios ac ON ac.ID_Textil   = t.ID_Textil " +
         "LEFT JOIN Otros o       ON o.ID_Producto  = p.ID_Producto ";
 
-    // Convierte una fila del ResultSet (SQL_FULL) al subtipo concreto de Producto; también usado en TicketRepository
     static Producto mapProducto(ResultSet rs) throws SQLException {
         long    idProd = rs.getLong("ID_Producto");
         String  nombre = rs.getString("Nombre_Producto");
@@ -43,7 +41,6 @@ public class ProductoRepository {
         String  desc   = rs.getString("Descripcion_Producto");
         TipoIVA iva    = TipoIVA.fromString(rs.getString("Tipo_IVA"));
         double  dto    = rs.getDouble("Descuento");
-
 
         rs.getLong("ID_Vip");
         if (!rs.wasNull()) {
@@ -150,11 +147,19 @@ public class ProductoRepository {
 
     public List<Producto> findAll() throws MyException {
         List<Producto> lista = new ArrayList<>();
+        String sql = SQL_FULL + "ORDER BY p.ID_Producto";
+
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(SQL_FULL + "ORDER BY p.ID_Producto");
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) lista.add(mapProducto(rs));
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(mapProducto(rs));
+            }
         } catch (SQLException e) {
             throw new MyException("Error al listar productos: " + e.getMessage());
         } finally {
@@ -164,12 +169,19 @@ public class ProductoRepository {
     }
 
     public Optional<Producto> findById(long id) throws MyException {
+        String sql = SQL_FULL + "WHERE p.ID_Producto = ?";
+
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(SQL_FULL + "WHERE p.ID_Producto = ?")) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
             ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return Optional.of(mapProducto(rs));
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return Optional.of(mapProducto(rs));
             }
         } catch (SQLException e) {
             throw new MyException("Error al buscar producto: " + e.getMessage());
@@ -187,37 +199,93 @@ public class ProductoRepository {
             insertProducto(con, p);
 
             if (p instanceof VIP) {
-                long eId = nextId(con, "Entrada",    "ID_Entrada",   300);
+                // Obtener siguiente ID de Entrada
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Entrada), 300) + 1 AS nid FROM Entrada");
+                ResultSet rsId = psId.executeQuery();
+                long eId = rsId.next() ? rsId.getLong("nid") : 301;
+
                 insertEntrada(con, (Entrada) p, eId);
                 ((Entrada) p).setId_Entrada(eId);
-                long vId = nextId(con, "VIP",        "ID_Vip",       200);
+
+                // Obtener siguiente ID de VIP
+                PreparedStatement psId2 = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Vip), 200) + 1 AS nid FROM VIP");
+                ResultSet rsId2 = psId2.executeQuery();
+                long vId = rsId2.next() ? rsId2.getLong("nid") : 201;
+
                 insertVip(con, (VIP) p, vId, eId);
+
             } else if (p instanceof Estandar) {
-                long eId = nextId(con, "Entrada",    "ID_Entrada",   300);
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Entrada), 300) + 1 AS nid FROM Entrada");
+                ResultSet rsId = psId.executeQuery();
+                long eId = rsId.next() ? rsId.getLong("nid") : 301;
+
                 insertEntrada(con, (Entrada) p, eId);
                 ((Entrada) p).setId_Entrada(eId);
-                long sId = nextId(con, "Estandar",   "ID_Estandar",  300);
+
+                PreparedStatement psId2 = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Estandar), 300) + 1 AS nid FROM Estandar");
+                ResultSet rsId2 = psId2.executeQuery();
+                long sId = rsId2.next() ? rsId2.getLong("nid") : 301;
+
                 insertEstandar(con, (Estandar) p, sId, eId);
+
             } else if (p instanceof Beca) {
-                long eId = nextId(con, "Entrada",    "ID_Entrada",   300);
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Entrada), 300) + 1 AS nid FROM Entrada");
+                ResultSet rsId = psId.executeQuery();
+                long eId = rsId.next() ? rsId.getLong("nid") : 301;
+
                 insertEntrada(con, (Entrada) p, eId);
                 ((Entrada) p).setId_Entrada(eId);
-                long bId = nextId(con, "Beca",       "ID_Beca",      400);
+
+                PreparedStatement psId2 = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Beca), 400) + 1 AS nid FROM Beca");
+                ResultSet rsId2 = psId2.executeQuery();
+                long bId = rsId2.next() ? rsId2.getLong("nid") : 401;
+
                 insertBeca(con, (Beca) p, bId, eId);
+
             } else if (p instanceof Camisetas) {
-                long tId = nextId(con, "Textil",     "ID_Textil",    20);
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Textil), 20) + 1 AS nid FROM Textil");
+                ResultSet rsId = psId.executeQuery();
+                long tId = rsId.next() ? rsId.getLong("nid") : 21;
+
                 insertTextil(con, (Textil) p, tId);
                 ((Textil) p).setId_Textil(tId);
-                long cId = nextId(con, "Camisetas",  "ID_Camisetas", 1);
+
+                PreparedStatement psId2 = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Camisetas), 1) + 1 AS nid FROM Camisetas");
+                ResultSet rsId2 = psId2.executeQuery();
+                long cId = rsId2.next() ? rsId2.getLong("nid") : 2;
+
                 insertCamiseta(con, (Camisetas) p, cId, tId);
+
             } else if (p instanceof Accesorios) {
-                long tId = nextId(con, "Textil",     "ID_Textil",    20);
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Textil), 20) + 1 AS nid FROM Textil");
+                ResultSet rsId = psId.executeQuery();
+                long tId = rsId.next() ? rsId.getLong("nid") : 21;
+
                 insertTextil(con, (Textil) p, tId);
                 ((Textil) p).setId_Textil(tId);
-                long aId = nextId(con, "Accesorios", "ID_Accesorios", 1000);
+
+                PreparedStatement psId2 = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Accesorios), 1000) + 1 AS nid FROM Accesorios");
+                ResultSet rsId2 = psId2.executeQuery();
+                long aId = rsId2.next() ? rsId2.getLong("nid") : 1001;
+
                 insertAccesorio(con, (Accesorios) p, aId, tId);
+
             } else if (p instanceof Otros) {
-                long oId = nextId(con, "Otros", "ID_Otros", 200);
+                PreparedStatement psId = con.prepareStatement(
+                    "SELECT COALESCE(MAX(ID_Otros), 200) + 1 AS nid FROM Otros");
+                ResultSet rsId = psId.executeQuery();
+                long oId = rsId.next() ? rsId.getLong("nid") : 201;
+
                 insertOtros(con, (Otros) p, oId);
             }
 
@@ -259,22 +327,60 @@ public class ProductoRepository {
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
         Connection con = conector.getConnect();
         try {
-            try (PreparedStatement ps = con.prepareStatement(
-                    "SELECT COUNT(*) FROM Linea_Ticket WHERE ID_Producto = ?")) {
-                ps.setLong(1, id);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next() && rs.getInt(1) > 0) return false;
-            }
+            // Comprobar si tiene ventas asociadas
+            PreparedStatement psCheck = con.prepareStatement(
+                "SELECT COUNT(*) FROM Linea_Ticket WHERE ID_Producto = ?");
+            psCheck.setLong(1, id);
+            ResultSet rsCheck = psCheck.executeQuery();
+            if (rsCheck.next() && rsCheck.getInt(1) > 0) return false;
+
             con.setAutoCommit(false);
-            exec(con, "DELETE FROM VIP        WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)", id);
-            exec(con, "DELETE FROM Estandar   WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)", id);
-            exec(con, "DELETE FROM Beca       WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)", id);
-            exec(con, "DELETE FROM Entrada    WHERE ID_Producto=?", id);
-            exec(con, "DELETE FROM Camisetas  WHERE ID_Textil  IN (SELECT ID_Textil  FROM Textil  WHERE ID_Producto=?)", id);
-            exec(con, "DELETE FROM Accesorios WHERE ID_Textil  IN (SELECT ID_Textil  FROM Textil  WHERE ID_Producto=?)", id);
-            exec(con, "DELETE FROM Textil     WHERE ID_Producto=?", id);
-            exec(con, "DELETE FROM Otros      WHERE ID_Producto=?", id);
-            exec(con, "DELETE FROM Producto   WHERE ID_Producto=?", id);
+
+            PreparedStatement ps1 = con.prepareStatement(
+                "DELETE FROM VIP WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)");
+            ps1.setLong(1, id);
+            ps1.executeUpdate();
+
+            PreparedStatement ps2 = con.prepareStatement(
+                "DELETE FROM Estandar WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)");
+            ps2.setLong(1, id);
+            ps2.executeUpdate();
+
+            PreparedStatement ps3 = con.prepareStatement(
+                "DELETE FROM Beca WHERE ID_Entrada IN (SELECT ID_Entrada FROM Entrada WHERE ID_Producto=?)");
+            ps3.setLong(1, id);
+            ps3.executeUpdate();
+
+            PreparedStatement ps4 = con.prepareStatement(
+                "DELETE FROM Entrada WHERE ID_Producto=?");
+            ps4.setLong(1, id);
+            ps4.executeUpdate();
+
+            PreparedStatement ps5 = con.prepareStatement(
+                "DELETE FROM Camisetas WHERE ID_Textil IN (SELECT ID_Textil FROM Textil WHERE ID_Producto=?)");
+            ps5.setLong(1, id);
+            ps5.executeUpdate();
+
+            PreparedStatement ps6 = con.prepareStatement(
+                "DELETE FROM Accesorios WHERE ID_Textil IN (SELECT ID_Textil FROM Textil WHERE ID_Producto=?)");
+            ps6.setLong(1, id);
+            ps6.executeUpdate();
+
+            PreparedStatement ps7 = con.prepareStatement(
+                "DELETE FROM Textil WHERE ID_Producto=?");
+            ps7.setLong(1, id);
+            ps7.executeUpdate();
+
+            PreparedStatement ps8 = con.prepareStatement(
+                "DELETE FROM Otros WHERE ID_Producto=?");
+            ps8.setLong(1, id);
+            ps8.executeUpdate();
+
+            PreparedStatement ps9 = con.prepareStatement(
+                "DELETE FROM Producto WHERE ID_Producto=?");
+            ps9.setLong(1, id);
+            ps9.executeUpdate();
+
             con.commit();
         } catch (SQLException e) {
             try { con.rollback(); } catch (SQLException ex) {}
@@ -287,12 +393,19 @@ public class ProductoRepository {
     }
 
     public long getNextId() throws MyException {
+        String sql = "SELECT COALESCE(MAX(ID_Producto), 0) + 1 AS next_id FROM Producto";
+
         MySqlConnectorVentas conector = new MySqlConnectorVentas();
-        try (Connection con = conector.getConnect();
-             PreparedStatement ps = con.prepareStatement(
-                     "SELECT COALESCE(MAX(ID_Producto), 0) + 1 AS next_id FROM Producto");
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) return rs.getLong("next_id");
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = conector.getConnect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("next_id");
+            }
         } catch (SQLException e) {
             throw new MyException("Error al obtener siguiente ID: " + e.getMessage());
         } finally {
@@ -301,210 +414,197 @@ public class ProductoRepository {
         return 1;
     }
 
-    private void exec(Connection con, String sql, long id) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setLong(1, id); ps.executeUpdate();
-        }
-    }
-
-    private long nextId(Connection con, String tabla, String col, long base) throws SQLException {
-        String sql = "SELECT COALESCE(MAX(" + col + "), " + base + ") + 1 AS nid FROM " + tabla;
-        try (PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) return rs.getLong("nid");
-        }
-        return base + 1;
-    }
-
     private void insertProducto(Connection con, Producto p) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Producto (ID_Producto, Nombre_Producto, Precio, " +
-                "Stock_Disponible, Descripcion_Producto, Tipo_IVA, Descuento) VALUES (?,?,?,?,?,?,?)")) {
-            ps.setLong(1,   p.getId_Producto());
-            ps.setString(2, p.getNombreProducto());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4,    p.getStockDisponible());
-            ps.setString(5, p.getDescripcionProducto());
-            ps.setString(6, p.getTipoIVA() != null ? (int)p.getTipoIVA().getPorcentaje() + "%" : "21%");
-            ps.setDouble(7, p.getDescuento());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Producto (ID_Producto, Nombre_Producto, Precio, " +
+            "Stock_Disponible, Descripcion_Producto, Tipo_IVA, Descuento) VALUES (?,?,?,?,?,?,?)");
+        ps.setLong(1,   p.getId_Producto());
+        ps.setString(2, p.getNombreProducto());
+        ps.setDouble(3, p.getPrecio());
+        ps.setInt(4,    p.getStockDisponible());
+        ps.setString(5, p.getDescripcionProducto());
+        ps.setString(6, p.getTipoIVA() != null ? (int)p.getTipoIVA().getPorcentaje() + "%" : "21%");
+        ps.setDouble(7, p.getDescuento());
+        ps.executeUpdate();
     }
 
     private void updateProducto(Connection con, Producto p) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Producto SET Nombre_Producto=?, Precio=?, Stock_Disponible=?, " +
-                "Descripcion_Producto=?, Tipo_IVA=?, Descuento=? WHERE ID_Producto=?")) {
-            ps.setString(1, p.getNombreProducto());
-            ps.setDouble(2, p.getPrecio());
-            ps.setInt(3,    p.getStockDisponible());
-            ps.setString(4, p.getDescripcionProducto());
-            ps.setString(5, p.getTipoIVA() != null ? (int)p.getTipoIVA().getPorcentaje() + "%" : "21%");
-            ps.setDouble(6, p.getDescuento());
-            ps.setLong(7,   p.getId_Producto());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Producto SET Nombre_Producto=?, Precio=?, Stock_Disponible=?, " +
+            "Descripcion_Producto=?, Tipo_IVA=?, Descuento=? WHERE ID_Producto=?");
+        ps.setString(1, p.getNombreProducto());
+        ps.setDouble(2, p.getPrecio());
+        ps.setInt(3,    p.getStockDisponible());
+        ps.setString(4, p.getDescripcionProducto());
+        ps.setString(5, p.getTipoIVA() != null ? (int)p.getTipoIVA().getPorcentaje() + "%" : "21%");
+        ps.setDouble(6, p.getDescuento());
+        ps.setLong(7,   p.getId_Producto());
+        ps.executeUpdate();
     }
 
     private void insertEntrada(Connection con, Entrada e, long id) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Entrada (ID_Entrada, ID_Producto, Zona, Asiento, " +
-                "Acceso_Permitido, Accesos_Adicionales, Validez_Horas, EstadoEntrada) VALUES (?,?,?,?,?,?,?,?)")) {
-            ps.setLong(1,   id);
-            ps.setLong(2,   e.getId_Producto());
-            ps.setString(3, e.getZona());
-            ps.setString(4, e.getAsiento());
-            ps.setString(5, e.getAccesoPermitido());
-            ps.setString(6, e.getAccesosAdicionales());
-            ps.setInt(7,    e.getValidezHoras());
-            ps.setString(8, e.getEstadoEntrada() != null ? e.getEstadoEntrada().name() : "ACTIVA");
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Entrada (ID_Entrada, ID_Producto, Zona, Asiento, " +
+            "Acceso_Permitido, Accesos_Adicionales, Validez_Horas, EstadoEntrada) VALUES (?,?,?,?,?,?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   e.getId_Producto());
+        ps.setString(3, e.getZona());
+        ps.setString(4, e.getAsiento());
+        ps.setString(5, e.getAccesoPermitido());
+        ps.setString(6, e.getAccesosAdicionales());
+        ps.setInt(7,    e.getValidezHoras());
+        ps.setString(8, e.getEstadoEntrada() != null ? e.getEstadoEntrada().name() : "ACTIVA");
+        ps.executeUpdate();
     }
 
     private void updateEntrada(Connection con, Entrada e) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Entrada SET Zona=?, Asiento=?, Acceso_Permitido=?, " +
-                "Accesos_Adicionales=?, Validez_Horas=?, EstadoEntrada=? WHERE ID_Entrada=?")) {
-            ps.setString(1, e.getZona());
-            ps.setString(2, e.getAsiento());
-            ps.setString(3, e.getAccesoPermitido());
-            ps.setString(4, e.getAccesosAdicionales());
-            ps.setInt(5,    e.getValidezHoras());
-            ps.setString(6, e.getEstadoEntrada() != null ? e.getEstadoEntrada().name() : "ACTIVA");
-            ps.setLong(7,   e.getId_Entrada());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Entrada SET Zona=?, Asiento=?, Acceso_Permitido=?, " +
+            "Accesos_Adicionales=?, Validez_Horas=?, EstadoEntrada=? WHERE ID_Entrada=?");
+        ps.setString(1, e.getZona());
+        ps.setString(2, e.getAsiento());
+        ps.setString(3, e.getAccesoPermitido());
+        ps.setString(4, e.getAccesosAdicionales());
+        ps.setInt(5,    e.getValidezHoras());
+        ps.setString(6, e.getEstadoEntrada() != null ? e.getEstadoEntrada().name() : "ACTIVA");
+        ps.setLong(7,   e.getId_Entrada());
+        ps.executeUpdate();
     }
 
     private void insertVip(Connection con, VIP v, long id, long idEntrada) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO VIP (ID_Vip, ID_Entrada, Beneficios_Incluidos, Servicios_Adicionales, Precio_Extra) VALUES (?,?,?,?,?)")) {
-            ps.setLong(1,   id);         ps.setLong(2,   idEntrada);
-            ps.setString(3, v.getBeneficiosIncluidos());
-            ps.setString(4, v.getServiciosAdicionales());
-            ps.setDouble(5, v.getPrecioExtra());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO VIP (ID_Vip, ID_Entrada, Beneficios_Incluidos, Servicios_Adicionales, Precio_Extra) VALUES (?,?,?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   idEntrada);
+        ps.setString(3, v.getBeneficiosIncluidos());
+        ps.setString(4, v.getServiciosAdicionales());
+        ps.setDouble(5, v.getPrecioExtra());
+        ps.executeUpdate();
     }
 
     private void updateVip(Connection con, VIP v) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE VIP SET Beneficios_Incluidos=?, Servicios_Adicionales=?, Precio_Extra=? WHERE ID_Vip=?")) {
-            ps.setString(1, v.getBeneficiosIncluidos());
-            ps.setString(2, v.getServiciosAdicionales());
-            ps.setDouble(3, v.getPrecioExtra()); ps.setLong(4, v.getId_Vip());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE VIP SET Beneficios_Incluidos=?, Servicios_Adicionales=?, Precio_Extra=? WHERE ID_Vip=?");
+        ps.setString(1, v.getBeneficiosIncluidos());
+        ps.setString(2, v.getServiciosAdicionales());
+        ps.setDouble(3, v.getPrecioExtra());
+        ps.setLong(4,   v.getId_Vip());
+        ps.executeUpdate();
     }
 
     private void insertEstandar(Connection con, Estandar e, long id, long idEntrada) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Estandar (ID_Estandar, ID_Entrada, Incluye_Regalo) VALUES (?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, idEntrada); ps.setString(3, e.getIncluyeRegalo());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Estandar (ID_Estandar, ID_Entrada, Incluye_Regalo) VALUES (?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   idEntrada);
+        ps.setString(3, e.getIncluyeRegalo());
+        ps.executeUpdate();
     }
 
     private void updateEstandar(Connection con, Estandar e) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Estandar SET Incluye_Regalo=? WHERE ID_Estandar=?")) {
-            ps.setString(1, e.getIncluyeRegalo()); ps.setLong(2, e.getId_Estandar());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Estandar SET Incluye_Regalo=? WHERE ID_Estandar=?");
+        ps.setString(1, e.getIncluyeRegalo());
+        ps.setLong(2,   e.getId_Estandar());
+        ps.executeUpdate();
     }
 
     private void insertBeca(Connection con, Beca b, long id, long idEntrada) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Beca (ID_Beca, ID_Entrada, Motivo_Beca, Porcentaje_Descuento, Requisitos) VALUES (?,?,?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, idEntrada);
-            ps.setString(3, b.getMotivoBeca());
-            ps.setDouble(4, b.getPorcentajeDescuento());
-            ps.setString(5, b.getRequisitos());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Beca (ID_Beca, ID_Entrada, Motivo_Beca, Porcentaje_Descuento, Requisitos) VALUES (?,?,?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   idEntrada);
+        ps.setString(3, b.getMotivoBeca());
+        ps.setDouble(4, b.getPorcentajeDescuento());
+        ps.setString(5, b.getRequisitos());
+        ps.executeUpdate();
     }
 
     private void updateBeca(Connection con, Beca b) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Beca SET Motivo_Beca=?, Porcentaje_Descuento=?, Requisitos=? WHERE ID_Beca=?")) {
-            ps.setString(1, b.getMotivoBeca());
-            ps.setDouble(2, b.getPorcentajeDescuento());
-            ps.setString(3, b.getRequisitos()); ps.setLong(4, b.getId_Beca());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Beca SET Motivo_Beca=?, Porcentaje_Descuento=?, Requisitos=? WHERE ID_Beca=?");
+        ps.setString(1, b.getMotivoBeca());
+        ps.setDouble(2, b.getPorcentajeDescuento());
+        ps.setString(3, b.getRequisitos());
+        ps.setLong(4,   b.getId_Beca());
+        ps.executeUpdate();
     }
 
     private void insertTextil(Connection con, Textil t, long id) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Textil (ID_Textil, ID_Producto, Talla, Color, Material, Genero, Tipo_Textil) VALUES (?,?,?,?,?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, t.getId_Producto());
-            ps.setString(3, t.getTalla());   ps.setString(4, t.getColor());
-            ps.setString(5, t.getMaterial());
-            ps.setString(6, t.getGenero() != null ? t.getGenero().name() : null);
-            ps.setString(7, t.getTipoTextil());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Textil (ID_Textil, ID_Producto, Talla, Color, Material, Genero, Tipo_Textil) VALUES (?,?,?,?,?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   t.getId_Producto());
+        ps.setString(3, t.getTalla());
+        ps.setString(4, t.getColor());
+        ps.setString(5, t.getMaterial());
+        ps.setString(6, t.getGenero() != null ? t.getGenero().name() : null);
+        ps.setString(7, t.getTipoTextil());
+        ps.executeUpdate();
     }
 
     private void updateTextil(Connection con, Textil t) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Textil SET Talla=?, Color=?, Material=?, Genero=?, Tipo_Textil=? WHERE ID_Textil=?")) {
-            ps.setString(1, t.getTalla());   ps.setString(2, t.getColor());
-            ps.setString(3, t.getMaterial());
-            ps.setString(4, t.getGenero() != null ? t.getGenero().name() : null);
-            ps.setString(5, t.getTipoTextil()); ps.setLong(6, t.getId_Textil());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Textil SET Talla=?, Color=?, Material=?, Genero=?, Tipo_Textil=? WHERE ID_Textil=?");
+        ps.setString(1, t.getTalla());
+        ps.setString(2, t.getColor());
+        ps.setString(3, t.getMaterial());
+        ps.setString(4, t.getGenero() != null ? t.getGenero().name() : null);
+        ps.setString(5, t.getTipoTextil());
+        ps.setLong(6,   t.getId_Textil());
+        ps.executeUpdate();
     }
 
     private void insertCamiseta(Connection con, Camisetas c, long id, long idTextil) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Camisetas (ID_Camisetas, ID_Textil, Modelo, Estampado) VALUES (?,?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, idTextil);
-            ps.setString(3, c.getModelo()); ps.setString(4, c.getEstampado());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Camisetas (ID_Camisetas, ID_Textil, Modelo, Estampado) VALUES (?,?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   idTextil);
+        ps.setString(3, c.getModelo());
+        ps.setString(4, c.getEstampado());
+        ps.executeUpdate();
     }
 
     private void updateCamiseta(Connection con, Camisetas c) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Camisetas SET Modelo=?, Estampado=? WHERE ID_Camisetas=?")) {
-            ps.setString(1, c.getModelo()); ps.setString(2, c.getEstampado());
-            ps.setLong(3, c.getId_Camisetas());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Camisetas SET Modelo=?, Estampado=? WHERE ID_Camisetas=?");
+        ps.setString(1, c.getModelo());
+        ps.setString(2, c.getEstampado());
+        ps.setLong(3,   c.getId_Camisetas());
+        ps.executeUpdate();
     }
 
     private void insertAccesorio(Connection con, Accesorios a, long id, long idTextil) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Accesorios (ID_Accesorios, ID_Textil, Tipo_Accesorio) VALUES (?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, idTextil); ps.setString(3, a.getTipoAccesorio());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Accesorios (ID_Accesorios, ID_Textil, Tipo_Accesorio) VALUES (?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   idTextil);
+        ps.setString(3, a.getTipoAccesorio());
+        ps.executeUpdate();
     }
 
     private void updateAccesorio(Connection con, Accesorios a) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Accesorios SET Tipo_Accesorio=? WHERE ID_Accesorios=?")) {
-            ps.setString(1, a.getTipoAccesorio()); ps.setLong(2, a.getId_Accesorios());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Accesorios SET Tipo_Accesorio=? WHERE ID_Accesorios=?");
+        ps.setString(1, a.getTipoAccesorio());
+        ps.setLong(2,   a.getId_Accesorios());
+        ps.executeUpdate();
     }
 
     private void insertOtros(Connection con, Otros o, long id) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Otros (ID_Otros, ID_Producto, Descripcion) VALUES (?,?,?)")) {
-            ps.setLong(1, id); ps.setLong(2, o.getId_Producto()); ps.setString(3, o.getDescripcion());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "INSERT INTO Otros (ID_Otros, ID_Producto, Descripcion) VALUES (?,?,?)");
+        ps.setLong(1,   id);
+        ps.setLong(2,   o.getId_Producto());
+        ps.setString(3, o.getDescripcion());
+        ps.executeUpdate();
     }
 
     private void updateOtros(Connection con, Otros o) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(
-                "UPDATE Otros SET Descripcion=? WHERE ID_Otros=?")) {
-            ps.setString(1, o.getDescripcion()); ps.setLong(2, o.getId_Otros());
-            ps.executeUpdate();
-        }
+        PreparedStatement ps = con.prepareStatement(
+            "UPDATE Otros SET Descripcion=? WHERE ID_Otros=?");
+        ps.setString(1, o.getDescripcion());
+        ps.setLong(2,   o.getId_Otros());
+        ps.executeUpdate();
     }
 }
