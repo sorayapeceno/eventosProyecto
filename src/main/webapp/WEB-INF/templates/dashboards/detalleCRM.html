@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Detalle – CRM</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Detalle – CRM</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards/crm}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Organizaciones por Tipo</h3>
+        <canvas id="chartOrgTipo"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Productos por Categoría</h3>
+        <canvas id="chartProdCat"></canvas>
+      </div>
+    </div>
+
+    <!-- Tabla organizaciones -->
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Organizaciones</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${organizaciones}">
+          <td th:text="${o['Nombre']}"></td>
+          <td><span class="badge" th:text="${o['Tipo_Organizacion']}"></span></td>
+          <td th:text="${o['Email']}"></td>
+          <td th:text="${o['Telefono']}"></td>
+          <td th:text="${o['Direccion']}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabla productos -->
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Productos</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio (€)</th>
+          <th>Stock</th>
+          <th>Categoría</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${productos}">
+          <td th:text="${p['Nombre']}"></td>
+          <td th:text="${p['Descripcion']}"></td>
+          <td th:text="${p['Precio']}"></td>
+          <td th:text="${p['Stock']}"></td>
+          <td><span class="badge" th:text="${p['Categoria']}"></span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabla oportunidades -->
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Oportunidades</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Fecha Inicio</th>
+          <th>Tipos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="op : ${oportunidades}">
+          <td th:text="${op['Titulo']}"></td>
+          <td th:text="${op['Descripcion']}"></td>
+          <td th:text="${op['Fecha_Inicio']}"></td>
+          <td><span class="badge" th:text="${op['Tipos_Oportunidad']}"></span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const orgTipoLabels = /*[[${organizacionesPorTipo.keySet()}]]*/ [];
+  const orgTipoValues = /*[[${organizacionesPorTipo.values()}]]*/ [];
+  const prodCatLabels = /*[[${productosPorCategoria.keySet()}]]*/ [];
+  const prodCatValues = /*[[${productosPorCategoria.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/detalleCRM.js}"></script>
+</body>
+</html>

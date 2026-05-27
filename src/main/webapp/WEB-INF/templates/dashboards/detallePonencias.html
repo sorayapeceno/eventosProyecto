@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Detalle – Ponencias</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+                <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+            </a>
+        </div>
+        <h1>Detalle – Ponencias</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/dashboards/ponencias}"><button type="button">&#8592; Atrás</button></a>
+        </div>
+    </div>
+    <div class="cajaDeBotones">
+        <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+        <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+        <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+        <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    </div>
+</header>
+<main class="principal">
+    <div class="dashboard-contenido">
+
+        <div class="charts-grid">
+            <div class="chart-box">
+                <h3>Por Tipo</h3>
+                <canvas id="chartTipo"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Por Nivel</h3>
+                <canvas id="chartNivel"></canvas>
+            </div>
+        </div>
+
+        <div class="tabla-detalle-wrap">
+            <h2 class="tabla-titulo">Listado completo de Ponencias</h2>
+            <table class="tabla-detalle">
+                <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Temática</th>
+                    <th>Tipo</th>
+                    <th>Nivel</th>
+                    <th>Formato</th>
+                    <th>Duración (min)</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Sala</th>
+                    <th>Evento</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${ponencias}">
+                    <td th:text="${p['Titulo']}"></td>
+                    <td th:text="${p['Tema']}"></td>
+                    <td><span class="badge" th:text="${p['Tipo']}"></span></td>
+                    <td th:text="${p['Nivel']}"></td>
+                    <td th:text="${p['Formato']}"></td>
+                    <td th:text="${p['Duracion']}"></td>
+                    <td th:text="${p['Fecha']}"></td>
+                    <td th:text="${p['Hora']}"></td>
+                    <td th:text="${p['Sala']}"></td>
+                    <td th:text="${p['Evento']}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const tipoLabels  = /*[[${ponenciasPorTipo.keySet()}]]*/ [];
+    const tipoValues  = /*[[${ponenciasPorTipo.values()}]]*/ [];
+    const nivelLabels = /*[[${ponenciasPorNivel.keySet()}]]*/ [];
+    const nivelValues = /*[[${ponenciasPorNivel.values()}]]*/ [];
+    /*]]>*/
+</script>
+<script th:src="@{/JS/detallePonencias.js}"></script>
+</body>
+</html>

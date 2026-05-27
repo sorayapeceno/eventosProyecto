@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Generar JSON CRM</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        main { max-width: 700px; margin: 30px auto; text-align: center; }
+        .mensaje { padding: 15px; border-radius: 8px; margin: 20px 0; background-color: #f2f2f2; }
+        a button { padding: 12px 22px; border-radius: 30px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Generación de JSON</h1>
+    <a th:href="@{/crm/}">
+        <button type="button">&#8592; Volver al CRM</button>
+    </a>
+</header>
+
+<main>
+    <div class="mensaje" th:if="${exito != null}">
+        <h2 th:text="${exito}">JSON generado correctamente.</h2>
+        <p>Filtro aplicado: productos con stock mayor que 0.</p>
+        <p>Productos encontrados: <span th:text="${totalProductos}">0</span></p>
+        <p>Ruta del fichero: <strong th:text="${rutaArchivo}">resources/crm/productos_filtrados.json</strong></p>
+    </div>
+
+    <div class="mensaje" th:if="${error != null}">
+        <h2 th:text="${error}">Error</h2>
+        <p>Comprueba la conexión con MySQL y que la tabla FormularioProducto existe.</p>
+    </div>
+</main>
+</body>
+</html>

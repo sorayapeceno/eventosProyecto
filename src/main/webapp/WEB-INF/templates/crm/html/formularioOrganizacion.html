@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Formulario Organización</title>
+    <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+    <style>
+        body { text-align: center; }
+        main { display: flex; justify-content: center; }
+        form { width: 420px; display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        input, select, button { padding: 10px; font-size: 16px; }
+        .error { color: darkred; font-weight: bold; }
+        .exito { color: darkgreen; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+    </a>
+    <h1>Formulario Organización</h1>
+    <a th:href="@{/crm/}"><button type="button">&#8592; Atrás</button></a>
+</header>
+
+<main>
+    <form th:action="@{/crm/organizacion}" method="post">
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+        <p class="exito" th:if="${exito}" th:text="${exito}"></p>
+
+        <input type="text" name="nombre" placeholder="Nombre de la organización" th:value="${organizacion != null ? organizacion.nombre : ''}">
+        <input type="text" name="direccion" placeholder="Dirección" th:value="${organizacion != null ? organizacion.direccion : ''}">
+        <input type="text" name="telefono" placeholder="Teléfono" th:value="${organizacion != null ? organizacion.telefono : ''}">
+        <input type="email" name="email" placeholder="Email" th:value="${organizacion != null ? organizacion.email : ''}">
+
+        <select name="tipoOrganizacion">
+            <option value="">-- Tipo de organización --</option>
+            <option value="Administración">Administración</option>
+            <option value="Empresa">Empresa</option>
+            <option value="Centro educativo">Centro educativo</option>
+            <option value="Asociación">Asociación</option>
+            <option value="Ayuntamiento">Ayuntamiento</option>
+        </select>
+
+        <button type="submit">Guardar organización</button>
+    </form>
+</main>
+</body>
+</html>

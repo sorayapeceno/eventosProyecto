@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Detalle – Logística</title>
+  <link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+  <link rel="stylesheet" th:href="@{/CSS/dashboards.css}">
+</head>
+<body>
+<header>
+  <div class="header-superior">
+    <div class="logo-container">
+      <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
+      </a>
+    </div>
+    <h1>Detalle – Logística</h1>
+    <div class="contenedorBotonInicio">
+      <a th:href="@{/dashboards/logistica}"><button type="button">&#8592; Atrás</button></a>
+    </div>
+  </div>
+  <div class="cajaDeBotones">
+    <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
+    <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
+    <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
+    <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+    <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+    <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+    <a class="botones" th:href="@{/dashboards/logistica}">Logística</a>
+  </div>
+</header>
+<main class="principal">
+  <div class="dashboard-contenido">
+
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Pedidos por Estado</h3>
+        <canvas id="chartPedEstado"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Albaranes por Estado</h3>
+        <canvas id="chartAlbaran"></canvas>
+      </div>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Proveedores</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>País</th>
+          <th>Fecha Alta</th>
+          <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${proveedores}">
+          <td th:text="${p['nombre']}"></td>
+          <td th:text="${p['direccion']}"></td>
+          <td th:text="${p['telefono']}"></td>
+          <td th:text="${p['email']}"></td>
+          <td th:text="${p['pais']}"></td>
+          <td th:text="${p['fecha_alta']}"></td>
+          <td><span class="badge" th:text="${p['estado']}"></span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Pedidos</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>ID Pedido</th>
+          <th>Fecha Pedido</th>
+          <th>Fecha Entrega Prevista</th>
+          <th>Proveedor</th>
+          <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${pedidos}">
+          <td th:text="${p['id_pedido']}"></td>
+          <td th:text="${p['fecha_pedido']}"></td>
+          <td th:text="${p['fecha_entrega_prevista']}"></td>
+          <td th:text="${p['proveedor']}"></td>
+          <td><span class="badge" th:text="${p['estado_pedido']}"></span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabla-detalle-wrap">
+      <h2 class="tabla-titulo">Mercancías</h2>
+      <table class="tabla-detalle">
+        <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Categoría</th>
+          <th>Precio Unitario (€)</th>
+          <th>Stock Mínimo</th>
+          <th>Stock Actual</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${mercancias}">
+          <td th:text="${m['descripcion']}"></td>
+          <td th:text="${m['categoria']}"></td>
+          <td th:text="${m['precio_unitario']}"></td>
+          <td th:text="${m['stock_minimo']}"></td>
+          <td th:text="${m['stock_actual']}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const pedEstadoLabels = /*[[${pedidosPorEstado.keySet()}]]*/ [];
+  const pedEstadoValues = /*[[${pedidosPorEstado.values()}]]*/ [];
+  const albaranLabels   = /*[[${albAranesPorEstado.keySet()}]]*/ [];
+  const albaranValues   = /*[[${albAranesPorEstado.values()}]]*/ [];
+  /*]]>*/
+</script>
+<script th:src="@{/JS/detalleLogistica.js}"></script>
+</body>
+</html>
