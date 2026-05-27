@@ -133,7 +133,7 @@ public class Ponencia {
 
     public void setFormato(Formato formato) {
         this.formato = formato;
-    }
+    }/**/
 
     @Override
     public boolean equals(Object o) {

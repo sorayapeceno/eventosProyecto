@@ -104,7 +104,7 @@ public class RepoEventos {
                 );
 
 
-                eventos.add(evento);
+                eventos.add(evento);/**/
             }
 
         } catch (SQLException e) {

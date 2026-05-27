@@ -92,7 +92,7 @@ public class ParticipantesServlet extends HttpServlet {
 					case "Crear_Ponencia":
 						PonenciaRepo repo1 = new PonenciaRepo();
 						templateEngine.process("Crear_Ponencia",context,response.getWriter());
-						break;
+						break;/**/
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
