@@ -1,7 +1,7 @@
 package dam.primero.servlet.ventas;
 
-import dam.primero.modelos.ventas.*;
-import dam.primero.repositorio.ventas.TicketRepository;
+import dam.primero.modelos.ventas.Asistente;
+import dam.primero.repositorio.ventas.AsistenteRepository;
 import dam.primero.exception.MyException;
 
 import org.thymeleaf.TemplateEngine;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class VentasServlet extends HttpServlet {
+public class AsistenteServlet extends HttpServlet {
 
     private TemplateEngine templateEngine;
     private JavaxServletWebApplication application;
@@ -29,7 +29,7 @@ public class VentasServlet extends HttpServlet {
     private static final String TEMPLATES = "/WEB-INF/templates/ventas/";
     private static final String SUFFIX    = ".html";
 
-    private final TicketRepository ticketRepo = new TicketRepository();
+    private final AsistenteRepository repo = new AsistenteRepository();
 
     @Override
     public void init() throws ServletException {
@@ -51,18 +51,14 @@ public class VentasServlet extends HttpServlet {
         String path = req.getPathInfo() == null ? "/" : req.getPathInfo();
 
         switch (path) {
-            case "/":
-            case "/index":
-                mostrarIndex(req, resp);
+            case "/listar":
+                listar(req, resp);
                 break;
-            case "/verListadoVentas":
-                mostrarListadoVentas(req, resp);
-                break;
-            case "/detalleTicket":
-                mostrarDetalleTicket(req, resp);
+            case "/formulario":
+                formulario(req, resp);
                 break;
             default:
-                resp.sendRedirect(req.getContextPath() + "/ventas/");
+                resp.sendRedirect(req.getContextPath() + "/asistente/listar");
         }
     }
 
@@ -73,82 +69,97 @@ public class VentasServlet extends HttpServlet {
         String path = req.getPathInfo() == null ? "/" : req.getPathInfo();
 
         switch (path) {
-            case "/cancelarTicket":
-                cancelarTicket(req, resp);
+            case "/guardar":
+                guardar(req, resp);
+                break;
+            case "/eliminar":
+                eliminar(req, resp);
                 break;
             default:
-                resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas");
+                resp.sendRedirect(req.getContextPath() + "/asistente/listar");
         }
     }
 
-    private void mostrarIndex(HttpServletRequest req, HttpServletResponse resp)
+    private void listar(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
-            resp.setContentType("text/html;charset=UTF-8");
-            IServletWebExchange webExchange = application.buildExchange(req, resp);
-            WebContext context = new WebContext(webExchange, req.getLocale());
-
-            templateEngine.process("indexVentas", context, resp.getWriter());
-
-        } catch (Exception e) {
-            renderError(req, resp, e.getMessage());
-        }
-    }
-
-    private void mostrarListadoVentas(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        try {
-            List<Ticket> tickets = ticketRepo.findAll();
+            List<Asistente> asistentes = repo.findAll();
 
             resp.setContentType("text/html;charset=UTF-8");
             IServletWebExchange webExchange = application.buildExchange(req, resp);
             WebContext context = new WebContext(webExchange, req.getLocale());
-            context.setVariable("tickets", tickets);
+            context.setVariable("asistentes", asistentes);
 
-            templateEngine.process("html/ListadoVentas", context, resp.getWriter());
+            templateEngine.process("html/ListadoAsistentes", context, resp.getWriter());
 
         } catch (MyException e) {
             renderError(req, resp, e.getMessage());
         }
     }
 
-    private void mostrarDetalleTicket(HttpServletRequest req, HttpServletResponse resp)
+    private void formulario(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
-            String idStr = req.getParameter("id");
-            if (idStr == null || idStr.isBlank()) {
-                resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas");
-                return;
-            }
-
-            long id = Long.parseLong(idStr);
-            Optional<Ticket> resultado = ticketRepo.findByIdConLineas(id);
-
             resp.setContentType("text/html;charset=UTF-8");
             IServletWebExchange webExchange = application.buildExchange(req, resp);
             WebContext context = new WebContext(webExchange, req.getLocale());
 
-            if (resultado.isPresent()) {
-                context.setVariable("ticket", resultado.get());
-                templateEngine.process("html/DetalleTicket", context, resp.getWriter());
-            } else {
-                context.setVariable("error", "Ticket no encontrado");
-                templateEngine.process("html/error", context, resp.getWriter());
+            String idStr = req.getParameter("id");
+            if (idStr != null && !idStr.isBlank()) {
+                Optional<Asistente> encontrado = repo.findById(Long.parseLong(idStr));
+                encontrado.ifPresent(a -> context.setVariable("asistente", a));
             }
 
+            templateEngine.process("html/FormularioAsistente", context, resp.getWriter());
+
         } catch (MyException | NumberFormatException e) {
-            renderError(req, resp, "Error al cargar el ticket: " + e.getMessage());
+            renderError(req, resp, e.getMessage());
         }
     }
 
-    private void cancelarTicket(HttpServletRequest req, HttpServletResponse resp)
+    private void guardar(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        try {
+            String idStr = req.getParameter("id");
+            Asistente a = new Asistente();
+
+            if (idStr != null && !idStr.isBlank()) {
+                a.setId_Asistente(Long.parseLong(idStr));
+            } else {
+                a.setId_Asistente(repo.getNextId());
+            }
+
+            a.setTematica(req.getParameter("tematica"));
+            a.setDireccion(req.getParameter("direccion"));
+            a.setObservaciones(req.getParameter("observaciones"));
+            a.setBio(req.getParameter("bio"));
+            a.setNivelImparticion(req.getParameter("nivelImparticion"));
+
+            String totalStr = req.getParameter("totalGastado");
+            a.setTotalGastado(totalStr != null && !totalStr.isBlank()
+                              ? Double.parseDouble(totalStr) : 0.0);
+
+            if (idStr != null && !idStr.isBlank()) {
+                repo.update(a);
+            } else {
+                repo.save(a);
+            }
+
+            resp.sendRedirect(req.getContextPath() + "/asistente/listar?msg=guardado");
+
+        } catch (MyException | NumberFormatException e) {
+            renderError(req, resp, "Error al guardar asistente: " + e.getMessage());
+        }
+    }
+
+    private void eliminar(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
             long id = Long.parseLong(req.getParameter("id"));
-            ticketRepo.cancelar(id);
-            resp.sendRedirect(req.getContextPath() + "/ventas/verListadoVentas?msg=cancelado");
+            repo.deleteById(id);
+            resp.sendRedirect(req.getContextPath() + "/asistente/listar?msg=eliminado");
         } catch (MyException | NumberFormatException e) {
-            renderError(req, resp, "Error al cancelar ticket: " + e.getMessage());
+            renderError(req, resp, "Error al eliminar asistente: " + e.getMessage());
         }
     }
 

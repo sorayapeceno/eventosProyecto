@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones activo">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Catálogo de Productos</h2>
+
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'guardado'}"  class="alerta alerta-exito">Producto guardado correctamente.</div>
+            <div th:if="${param.msg[0] == 'eliminado'}" class="alerta alerta-exito">Producto eliminado correctamente.</div>
+        </div>
+        <div th:if="${param.error != null}">
+            <div th:if="${param.error[0] == 'tieneVentas'}" class="alerta alerta-error">
+                No se puede eliminar: el producto tiene ventas asociadas.
+            </div>
+        </div>
+        <div th:if="${error != null}" class="alerta alerta-error">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="panel-herramientas">
+            <a th:href="@{/producto/formulario}" class="btn-primario">Nuevo Producto</a>
+        </div>
+
+        <div class="contenedor-tabla">
+            <table class="tabla-ventas" id="tablaProductos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Descuento</th>
+                        <th>Precio Final</th>
+                        <th>Stock</th>
+                        <th>IVA</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${productos == null or #lists.isEmpty(productos)}">
+                        <td colspan="10" style="text-align:center; padding:20px;">
+                            No hay productos en el catálogo.
+                        </td>
+                    </tr>
+                    <tr th:each="prod : ${productos}">
+                        <td th:text="${prod.id_Producto}">1</td>
+                        <td th:text="${prod.nombreProducto}">Producto</td>
+                        <td th:text="${prod.tipoProducto.displayName}">Tipo</td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">€0.00</td>
+                        <td th:text="${prod.descuento > 0 ? '-€' + #numbers.formatDecimal(prod.descuento, 1, 2) : '-'}">-</td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(prod.precioConDescuento, 1, 2)}">€0.00</td>
+                        <td th:text="${prod.stockDisponible > 0 ? prod.stockDisponible : 'Sin stock'}">0</td>
+                        <td th:text="${prod.tipoIVA != null ? prod.tipoIVA.porcentaje + '%' : '21%'}">21%</td>
+                        <td th:text="${prod.descripcionProducto}">Descripción</td>
+                        <td>
+                            <div class="acciones">
+                                <a th:href="@{/producto/formulario(id=${prod.id_Producto})}" class="btn-neutro">Editar</a>
+                                <form th:action="@{/producto/eliminar}" method="post"
+                                      onsubmit="return confirm('¿Eliminar este producto?');">
+                                    <input type="hidden" name="id" th:value="${prod.id_Producto}">
+                                    <button type="submit" class="btn-peligro">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacion">
+            <button id="btnAnterior" onclick="anterior()">Anterior</button>
+            <span id="infoPagina">Página 1 de 1</span>
+            <button id="btnSiguiente" onclick="siguiente()">Siguiente</button>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    var filas = document.getElementById('tablaProductos').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var pag = 1;
+    var POR_PAG = 8;
+
+    function mostrar() {
+        var total = filas.length;
+        var paginas = Math.ceil(total / POR_PAG);
+        if (paginas < 1) paginas = 1;
+        if (pag > paginas) pag = paginas;
+        if (pag < 1) pag = 1;
+
+        for (var i = 0; i < filas.length; i++) {
+            if (i >= (pag - 1) * POR_PAG && i < pag * POR_PAG) {
+                filas[i].style.display = '';
+            } else {
+                filas[i].style.display = 'none';
+            }
+        }
+
+        document.getElementById('infoPagina').innerHTML = 'Página ' + pag + ' de ' + paginas;
+        document.getElementById('btnAnterior').disabled = (pag == 1);
+        document.getElementById('btnSiguiente').disabled = (pag == paginas);
+    }
+
+    function anterior() { pag--; mostrar(); }
+    function siguiente() { pag++; mostrar(); }
+
+    mostrar();
+</script>
+
+</body>
+</html>

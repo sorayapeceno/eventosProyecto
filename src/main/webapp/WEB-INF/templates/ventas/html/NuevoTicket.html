@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Venta</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones activo">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Nueva Venta</h2>
+
+        <div th:if="${param.error != null}">
+            <div th:if="${param.error[0] == 'carritoVacio'}"     class="alerta alerta-aviso">El carrito está vacío. Añade al menos un producto antes de confirmar.</div>
+            <div th:if="${param.error[0] == 'sinStock'}"         class="alerta alerta-error">No hay stock suficiente para ese producto.</div>
+            <div th:if="${param.error[0] == 'cantidadInvalida'}" class="alerta alerta-error">La cantidad debe ser mayor a 0.</div>
+        </div>
+
+        <!-- Añadir producto al carrito -->
+        <h3>Añadir Producto al Carrito</h3>
+        <form th:action="@{/ticket/carritoAgregar}" method="get" class="form-ventas">
+            <div class="form-grid">
+                <div class="form-grupo">
+                    <label for="idProducto">Producto</label>
+                    <select id="idProducto" name="idProducto" required>
+                        <option value="">-- Selecciona un producto --</option>
+                        <option th:each="prod : ${productos}"
+                                th:value="${prod.id_Producto}"
+                                th:text="${prod.nombreProducto + ' — €' + #numbers.formatDecimal(prod.precioConDescuento, 1, 2) + ' (Stock: ' + prod.stockDisponible + ')'}">
+                            Producto
+                        </option>
+                    </select>
+                </div>
+                <div class="form-grupo">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+                </div>
+            </div>
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">Añadir</button>
+            </div>
+        </form>
+
+        <hr style="margin: 20px 0;">
+
+        <!-- Carrito actual -->
+        <h3>Carrito</h3>
+        <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
+            <p>El carrito está vacío.</p>
+        </div>
+        <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+            <div class="contenedor-tabla">
+                <table class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${carrito}">
+                            <td th:text="${item.nombreProducto}">Producto</td>
+                            <td th:text="${item.cantidad}">1</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(item.precioUnitario, 1, 2)}">€0.00</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">€0.00</td>
+                            <td>
+                                <a th:href="@{/ticket/carritoEliminar(idProducto=${item.idProducto})}" class="btn-peligro" style="text-decoration:none; padding:4px 10px;">X</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Total estimado: €<span th:text="${#numbers.formatDecimal(totalCarrito, 1, 2)}">0.00</span></strong></p>
+        </div>
+
+        <hr style="margin: 20px 0;">
+
+        <!-- Datos del ticket -->
+        <h3>Datos del Ticket</h3>
+        <form th:action="@{/ticket/confirmar}" method="post" class="form-ventas">
+            <div class="form-grid">
+                <div class="form-grupo">
+                    <label for="idAsistente">Asistente *</label>
+                    <select id="idAsistente" name="idAsistente" required>
+                        <option value="">-- Selecciona asistente --</option>
+                        <option th:each="asistente : ${asistentes}"
+                                th:value="${asistente.id_Asistente}"
+                                th:text="${asistente.bio + ' (ID: ' + asistente.id_Asistente + ')'}">
+                            Asistente
+                        </option>
+                    </select>
+                </div>
+                <div class="form-grupo">
+                    <label for="metodoPago">Método de Pago *</label>
+                    <select id="metodoPago" name="metodoPago" required>
+                        <option th:each="mp : ${metodoPagos}"
+                                th:value="${mp.name()}"
+                                th:text="${mp.name()}">
+                            TARJETA
+                        </option>
+                    </select>
+                </div>
+                <div class="form-grupo full-width">
+                    <label for="codPromocional">Código Promocional (opcional)</label>
+                    <input type="text" id="codPromocional" name="codPromocional"
+                           placeholder="Ej: BIENVENIDA, PROMO_DEPOR" maxlength="32">
+                    <small>Códigos disponibles: BIENVENIDA (-€5), PROMO_DEPOR (-€10)</small>
+                </div>
+            </div>
+            <div class="form-acciones">
+                <button type="submit" class="btn-primario">Confirmar Compra</button>
+                <a th:href="@{/ticket/carritoClear}" class="btn-neutro">Vaciar Carrito</a>
+                <a th:href="@{/ventas/verListadoVentas}" class="btn-neutro">Cancelar</a>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+</body>
+</html>

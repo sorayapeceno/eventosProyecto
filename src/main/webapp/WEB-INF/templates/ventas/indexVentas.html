@@ -1,48 +1,132 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>VENTAS</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
-	<style>
-		body  { text-align: center; }
-		main  { display: flex; justify-content: center; align-items: center; }
-		.botones {
-			width: 300px;
-			padding: 15px;
-			font-size: 20px;
-			font-weight: bold;
-			background-color: #3348cb;
-			color: black;
-			border: none;
-			border-radius: 50px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>Módulo Ventas</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+    <style>
+        .principal-index {
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+            min-height: calc(100vh - 120px);
+            background-image: url('/Fotos/instituto.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .contenido-index {
+            width: 100%;
+            max-width: 1100px;
+        }
+        .contenido-index h2 {
+            font-size: 22px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+        .contenido-index > p {
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            margin-bottom: 0;
+        }
+        .cajas-acceso {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .caja-acceso {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 220px;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 10px;
+        }
+        .caja-acceso h3 {
+            font-size: 16px;
+            color: #4a7cbf;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 6px;
+        }
+        .caja-acceso p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .caja-acceso a {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: white;
+            background-color: #4a7cbf;
+            padding: 7px 10px;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .caja-acceso a:hover {
+            background-color: #3a6aaf;
+        }
+    </style>
 </head>
 <body>
+
 <header>
-	<a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-	   target="_blank">
-		<img th:src="@{/Fotos/logo.svg}" alt="Logotipo Instituto" id="logo">
-	</a>
-
-	<div class="fondo"
-		 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                        opacity: 0.3; z-index: -1;">
-	</div>
-
-	<h1 align="center">VENTAS</h1>
-
-	<!-- Botón atrás: navega a la raíz del contexto -->
-	<a th:href="@{/}">
-		<button type="button">&#8592; Atrás</button>
-	</a>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
 </header>
 
-<main>
-	<div>
-		<button class="botones" onclick="window.location.href='ventas/verListadoClientes'">Ver Ventas</button>
-	</div>
+<main class="principal-index">
+    <div class="contenido-index">
+
+        <h2>Módulo de Ventas</h2>
+        <p>Bienvenido al módulo de gestión de ventas. Desde aquí puedes gestionar los tickets, asistentes y productos.</p>
+
+        <div class="cajas-acceso">
+
+            <div class="caja-acceso">
+                <h3>Ventas</h3>
+                <p>Consulta todos los tickets generados o crea una nueva venta seleccionando productos y asistente.</p>
+                <a th:href="@{/ventas/verListadoVentas}">Ver listado de ventas</a>
+                <a th:href="@{/ticket/nuevo}">Nueva venta</a>
+            </div>
+
+            <div class="caja-acceso">
+                <h3>Asistentes</h3>
+                <p>Gestiona los asistentes del evento: consulta su información, registra nuevos o edita los existentes.</p>
+                <a th:href="@{/asistente/listar}">Ver asistentes</a>
+                <a th:href="@{/asistente/formulario}">Nuevo asistente</a>
+            </div>
+
+            <div class="caja-acceso">
+                <h3>Productos</h3>
+                <p>Administra el catálogo de productos disponibles: entradas, textil y otros artículos del evento.</p>
+                <a th:href="@{/producto/listar}">Ver catálogo de productos</a>
+                <a th:href="@{/producto/formulario}">Nuevo producto</a>
+            </div>
+
+        </div>
+
+    </div>
 </main>
+
 </body>
 </html>

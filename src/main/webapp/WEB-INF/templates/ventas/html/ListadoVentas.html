@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Ventas</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones activo">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Listado de Ventas</h2>
+
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'cancelado'}" class="alerta alerta-exito">
+                El ticket ha sido cancelado correctamente y el stock restaurado.
+            </div>
+        </div>
+        <div th:if="${error != null}" class="alerta alerta-error">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="panel-herramientas">
+            <a th:href="@{/ticket/nuevo}" class="btn-primario">Nueva Venta</a>
+        </div>
+
+        <div class="contenedor-tabla">
+            <table class="tabla-ventas" id="tablaTickets">
+                <thead>
+                    <tr>
+                        <th>ID Ticket</th>
+                        <th>Código QR</th>
+                        <th>Asistente</th>
+                        <th>Fecha Compra</th>
+                        <th>Método Pago</th>
+                        <th>Descuento</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${tickets == null or #lists.isEmpty(tickets)}">
+                        <td colspan="8" style="text-align:center; padding:20px;">
+                            No hay ventas registradas.
+                        </td>
+                    </tr>
+                    <tr th:each="ticket : ${tickets}">
+                        <td th:text="'#' + ${ticket.id_Ticket}">#100</td>
+                        <td th:text="${ticket.codigoQR}">QR-0000</td>
+                        <td th:text="${ticket.duenio != null ? ticket.duenio.bio : 'N/D'}">Bio</td>
+                        <td th:text="${ticket.fechaCompra != null ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy') : '-'}">01/01/2024</td>
+                        <td th:text="${ticket.metodoPago != null ? ticket.metodoPago.name() : '-'}">TARJETA</td>
+                        <td th:text="${ticket.descuento > 0 ? '-€' + #numbers.formatDecimal(ticket.descuento, 1, 2) : '-'}">-</td>
+                        <td th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">€0.00</td>
+                        <td>
+                            <div class="acciones">
+                                <a th:href="@{/ventas/detalleTicket(id=${ticket.id_Ticket})}" class="btn-secundario">Ver</a>
+                                <form th:action="@{/ventas/cancelarTicket}" method="post"
+                                      onsubmit="return confirm('¿Seguro que quieres cancelar este ticket?');">
+                                    <input type="hidden" name="id" th:value="${ticket.id_Ticket}">
+                                    <button type="submit" class="btn-peligro">Cancelar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacion">
+            <button id="btnAnterior" onclick="anterior()">Anterior</button>
+            <span id="infoPagina">Página 1 de 1</span>
+            <button id="btnSiguiente" onclick="siguiente()">Siguiente</button>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    var filas = document.getElementById('tablaTickets').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var pag = 1;
+    var POR_PAG = 8;
+
+    function mostrar() {
+        var total = filas.length;
+        var paginas = Math.ceil(total / POR_PAG);
+        if (paginas < 1) paginas = 1;
+        if (pag > paginas) pag = paginas;
+        if (pag < 1) pag = 1;
+
+        for (var i = 0; i < filas.length; i++) {
+            if (i >= (pag - 1) * POR_PAG && i < pag * POR_PAG) {
+                filas[i].style.display = '';
+            } else {
+                filas[i].style.display = 'none';
+            }
+        }
+
+        document.getElementById('infoPagina').innerHTML = 'Página ' + pag + ' de ' + paginas;
+        document.getElementById('btnAnterior').disabled = (pag == 1);
+        document.getElementById('btnSiguiente').disabled = (pag == paginas);
+    }
+
+    function anterior() { pag--; mostrar(); }
+    function siguiente() { pag++; mostrar(); }
+
+    mostrar();
+</script>
+
+</body>
+</html>

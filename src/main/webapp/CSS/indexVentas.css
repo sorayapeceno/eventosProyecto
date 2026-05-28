@@ -1,0 +1,292 @@
+/* ==========================================================================
+   indexVentas.css — Página de inicio del módulo de ventas
+   ========================================================================== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container { display: flex; align-items: center; }
+
+#logo { height: 100px; width: auto; object-fit: contain; }
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #2d97d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.contenedorBotonInicio button:hover {
+    background-color: #3348cb;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Barra de navegación superior hacia el resto del proyecto */
+.cajaDeBotones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.botones {
+    min-width: 150px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #3348cb;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.botones:hover {
+    background-color: #7f85d7;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   Contenido principal
+   ========================================================================== */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    padding: 35px 20px;
+}
+
+.contenido-index {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* ==========================================================================
+   Bloque de bienvenida
+   ========================================================================== */
+.bienvenida {
+    background-color: rgba(255,255,255,0.97);
+    padding: 35px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-left: 6px solid #2d97d0;
+}
+
+.bienvenida h2 {
+    font-size: 26px;
+    color: #3348cb;
+    margin-bottom: 14px;
+    border-bottom: 3px solid #2d97d0;
+    padding-bottom: 10px;
+}
+
+.bienvenida p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.bienvenida p:last-child { margin-bottom: 0; }
+
+/* ==========================================================================
+   Sección de acceso rápido a las páginas del módulo
+   ========================================================================== */
+.seccion-titulo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e3a8a;
+    padding-left: 4px;
+    margin-bottom: -10px;
+}
+
+.grid-accesos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+/* Cada tarjeta de acceso */
+.tarjeta-acceso {
+    background-color: rgba(255,255,255,0.97);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+    padding: 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 4px solid #2d97d0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
+}
+
+.tarjeta-acceso:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(51,72,203,0.15);
+    border-top-color: #3348cb;
+}
+
+.tarjeta-acceso .icono {
+    font-size: 36px;
+    line-height: 1;
+}
+
+.tarjeta-acceso h3 {
+    font-size: 17px;
+    font-weight: bold;
+    color: #3348cb;
+    margin: 0;
+}
+
+.tarjeta-acceso p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.tarjeta-acceso .etiqueta {
+    margin-top: auto;
+    display: inline-block;
+    align-self: flex-start;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #eff6ff;
+    color: #3348cb;
+}
+
+/* Variantes de color de borde por tipo de sección */
+.tarjeta-acceso.ventas    { border-top-color: #3348cb; }
+.tarjeta-acceso.asistente { border-top-color: #0369a1; }
+.tarjeta-acceso.producto  { border-top-color: #1e6b22; }
+.tarjeta-acceso.nuevo     { border-top-color: #c05621; }
+
+.tarjeta-acceso.ventas    .etiqueta { background-color: #e0e7ff; color: #3348cb; }
+.tarjeta-acceso.asistente .etiqueta { background-color: #e0f2fe; color: #0369a1; }
+.tarjeta-acceso.producto  .etiqueta { background-color: #dcfce7; color: #166534; }
+.tarjeta-acceso.nuevo     .etiqueta { background-color: #ffedd5; color: #c05621; }
+
+/* ==========================================================================
+   Tarjetas de estadísticas rápidas
+   ========================================================================== */
+.stats-rapidas {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 150px;
+    background-color: rgba(255,255,255,0.97);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 4px solid #2d97d0;
+    text-align: center;
+}
+
+.stat-item .num {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3348cb;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-item .desc {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-superior {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    h1 { font-size: 26px; margin: 10px 0; }
+
+    .cajaDeBotones {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botones { width: 100%; max-width: 280px; }
+
+    .bienvenida { padding: 22px 20px; }
+
+    .grid-accesos { grid-template-columns: 1fr; }
+
+    .stats-rapidas { flex-direction: column; }
+}

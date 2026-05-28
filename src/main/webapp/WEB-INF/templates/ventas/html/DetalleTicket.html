@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Ticket</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+
+        <h2>Detalle del Ticket</h2>
+
+        <div th:if="${param.msg != null}">
+            <div th:if="${param.msg[0] == 'creado'}" class="alerta alerta-exito">
+                Ticket creado correctamente. Stock actualizado.
+            </div>
+        </div>
+
+        <div th:if="${ticket != null}">
+
+            <!-- Datos del ticket y asistente -->
+            <div class="contenedor-tabla" style="max-width:520px; margin-bottom:20px;">
+                <table class="tabla-ventas">
+                    <tbody>
+                        <tr>
+                            <td><strong>ID</strong></td>
+                            <td th:text="'#' + ${ticket.id_Ticket}">#100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Código QR</strong></td>
+                            <td><code th:text="${ticket.codigoQR}">QR-0000</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha</strong></td>
+                            <td th:text="${ticket.fechaCompra != null
+                                           ? #temporals.format(ticket.fechaCompra, 'dd/MM/yyyy')
+                                           : '-'}">01/01/2024</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Método de pago</strong></td>
+                            <td th:text="${ticket.metodoPago != null ? ticket.metodoPago.name() : '-'}">TARJETA</td>
+                        </tr>
+                        <tr th:if="${ticket.codPromocional != null and !#strings.isEmpty(ticket.codPromocional)}">
+                            <td><strong>Código promo</strong></td>
+                            <td><code th:text="${ticket.codPromocional}">PROMO</code></td>
+                        </tr>
+                        <tr th:if="${ticket.duenio != null}">
+                            <td><strong>Asistente</strong></td>
+                            <td th:text="${ticket.duenio.bio}">Bio</td>
+                        </tr>
+                        <tr th:if="${ticket.descuento > 0}">
+                            <td><strong>Descuento</strong></td>
+                            <td th:text="'-€' + ${#numbers.formatDecimal(ticket.descuento, 1, 2)}">-€0.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(ticket.precioFinal, 1, 2)}">€0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Líneas del ticket -->
+            <h3 style="font-size:16px; margin-bottom:12px;">Líneas</h3>
+
+            <div class="contenedor-tabla">
+                <table class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${ticket.lineas == null or #lists.isEmpty(ticket.lineas)}">
+                            <td colspan="3" style="text-align:center; padding:20px;">
+                                Sin líneas registradas.
+                            </td>
+                        </tr>
+                        <tr th:each="linea : ${ticket.lineas}">
+                            <td th:text="${linea.producto != null ? linea.producto.nombreProducto : '-'}">Producto</td>
+                            <td th:text="${linea.cantidad}">1</td>
+                            <td th:text="'€' + ${#numbers.formatDecimal(linea.totalLinea, 1, 2)}">€0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-acciones" style="margin-top:20px;">
+                <a th:href="@{/ventas/verListadoVentas}" class="btn-neutro">← Volver al Listado</a>
+                <form th:action="@{/ventas/cancelarTicket}" method="post" style="display:inline;"
+                     onsubmit="return confirm('¿Cancelar este ticket?');">
+                    <input type="hidden" name="id" th:value="${ticket.id_Ticket}">
+                    <button type="submit" class="btn-peligro">Cancelar Ticket</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div th:if="${ticket == null}">
+            <p>El ticket solicitado no existe o ha sido cancelado.</p>
+            <a th:href="@{/ventas/verListadoVentas}" class="btn-primario">Volver al Listado</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

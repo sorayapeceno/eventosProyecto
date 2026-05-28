@@ -6,7 +6,6 @@ import dam.primero.exception.MyException;
 import dam.primero.modelos.eventos_participantes.Modelo.Estado;
 import dam.primero.modelos.eventos_participantes.Modelo.Evento;
 import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
-import dam.primero.modelos.ventas.Cliente;
 
 import java.sql.*;
 import java.time.LocalDate;

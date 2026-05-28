@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Ventas - Error</title>
+    <link rel="stylesheet" th:href="@{/CSS/unificacion.css}">
+    <link rel="stylesheet" th:href="@{/CSS/ventas.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-superior">
+        <div class="logo-container">
+            <a th:href="@{/}">
+                <img id="logo" th:src="@{/Fotos/logo.svg}" alt="Logo IES Torre de los Guzmanes">
+            </a>
+        </div>
+        <h1>I.E.S. Torre de los Guzmanes</h1>
+        <div class="contenedorBotonInicio">
+            <a th:href="@{/}" class="boton-inicio">INICIO</a>
+        </div>
+    </div>
+    <nav class="cajaDeBotones">
+        <a th:href="@{/ventas/verListadoVentas}" class="botones">Ventas</a>
+        <a th:href="@{/ticket/nuevo}"            class="botones">Nueva Venta</a>
+        <a th:href="@{/asistente/listar}"        class="botones">Asistentes</a>
+        <a th:href="@{/producto/listar}"         class="botones">Productos</a>
+    </nav>
+</header>
+
+<main class="principal">
+    <div class="contenido-ventas">
+        <div class="error-container">
+            <div class="error-icono"></div>
+            <h2>Ha ocurrido un error</h2>
+            <p th:if="${error != null}" th:text="${error}">
+               Se ha producido un error inesperado.
+            </p>
+            <p th:if="${error == null}">
+               Se ha producido un error inesperado. Por favor, inténtalo de nuevo.
+            </p>
+            <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                <a th:href="@{/ventas/verListadoVentas}" class="btn-primario">
+                    Ir al Módulo de Ventas
+                </a>
+                <button onclick="history.back()" class="btn-neutro">
+                    ← Volver
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

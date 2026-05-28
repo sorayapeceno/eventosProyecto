@@ -1,0 +1,232 @@
+/* CSS Módulo Ventas */
+
+/* Nav botones */
+.cajaDeBotones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.botones {
+    display: inline-block;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: #ffffff !important;
+    color: #4a7cbf !important;
+    border: 1px solid #4a7cbf;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.botones:hover {
+    background-color: #4a7cbf;
+    color: #ffffff;
+}
+
+.botones.activo {
+    background-color: #4a7cbf;
+    color: #ffffff;
+}
+
+header {
+    flex-direction: column;
+    padding: 15px 30px 0;
+    gap: 0;
+}
+
+.header-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.principal {
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    min-height: calc(100vh - 120px);
+}
+
+.contenido-ventas {
+    width: 100%;
+    max-width: 1100px;
+    background: white;
+    padding: 30px;
+    border: 1px solid #ccc;
+}
+
+.contenido-ventas h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #4a7cbf;
+}
+
+/* Alertas */
+.alerta {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid;
+}
+.alerta-exito  { background-color: #d4edda; border-color: #28a745; color: #155724; }
+.alerta-error  { background-color: #f8d7da; border-color: #dc3545; color: #721c24; }
+.alerta-aviso  { background-color: #fff3cd; border-color: #ffc107; color: #856404; }
+
+/* Panel herramientas */
+.panel-herramientas {
+    margin-bottom: 15px;
+}
+
+/* Tablas */
+.contenedor-tabla {
+    overflow-x: auto;
+    margin-bottom: 15px;
+}
+
+.tabla-ventas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-ventas th {
+    background-color: #4a7cbf;
+    color: white;
+    padding: 10px 8px;
+    text-align: left;
+}
+
+.tabla-ventas td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-ventas tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Botones */
+.btn-primario {
+    background-color: #4a7cbf;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secundario {
+    background-color: #5a8db5;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-neutro {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-peligro {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* Acciones en tabla */
+.acciones {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.acciones form {
+    margin: 0;
+}
+
+/* Formularios */
+.form-ventas {
+    max-width: 800px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-grupo.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-grupo label {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    padding: 7px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Paginación */
+.paginacion {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.paginacion button {
+    padding: 6px 14px;
+    background-color: #4a7cbf;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.paginacion button:disabled {
+    background-color: #aaa;
+}
+
+/* Acciones formulario */
+.form-acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+}
