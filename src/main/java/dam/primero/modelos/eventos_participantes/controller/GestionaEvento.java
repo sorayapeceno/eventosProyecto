@@ -152,7 +152,5 @@ public class GestionaEvento {
         PonenciaRepo ponenciaRepo = new PonenciaRepo();
         ponencias = ponenciaRepo.listarPonencias();
         System.out.println(ponencias);*/
-
-
     }
 }

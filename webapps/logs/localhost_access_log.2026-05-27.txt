@@ -385,3 +385,11 @@
 0:0:0:0:0:0:0:1 - - [27/May/2026:13:04:34 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611
 0:0:0:0:0:0:0:1 - - [27/May/2026:13:04:41 +0200] "GET /eventosProyecto/participantes/Crear_Evento HTTP/1.1" 200 4557
 0:0:0:0:0:0:0:1 - - [27/May/2026:13:04:41 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:29 +0200] "GET /eventosProyecto HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:32 +0200] "GET /eventosProyecto/ HTTP/1.1" 200 2424
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:38 +0200] "GET /eventosProyecto/participantes HTTP/1.1" 200 2631
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:38 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:45 +0200] "GET /eventosProyecto/participantes/Crear_Evento HTTP/1.1" 200 4557
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:22:45 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:23:48 +0200] "GET /eventosProyecto/participantes/Crear_Ponencia HTTP/1.1" 200 4937
+0:0:0:0:0:0:0:1 - - [27/May/2026:13:23:48 +0200] "GET /imagen/instituto.jpg HTTP/1.1" 404 611

@@ -105,6 +105,15 @@ public class ParticipantesServlet extends HttpServlet {
 						templateEngine.process("Crear_Ponencia",context,response.getWriter());
 
 						break;/**/
+
+					case "Registrar_Ponente":
+						PonenteRepo ponenteRepo = new PonenteRepo();
+						NivelImparticionRepo repo5 = new NivelImparticionRepo();
+						Set<NivelImparticion> nivelImparticions = repo5.listarNivelImparticion();
+						context.setVariable("nivelImparticions",nivelImparticions);
+						templateEngine.process("Registrar_Ponente",context,response.getWriter());
+						break;
+
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
 						List<Evento> eventos = new ArrayList<Evento>();
