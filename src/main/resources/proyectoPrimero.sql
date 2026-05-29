@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS dashboards;
 
 create database dashboards;
 use dashboards;
-ID_Accesorios
+
 CREATE USER IF NOT EXISTS 'alumno'@'localhost' IDENTIFIED BY 'alumnodam#1234';
 GRANT ALL PRIVILEGES ON *.* TO 'alumno'@'localhost';
 FLUSH PRIVILEGES;
