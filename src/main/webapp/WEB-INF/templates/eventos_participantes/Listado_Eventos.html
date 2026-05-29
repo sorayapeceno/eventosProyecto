@@ -40,26 +40,36 @@
                 <table>
                     <caption>Eventos registrados</caption>
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Fecha inicio</th>
-                            <th>Fecha fin</th>
-                            <th>Ciudad</th>
-                            <th>Estado</th>
-                            <th>Modalidad</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Modalidad</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>InnovaCode: Jornadas de Programación y BBDD</td>
-                            <td>2026-06-20</td>
-                            <td>2026-06-21</td>
-                            <td>Sevilla</td>
-                            <td>Cerrado</td>
-                            <td>Híbrido</td>
-                        </tr>
+
+                    <tr th:each="evento : ${eventos}">
+
+                        <td th:text="${evento.id_Evento}"></td>
+
+                        <td th:text="${evento.nombre}"></td>
+
+                        <td th:text="${evento.fecha_Inicio}"></td>
+
+                        <td th:text="${evento.fecha_Fin}"></td>
+
+                        <td th:text="${evento.ciudad}"></td>
+
+                        <td th:text="${evento.estado}"></td>
+
+                        <td th:text="${evento.modalidad}"></td>
+
+                    </tr>
+
                     </tbody>
                 </table>
             </section>

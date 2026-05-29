@@ -3,14 +3,14 @@ package dam.primero.repositorio.eventos_participantes;
 import dam.primero.config.MySqlConector;
 import dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes;
 import dam.primero.exception.MyException;
-import dam.primero.modelos.eventos_participantes.Modelo.Estado;
-import dam.primero.modelos.eventos_participantes.Modelo.Evento;
-import dam.primero.modelos.eventos_participantes.Modelo.Modalidad;
+import dam.primero.modelos.eventos_participantes.Modelo.*;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RepoEventos {
     private MySqlConectorEventosParticipantes conector;
@@ -73,7 +73,6 @@ public class RepoEventos {
 
         }
 
-
     public List<Evento> listarEvento() {
 
         List<Evento> eventos = new ArrayList<>();
@@ -88,31 +87,48 @@ public class RepoEventos {
 
             while (rs.next()) {
 
-                Evento evento = new Evento(
-                        rs.getInt("id_Evento"),
-                        rs.getString("Nombre"),
-                        rs.getString("Descripcion"),
-                        rs.getDate("Fecha_Inicio").toLocalDate(),
-                        rs.getDate("Fecha_Fin").toLocalDate(),
-                        rs.getString("Direccion"),
-                        rs.getString("Ciudad"),
-                        rs.getInt("Capacidad"),
-                        Estado.valueOf(rs.getString("Estado").toUpperCase()),
-                        Modalidad.valueOf(rs.getString("Modalidad").toUpperCase()),
-                        rs.getString("Lugar")
+                int id_Evento = rs.getInt("id_Evento");
+                String nombre = rs.getString("Nombre");
+                String descripcion = rs.getString("Descripcion");
+                LocalDate fecha_Inicio = rs.getDate("Fecha_Inicio").toLocalDate();
+                LocalDate fecha_Fin = rs.getDate("Fecha_Fin").toLocalDate();
+                String direccion = rs.getString("Direccion");
+                String ciudad = rs.getString("Ciudad");
+                int capacidad = rs.getInt("Capacidad");
+
+                Estado estado = Estado.valueOf(
+                        rs.getString("Estado").toUpperCase()
                 );
 
+                Modalidad modalidad = Modalidad.valueOf(
+                        rs.getString("Modalidad").toUpperCase()
+                );
 
-                eventos.add(evento);/**/
+                String lugar = rs.getString("Lugar");
+
+                Evento evento = new Evento(
+                        id_Evento,
+                        nombre,
+                        descripcion,
+                        fecha_Inicio,
+                        fecha_Fin,
+                        direccion,
+                        ciudad,
+                        capacidad,
+                        estado,
+                        modalidad,
+                        lugar
+                );
+
+                eventos.add(evento);
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
 
         return eventos;
-     }
+    }
 
     public Evento mostrarEvento(int idEvento) {
 

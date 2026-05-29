@@ -24,9 +24,9 @@ public class NivelImparticionRepo {
         }
         public Set<NivelImparticion> listarNivelImparticion() {
 
-            Set<NivelImparticion> nivelImp = new HashSet<NivelImparticion>();
+            Set<NivelImparticion> nivelImp = new HashSet<>();
 
-            String query = "SELECT Estado FROM Evento;";
+            String query = "SELECT NivelImparticion FROM Ponente;";
 
             Statement stmt = null;
             ResultSet rs = null;

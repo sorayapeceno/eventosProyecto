@@ -22,7 +22,7 @@ public class Evento {
                   Estado estado, Modalidad modalidad, String lugar) {
 
         contador++;
-        this.id_Evento = contador;
+        this.id_Evento = id_Evento;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
@@ -136,14 +136,20 @@ public class Evento {
 
     @Override
     public boolean equals(Object o) {
+
+        if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         Evento evento = (Evento) o;
+
         return id_Evento == evento.id_Evento;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id_Evento);
+
+        return Integer.hashCode(id_Evento);
     }
 
     @Override

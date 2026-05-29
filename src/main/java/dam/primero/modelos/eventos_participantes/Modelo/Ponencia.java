@@ -2,7 +2,7 @@ package dam.primero.modelos.eventos_participantes.Modelo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.LocalTime;
 
 public class Ponencia {
 
@@ -21,7 +21,7 @@ public class Ponencia {
 
 
     // Constructor vacío por buena práctica
-    public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, String sala, Nivel nivel, Tipo tipo, Formato formato) {}
+    public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalTime hora, String ubicacion, String sala, Nivel nivel, Tipo tipo, Formato formato) {}
 
     // Constructor completo modificado para aceptar y respetar el ID real de la base de datos
     public Ponencia(int id_Ponencia, String titulo, Tematica tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, Nivel nivel, Tipo tipo, Formato formato) {
@@ -133,18 +133,21 @@ public class Ponencia {
 
     public void setFormato(Formato formato) {
         this.formato = formato;
-    }/**/
+    }
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Ponencia ponencia = (Ponencia) o;
+
         return id_Ponencia == ponencia.id_Ponencia;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id_Ponencia);
+        return Integer.hashCode(id_Ponencia);
     }
 
     @Override

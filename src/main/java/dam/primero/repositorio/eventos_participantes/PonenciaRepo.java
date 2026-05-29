@@ -11,8 +11,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PonenciaRepo {
     private MySqlConectorEventosParticipantes conector;
@@ -69,9 +72,9 @@ public class PonenciaRepo {
 
 
 
-    public List<Ponencia> listarPonencias() {
+    public Set<Ponencia> listarPonencias() {
 
-        List<Ponencia> ponencias = new ArrayList<>();
+        Set<Ponencia> ponencias =new HashSet<>();
 
         String query = "SELECT * FROM Ponencia;";
 
@@ -90,7 +93,7 @@ public class PonenciaRepo {
                 String titulo = rs.getString("Titulo");
                 int duracion = rs.getInt("Duracion");
                 LocalDate fecha = rs.getDate("Fecha").toLocalDate();
-                LocalDateTime hora = rs.getTimestamp("Hora").toLocalDateTime();
+                LocalTime hora = rs.getTime("Hora").toLocalTime();
                 String ubicacion = rs.getString("Ubicacion");
                 String sala = rs.getString("Sala");
                 Nivel nivel = Nivel.valueOf(rs.getString("Nivel").toUpperCase());

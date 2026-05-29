@@ -42,23 +42,22 @@
                     <fieldset>
                         <legend>Datos del ponente</legend>
                         <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" th:value="${ponente.nombre}" required>
+                        <input type="text" id="nombre" name="nombre"  required>
                         
                         <label for="apellidos">Apellidos:</label>
-                        <input type="text" id="apellidos" name="apellidos" th:value="${ponente.apellidos}" required>
+                        <input type="text" id="apellidos" name="apellidos"  required>
 
                         <label for="especialidad">Especialidad:</label>
-                        <input type="text" id="especialidad" name="especialidad" th:value="${ponente.especialidad}" required>
+                        <input type="text" id="especialidad" name="especialidad"  required>
 
                         <label for="correo">Correo electrónico:</label>
-                        <input type="email" id="correo" name="correo" th:value="${ponente.correo}" required>
+                        <input type="email" id="correo" name="correo"  required>
 
                         <label for="telefono">Teléfono:</label>
-                        <input type="tel" id="telefono" name="telefono" th:value="${ponente.telefono}" required>
+                        <input type="tel" id="telefono" name="telefono"  required>
 
                         <label for="cv">Currículum (resumen):</label> 
-                        <textarea id="cv" name="cv" rows="4" th:text="${ponente.cv}">
-                        </textarea>
+                        <textarea id="cv" name="cv" rows="4" ></textarea>
 
                         <label for="nivelImparticion"> Nivel de impartición:</label>
                         <select id="nivelImparticion" name="nivelImparticion">

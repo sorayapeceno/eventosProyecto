@@ -69,8 +69,7 @@ public class PonenteRepo {
 
     public Set<Ponente> listarPonente() {
 
-        Set<Ponente> ponentes = new HashSet<>() {
-        };
+        Set<Ponente> ponentes = new HashSet<>();
 
         String query = "select * from ponente;";
 
@@ -84,16 +83,22 @@ public class PonenteRepo {
 
             while (rs.next()) {
 
-                int id_Ponente = rs.getInt("id_Ponente");
+
+                        int id_Ponente = rs.getInt("id_Ponente");
                 String bio = rs.getString("BIO");
                 String especialidad = rs.getString("Especialidad");
                 String cv  = rs.getString("CV");
-                NivelImparticion nivelImparticion = NivelImparticion.valueOf(rs.getString("Nivel_Imparticion"));
+                NivelImparticion nivelImparticion = NivelImparticion.valueOf(rs.getString("Nivel_Imparticion").toUpperCase());
 
-                Ponente ponente = new Ponente(id_Ponente,bio,especialidad,
-                        cv,nivelImparticion);
+                Ponente ponente = new Ponente(
+                        id_Ponente,
+                        bio,
+                        especialidad,
+                        cv,
+                        nivelImparticion);
 
                 ponentes.add(ponente);
+                System.out.println("Ponente cargado: " + id_Ponente + " - " + especialidad);
             }
 
         } catch (SQLException e) {

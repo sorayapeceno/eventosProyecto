@@ -3,12 +3,15 @@ package dam.primero.modelos.eventos_participantes.controller;
 import dam.primero.modelos.eventos_participantes.Modelo.*;
 import dam.primero.repositorio.eventos_participantes.EstadoRepo;
 import dam.primero.repositorio.eventos_participantes.PonenciaRepo;
+import dam.primero.repositorio.eventos_participantes.PonenteRepo;
 import dam.primero.repositorio.eventos_participantes.RepoEventos;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GestionaEvento {
     public static void main(String[] args) {
@@ -103,9 +106,36 @@ public class GestionaEvento {
                 "Fira Tecnológica Barcelona"
         );
 
-       // rep2.crearEvento(evento6);
+        Evento pruebaJavi = new Evento(4,
+                "Prueba Javi",
+                "Evento sobre inteligencia artificial, big data y desarrollo de soluciones cloud",
+                LocalDate.of(2026, 9, 20),
+                LocalDate.of(2026, 9, 22),
+                "Avenida de la Tecnología 45",
+                "Barcelona",
+                600,
+                Estado.ABIERTO,
+                Modalidad.PRESENCIAL,
+                "Fira Tecnológica Barcelona");
 
-        Tematica t = new Tematica(12,"Tema de la Ponencia");
+        RepoEventos repoEventos2 = new RepoEventos();
+        List<Evento> eventos = repoEventos2.listarEvento();
+
+
+
+
+        Ponente ponente = new Ponente(
+                1,
+                "Experto en desarrollo Java y bases de datos",
+                "Programación",
+                "cv_juan.pdf",
+                NivelImparticion.FP
+        );
+        /*PonenciaRepo repo = new PonenciaRepo();
+        Set<Ponencia> ponencias =  repo.listarPonencias();*/
+
+
+       /* Tematica t = new Tematica(12,"Tema de la Ponencia");
 
 
         Ponencia ponencia = new Ponencia(
@@ -128,11 +158,10 @@ public class GestionaEvento {
 
 
         PonenciaRepo repo = new PonenciaRepo();
-        repo.crearPonencia(ponencia);
+        repo.crearPonencia(ponencia);*/
 
 
 
-        List<Evento> eventos = new ArrayList<Evento>();
 
        // System.out.println(eventos);
 

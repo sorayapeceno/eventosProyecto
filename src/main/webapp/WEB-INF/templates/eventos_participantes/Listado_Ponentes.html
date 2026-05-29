@@ -36,32 +36,53 @@
     </aside>
         <main>
             <section class="contenido-secundario">
+
                 <h2>Listado de ponentes</h2>
+
                 <table>
+
                     <caption>Ponentes registrados</caption>
+
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>Especialidad</th>
-                            <th>Nivel de impartición</th>
-                            <th>Correo</th>
-                            <th>Teléfono</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Especialidad</th>
+                        <th>Nivel de impartición</th>
+                        <th>Bio</th>
+                        <th>CV</th>
+                    </tr>
                     </thead>
+
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Docente</td>
-                            <td>Especializado</td>
-                            <td>BBDD</td>
-                            <td>FP</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+
+                    <tr th:each="ponente : ${ponentes}">
+
+                        <td th:text="${ponente.idPonente}"></td>
+
+                        <td th:text="${ponente.especialidad}"></td>
+
+                        <td>
+                            <select name="nivelImparticion">
+
+                                <option th:each="nivel : ${niveles}"
+                                        th:value="${nivel}"
+                                        th:text="${nivel}"
+                                        th:selected="${nivel == ponente.nivelImparticion}">
+                                </option>
+
+                            </select>
+                        </td>
+
+                        <td th:text="${ponente.BIO}"></td>
+
+                        <td th:text="${ponente.CV}"></td>
+
+                    </tr>
+
                     </tbody>
+
                 </table>
+
             </section>
         </main>
         <footer>

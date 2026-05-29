@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -109,41 +110,39 @@ public class ParticipantesServlet extends HttpServlet {
 					case "Registrar_Ponente":
 						PonenteRepo ponenteRepo = new PonenteRepo();
 						NivelImparticionRepo repo5 = new NivelImparticionRepo();
-						Set<NivelImparticion> nivelImparticions = repo5.listarNivelImparticion();
-						context.setVariable("nivelImparticions",nivelImparticions);
+						Set<NivelImparticion> nivelImparticion1 = repo5.listarNivelImparticion();
+						context.setVariable("nivelImparticion1",nivelImparticion1);
 						templateEngine.process("Registrar_Ponente",context,response.getWriter());
 						break;
 
 					case "Listado_Eventos":
 						RepoEventos repoEventos = new RepoEventos();
-						List<Evento> eventos = new ArrayList<Evento>();
+						List<Evento> eventos = repoEventos.listarEvento();
 						context.setVariable("eventos", eventos);
 						templateEngine.process("Listado_Eventos", context, response.getWriter());
 						break;
+
 					case "Listado_Ponencias":
-						try {
 							PonenciaRepo rep = new PonenciaRepo();
-							List<Ponencia> ponencias = rep.listarPonencias();
+							Set<Ponencia> ponencias = rep.listarPonencias();
 							context.setVariable("ponencias", ponencias);
 							templateEngine.process("Listado_Ponencias", context, response.getWriter());
-						} catch (Exception e) {
-							response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en Base de Datos: " + e.getMessage());
-						}
+
 						break;
 					case "Listado_Ponentes":
 						PonenteRepo repPonentes = new PonenteRepo();
-						List<Ponente> ponentes = new ArrayList<Ponente>();
+						Set<Ponente> ponentes = repPonentes.listarPonente();
 						context.setVariable("ponentes", ponentes);
 						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
 
 					case "Detalle_Evento":
-						RepoEventos rep = new RepoEventos();
+						RepoEventos re = new RepoEventos();
 						String idParam = request.getParameter("id");
 
 						if (idParam != null && !idParam.isEmpty()) {
 							int idEvento = Integer.parseInt(idParam);
-							Evento evento = rep.mostrarEvento(idEvento);
+							Evento evento = re.mostrarEvento(idEvento);
 							context.setVariable("evento", evento);
 							templateEngine.process("Detalle_Evento", context, response.getWriter());
 						}
