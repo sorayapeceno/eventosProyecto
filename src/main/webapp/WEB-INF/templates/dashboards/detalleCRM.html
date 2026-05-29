@@ -15,9 +15,7 @@
       </a>
     </div>
     <h1>Detalle – CRM</h1>
-    <div class="contenedorBotonInicio">
-      <a th:href="@{/dashboards/crm}"><button type="button">&#8592; Atrás</button></a>
-    </div>
+    <div class="contenedorBotonInicio"><a th:href="@{/}"><button type="button">&#8962; Inicio</button></a></div>
   </div>
   <div class="cajaDeBotones">
     <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
@@ -25,6 +23,8 @@
     <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
     <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
     <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+    <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+    <a class="botones" th:href="@{/dashboards/logistica}">Logística</a>
   </div>
 </header>
 <main class="principal">
@@ -32,83 +32,30 @@
 
     <div class="charts-grid">
       <div class="chart-box">
-        <h3>Organizaciones por Tipo</h3>
-        <canvas id="chartOrgTipo"></canvas>
-      </div>
-      <div class="chart-box">
-        <h3>Productos por Categoría</h3>
-        <canvas id="chartProdCat"></canvas>
+        <h3>Páginas Web por Tipo</h3>
+        <canvas id="chartPaginas"></canvas>
       </div>
     </div>
 
-    <!-- Tabla organizaciones -->
     <div class="tabla-detalle-wrap">
-      <h2 class="tabla-titulo">Organizaciones</h2>
-      <table class="tabla-detalle">
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Tipo</th>
-          <th>Email</th>
-          <th>Teléfono</th>
-          <th>Dirección</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="o : ${organizaciones}">
-          <td th:text="${o['Nombre']}"></td>
-          <td><span class="badge" th:text="${o['Tipo_Organizacion']}"></span></td>
-          <td th:text="${o['Email']}"></td>
-          <td th:text="${o['Telefono']}"></td>
-          <td th:text="${o['Direccion']}"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Tabla productos -->
-    <div class="tabla-detalle-wrap">
-      <h2 class="tabla-titulo">Productos</h2>
-      <table class="tabla-detalle">
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Precio (€)</th>
-          <th>Stock</th>
-          <th>Categoría</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="p : ${productos}">
-          <td th:text="${p['Nombre']}"></td>
-          <td th:text="${p['Descripcion']}"></td>
-          <td th:text="${p['Precio']}"></td>
-          <td th:text="${p['Stock']}"></td>
-          <td><span class="badge" th:text="${p['Categoria']}"></span></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Tabla oportunidades -->
-    <div class="tabla-detalle-wrap">
-      <h2 class="tabla-titulo">Oportunidades</h2>
+      <h2 class="tabla-titulo">Listado de Páginas Web</h2>
       <table class="tabla-detalle">
         <thead>
         <tr>
           <th>Título</th>
-          <th>Descripción</th>
-          <th>Fecha Inicio</th>
-          <th>Tipos</th>
+          <th>URL</th>
+          <th>Tipo</th>
+          <th>Fecha Creación</th>
+          <th>Fecha Modificación</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="op : ${oportunidades}">
-          <td th:text="${op['Titulo']}"></td>
-          <td th:text="${op['Descripcion']}"></td>
-          <td th:text="${op['Fecha_Inicio']}"></td>
-          <td><span class="badge" th:text="${op['Tipos_Oportunidad']}"></span></td>
+        <tr th:each="p : ${paginas}">
+          <td th:text="${p['Titulo']}"></td>
+          <td th:text="${p['Url']}"></td>
+          <td><span class="badge" th:text="${p['Nombre_Tipo']}"></span></td>
+          <td th:text="${p['Fecha_Creacion']}"></td>
+          <td th:text="${p['Fecha_Modificacion']}"></td>
         </tr>
         </tbody>
       </table>
@@ -120,10 +67,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script th:inline="javascript">
   /*<![CDATA[*/
-  const orgTipoLabels = /*[[${organizacionesPorTipo.keySet()}]]*/ [];
-  const orgTipoValues = /*[[${organizacionesPorTipo.values()}]]*/ [];
-  const prodCatLabels = /*[[${productosPorCategoria.keySet()}]]*/ [];
-  const prodCatValues = /*[[${productosPorCategoria.values()}]]*/ [];
+  const paginasLabels = /*[[${paginasPorTipo.keySet()}]]*/ [];
+  const paginasValues = /*[[${paginasPorTipo.values()}]]*/ [];
   /*]]>*/
 </script>
 <script th:src="@{/JS/detalleCRM.js}"></script>

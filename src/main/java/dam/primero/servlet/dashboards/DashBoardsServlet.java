@@ -120,21 +120,10 @@ public class DashBoardsServlet extends HttpServlet {
 				break;
 			case "crm":
 				if ("detalle".equals(detalle)) {
-					context.setVariable("organizaciones", repo.detalleOrganizaciones());
-					context.setVariable("productos", repo.detalleProductosCRM());
-					context.setVariable("oportunidades", repo.detalleOportunidades());
-					context.setVariable("organizacionesPorTipo", repo.organizacionesPorTipo());
-					context.setVariable("productosPorCategoria", repo.productosPorCategoria());
+					context.setVariable("paginas", repo.detallePaginasWeb());
+					context.setVariable("paginasPorTipo", repo.paginasPorTipo());
 					templateEngine.process("detalleCRM", context, response.getWriter());
 				} else {
-					context.setVariable("totalOrganizaciones", repo.contarOrganizaciones());
-					context.setVariable("totalOportunidades", repo.contarOportunidades());
-					context.setVariable("totalProductos", repo.contarProductosCRM());
-					context.setVariable("totalFichas", repo.contarFichasCliente());
-					context.setVariable("organizacionesPorTipo", repo.organizacionesPorTipo());
-					context.setVariable("productosPorCategoria", repo.productosPorCategoria());
-					context.setVariable("stockPorProducto", repo.stockPorProducto());
-					context.setVariable("usuariosPorRol", repo.usuariosPorRol());
 					context.setVariable("paginasPorTipo", repo.paginasPorTipo());
 					templateEngine.process("dashboardCRM", context, response.getWriter());
 				}

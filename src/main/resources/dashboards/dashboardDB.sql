@@ -871,11 +871,18 @@ INSERT INTO FichaCliente (Id_Ficha, Nombre, Apellidos, Email, Telefono, Empresa_
 INSERT INTO FormularioOrganizacion (Id_Formulario, Nombre, Direccion, Telefono, Email, Tipo_Organizacion) VALUES
     (1, 'IES Torre de los Guzmanes', 'Calle Principal 1', '600111222', 'contacto@iestorre.es', 'Centro educativo');
 
+INSERT INTO FormularioOrganizacion (Id_Formulario, Nombre, Direccion, Telefono, Email, Tipo_Organizacion) VALUES
+    (1.1, 'IES Torre de los Guzmanes', 'Calle Principal 2', '600111322', 'contacto@iestorres.es', 'Municipio Algaba');
+
 INSERT INTO FormularioOportunidad (Id_Formulario, Titulo, Descripcion, Fecha_Inicio, Tipos_Oportunidad) VALUES
     (2, 'Colaboración Hackathon', 'Posible colaboración para evento educativo.', '2026-05-20', 'Colaboración, Evento');
 
 INSERT INTO FormularioProducto (Id_Formulario, Nombre, Descripcion, Precio, Stock, Categoria) VALUES
     (3, 'Camiseta Evento', 'Camiseta oficial para asistentes.', 12.50, 100, 'Merchandising');
+
+INSERT INTO FormularioProducto (Id_Formulario, Nombre, Descripcion, Precio, Stock, Categoria) VALUES
+    (3.1, 'Tablet Evento', 'Tablet oficial para asistentes.', 150.50, 101, 'Digital');
+
 
 INSERT INTO RespuestaFormulario (Id_Respuesta, Id_Formulario, Id_Ficha, Fecha_Respuesta) VALUES
     (1, 1, 1, CURRENT_DATE);

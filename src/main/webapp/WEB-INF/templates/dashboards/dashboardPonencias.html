@@ -15,15 +15,16 @@
             </a>
         </div>
         <h1>Dashboard – Ponencias</h1>
-        <div class="contenedorBotonInicio">
-            <a th:href="@{/dashboards}"><button type="button">&#8592; Atrás</button></a>
-        </div>
+        <div class="contenedorBotonInicio"><a th:href="@{/}"><button type="button">&#8962; Inicio</button></a></div>
     </div>
     <div class="cajaDeBotones">
         <a class="botones" th:href="@{/dashboards/eventos}">Eventos</a>
         <a class="botones" th:href="@{/dashboards/ponencias}">Ponencias</a>
         <a class="botones" th:href="@{/dashboards/ponentes}">Ponentes</a>
         <a class="botones" th:href="@{/dashboards/ventas}">Ventas</a>
+        <a class="botones" th:href="@{/dashboards/crm}">CRM</a>
+        <a class="botones" th:href="@{/dashboards/relaciones}">Relaciones</a>
+        <a class="botones" th:href="@{/dashboards/logistica}">Logística</a>
     </div>
 </header>
 <main class="principal">
@@ -63,7 +64,6 @@
 </main>
 <footer><p>© 2026 Gestión de Eventos</p></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
 <!--Convierte los maps de java en arrays de javaScript para que sean legibles-->
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -80,3 +80,7 @@
 <script th:src="@{/JS/dashboardPonencias.js}"></script>
 </body>
 </html>
+
+
+
+
