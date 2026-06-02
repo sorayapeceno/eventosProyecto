@@ -63,6 +63,7 @@ public class DashBoardsServlet extends HttpServlet {
 					context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());
 					templateEngine.process("detalleEventos", context, response.getWriter());
 				} else {
+					context.setVariable("totalPersonas", repo.contarPersonas());
 					context.setVariable("totalEventos", repo.contarEventos());
 					context.setVariable("eventosPorEstado", repo.eventosPorEstado());
 					context.setVariable("eventosPorModalidad", repo.eventosPorModalidad());

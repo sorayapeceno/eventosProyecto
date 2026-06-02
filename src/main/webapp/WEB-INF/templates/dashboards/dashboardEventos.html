@@ -29,12 +29,18 @@
 </header>
 <main class="principal">
   <div class="dashboard-contenido">
+
     <div class="kpi-row">
       <div class="kpi">
         <div class="num" th:text="${totalEventos}">0</div>
         <div class="lbl">Eventos registrados</div>
       </div>
+      <div class="kpi">
+        <div class="num" th:text="${totalPersonas}">0</div>
+        <div class="lbl">Personas registradas</div>
+      </div>
     </div>
+
     <div class="charts-grid">
       <div class="chart-box">
         <h3>Eventos por Estado</h3>
@@ -49,11 +55,13 @@
         <canvas id="chartCiudad"></canvas>
       </div>
     </div>
+
     <div class="mas-info-row">
       <a class="btn-mas-info" th:href="@{/dashboards/eventos/detalle}">
         &#128269; Más información
       </a>
     </div>
+
   </div>
 </main>
 <footer><p>© 2026 Gestión de Eventos</p></footer>
