@@ -148,7 +148,19 @@ public class ParticipantesServlet extends HttpServlet {
 						}
 						break;
 
-					default:
+                    case "Modificar_Evento":
+                        RepoEventos repoEventos1 = new RepoEventos();
+                        int idEvento = Integer.parseInt(request.getParameter("id_Evento"));
+
+                        Evento evento = repoEventos1.mostrarEvento(idEvento);
+
+                        context.setVariable("evento", evento);
+
+                        templateEngine.process("Modificar_Evento", context, response.getWriter());
+
+                        break;
+
+                    default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}
 			}
@@ -168,27 +180,85 @@ public class ParticipantesServlet extends HttpServlet {
 		System.out.println("Path: " + path);
 
 		if (path.equals("/Crear_Evento")) {
-			try {
-				Evento evento = new Evento();
-				evento.setNombre(request.getParameter("nombre"));
-				evento.setDescripcion(request.getParameter("descripcion"));
-				evento.setDireccion(request.getParameter("direccion"));
-				evento.setCiudad(request.getParameter("ciudad"));
-				evento.setLugar(request.getParameter("lugar"));
-				evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
-				evento.setFechaInicio(java.time.LocalDate.parse(request.getParameter("fechaInicio")));
-				evento.setFechaFin(java.time.LocalDate.parse(request.getParameter("fechaFin")));
-				evento.setEstado(Estado.valueOf(request.getParameter("estado")));
-				evento.setModalidad(dam.primero.modelos.eventos_participantes.Modelo.Modalidad.valueOf(request.getParameter("modalidad")));
+            try {
+                Evento evento = new Evento();
+                evento.setNombre(request.getParameter("nombre"));
+                evento.setDescripcion(request.getParameter("descripcion"));
+                evento.setDireccion(request.getParameter("direccion"));
+                evento.setCiudad(request.getParameter("ciudad"));
+                evento.setLugar(request.getParameter("lugar"));
+                evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
+                evento.setFechaInicio(java.time.LocalDate.parse(request.getParameter("fechaInicio")));
+                evento.setFechaFin(java.time.LocalDate.parse(request.getParameter("fechaFin")));
+                evento.setEstado(Estado.valueOf(request.getParameter("estado")));
+                evento.setModalidad(dam.primero.modelos.eventos_participantes.Modelo.Modalidad.valueOf(request.getParameter("modalidad")));
 
-				RepoEventos repo = new RepoEventos();
-				repo.crearEvento(evento);
+                RepoEventos repo = new RepoEventos();
+                repo.crearEvento(evento);
 
-				response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.getWriter().println("Error al crear evento: " + e.getMessage());
-			}
+                response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getWriter().println("Error al crear evento: " + e.getMessage());
+            }
+        }else if (path.equals("/Modificar_Evento")) {
+
+                try {
+
+                    Evento evento = new Evento();
+
+                    evento.setId_Evento(
+                            Integer.parseInt(request.getParameter("idEvento"))
+                    );
+
+                    evento.setNombre(request.getParameter("nombre"));
+                    evento.setDescripcion(request.getParameter("descripcion"));
+                    evento.setDireccion(request.getParameter("direccion"));
+                    evento.setCiudad(request.getParameter("ciudad"));
+                    evento.setLugar(request.getParameter("lugar"));
+
+                    evento.setCapacidad(
+                            Integer.parseInt(request.getParameter("capacidad"))
+                    );
+
+                    evento.setFechaInicio(
+                            java.time.LocalDate.parse(
+                                    request.getParameter("fechaInicio"))
+                    );
+
+                    evento.setFechaFin(
+                            java.time.LocalDate.parse(
+                                    request.getParameter("fechaFin"))
+                    );
+
+                    evento.setEstado(
+                            Estado.valueOf(
+                                    request.getParameter("estado"))
+                    );
+
+                    evento.setModalidad(
+                            Modalidad.valueOf(
+                                    request.getParameter("modalidad"))
+                    );
+
+                    RepoEventos repo = new RepoEventos();
+
+                    repo.modificarEvento(evento);
+
+                    response.sendRedirect(
+                            request.getContextPath()
+                                    + "/participantes/Listado_Eventos"
+                    );
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                    response.getWriter().println(
+                            "Error al modificar evento: "
+                                    + e.getMessage()
+                    );
+                }
+            }
 		}
 	}
-}

@@ -170,5 +170,49 @@ public class RepoEventos {
 
         return evento;
     }
+    public Evento modificarEvento(Evento evento) {
 
+        String query = """
+        UPDATE evento
+        SET Nombre = ?,
+            Descripcion = ?,
+            Fecha_Inicio = ?,
+            Fecha_Fin = ?,
+            Direccion = ?,
+            Ciudad = ?,
+            Capacidad = ?,
+            Estado = ?,
+            Modalidad = ?,
+            Lugar = ?
+        WHERE id_Evento = ?
+        """;
+
+        try (PreparedStatement ps = this.conector.getConnect().prepareStatement(query)) {
+
+            ps.setString(1, evento.getNombre());
+            ps.setString(2, evento.getDescripcion());
+            ps.setDate(3, Date.valueOf(evento.getFechaInicio()));
+            ps.setDate(4, Date.valueOf(evento.getFechaFin()));
+            ps.setString(5, evento.getDireccion());
+            ps.setString(6, evento.getCiudad());
+            ps.setInt(7, evento.getCapacidad());
+            ps.setString(8, evento.getEstado().name().toUpperCase());
+            ps.setString(9, evento.getModalidad().name().toUpperCase());
+            ps.setString(10, evento.getLugar());
+
+            ps.setInt(11, evento.getId_Evento());
+
+            int numActualizado = ps.executeUpdate();
+
+            if (numActualizado != 1) {
+                throw new MyException("Error al modificar el evento: " + evento);
+            }
+
+        } catch (SQLException | MyException e) {
+            System.out.println("Error al modificar evento: " + e.getMessage());
+        }
+
+        return evento;
     }
+
+}
