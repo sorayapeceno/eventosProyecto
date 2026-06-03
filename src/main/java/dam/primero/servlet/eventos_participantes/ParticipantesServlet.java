@@ -1,7 +1,6 @@
 package dam.primero.servlet.eventos_participantes;
 
 import dam.primero.modelos.eventos_participantes.Modelo.*;
-
 import dam.primero.repositorio.eventos_participantes.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -16,8 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -46,13 +45,13 @@ public class ParticipantesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("En el doGet PartipantesServlet");
+		System.out.println("En el doGet ParticipantesServlet");
 		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
 
 		IServletWebExchange webExchange = application.buildExchange(request, response);
 		WebContext context = new WebContext(webExchange, request.getLocale());
 
-		String servletPath = (request.getServletPath()!= null) ? request.getServletPath().trim() : "";
+		String servletPath = (request.getServletPath() != null) ? request.getServletPath().trim() : "";
 		String pathInfo = request.getPathInfo();
 		String path = (pathInfo != null) ? pathInfo.trim() : "";
 
@@ -61,58 +60,38 @@ public class ParticipantesServlet extends HttpServlet {
 
 		if ("/".equals(servletPath) && path.isEmpty()) {
 			templateEngine.process("index", context, response.getWriter());
-		}
-		else if ("/participantes".equals(servletPath)) {
+		} else if ("/participantes".equals(servletPath)) {
 
 			if (path.isEmpty() || path.equals("/")) {
 				templateEngine.process("indexParticipantes", context, response.getWriter());
-			}
-			else {
+			} else {
 				String[] partes = path.substring(1).split("/");
 				String accion = partes[0];
-				String subaccion = partes.length > 1 ? partes[1] : null;
 
-				System.out.println("doGet accion:    " + accion);
-				System.out.println("doGet subaccion: " + subaccion);
+				System.out.println("doGet accion: " + accion);
 
 				switch (accion) {
+
 					case "listaParticipantes":
 						templateEngine.process("indexParticipantes", context, response.getWriter());
 						break;
-					case "eventos":
-						break;
+
 					case "Crear_Evento":
-						EstadoRepo repo = new EstadoRepo();
-						ModalidadRepo r = new ModalidadRepo();
-						Set <Estado> estados = repo.listarEstados();
-						Set<Modalidad> modalidades = r.listarModalidad();
-						context.setVariable("estados", estados);
-						context.setVariable("modalidades",modalidades);
+						context.setVariable("estados", Set.of(Estado.values()));
+						context.setVariable("modalidades", Set.of(Modalidad.values()));
 						templateEngine.process("Crear_Evento", context, response.getWriter());
 						break;
 
 					case "Crear_Ponencia":
-						PonenciaRepo repo1 = new PonenciaRepo();
-						NivelRepo repo2 = new NivelRepo();
-						TipoRepo repo3 = new TipoRepo();
-						FormatoRepo repo4 = new FormatoRepo();
-						Set<Nivel> niveles = repo2.listarNivel();
-						Set<Tipo> tipos = repo3.listarTipo();
-						Set<Formato> formatos = repo4.listarFormato();
-						context.setVariable("niveles", niveles);
-						context.setVariable("tipos", tipos);
-						context.setVariable("formatos", formatos);
-
-						templateEngine.process("Crear_Ponencia",context,response.getWriter());
-
+						context.setVariable("niveles", Set.of(Nivel.values()));
+						context.setVariable("tipos", Set.of(Tipo.values()));
+						context.setVariable("formatos", Set.of(Formato.values()));
+						templateEngine.process("Crear_Ponencia", context, response.getWriter());
 						break;
 
 					case "Registrar_Ponente":
-						PonenteRepo ponenteRepo = new PonenteRepo();
-						NivelImparticionRepo repo5 = new NivelImparticionRepo();
-						Set<NivelImparticion> nivelImparticion1 = repo5.listarNivelImparticion();
-						context.setVariable("nivelImparticion1",nivelImparticion1);
-						templateEngine.process("Registrar_Ponente",context,response.getWriter());
+						context.setVariable("niveles", Set.of(NivelImparticion.values()));
+						templateEngine.process("Registrar_Ponente", context, response.getWriter());
 						break;
 
 					case "Listado_Eventos":
@@ -123,70 +102,46 @@ public class ParticipantesServlet extends HttpServlet {
 						break;
 
 					case "Listado_Ponencias":
-							PonenciaRepo rep = new PonenciaRepo();
-							Set<Ponencia> ponencias = rep.listarPonencias();
-							context.setVariable("ponencias", ponencias);
-							templateEngine.process("Listado_Ponencias", context, response.getWriter());
-
+						PonenciaRepo repPonencias = new PonenciaRepo();
+						context.setVariable("ponencias", repPonencias.listarPonencias());
+						context.setVariable("niveles", Set.of(Nivel.values()));
+						context.setVariable("tipos", Set.of(Tipo.values()));
+						context.setVariable("formatos", Set.of(Formato.values()));
+						templateEngine.process("Listado_Ponencias", context, response.getWriter());
 						break;
+
 					case "Listado_Ponentes":
 						PonenteRepo repPonentes = new PonenteRepo();
-						Set<Ponente> ponentes = repPonentes.listarPonente();
-						context.setVariable("ponentes", ponentes);
+						context.setVariable("ponentes", repPonentes.listarPonente());
+						context.setVariable("niveles", Set.of(NivelImparticion.values()));
 						templateEngine.process("Listado_Ponentes", context, response.getWriter());
 						break;
 
 					case "Detalle_Evento":
-						RepoEventos re = new RepoEventos();
-						String idParam = request.getParameter("id");
-
-						if (idParam != null && !idParam.isEmpty()) {
-							int idEvento = Integer.parseInt(idParam);
-							Evento evento = re.mostrarEvento(idEvento);
+						String idParamDetalle = request.getParameter("id");
+						if (idParamDetalle != null && !idParamDetalle.isEmpty()) {
+							RepoEventos re = new RepoEventos();
+							Evento evento = re.mostrarEvento(Integer.parseInt(idParamDetalle));
 							context.setVariable("evento", evento);
 							templateEngine.process("Detalle_Evento", context, response.getWriter());
 						}
 						break;
 
-                    case "Modificar_Evento":
-                        RepoEventos repoEventos1 = new RepoEventos();
-						int idEvento = Integer.parseInt(request.getParameter("id_Evento"));
-
-                        Evento evento = repoEventos1.mostrarEvento(idEvento);
-
-                        context.setVariable("evento", evento);
-
-                        templateEngine.process("Modificar_Evento", context, response.getWriter());
-
-                        break;
-					case "Asignacion_Ponencia-Evento":
-
-						RepoEventos eventoRepo = new RepoEventos();
-						PonenciaRepo ponenciaRepo = new PonenciaRepo();
-
-						List<Evento> eventos1 = eventoRepo.listarEvento();
-						Set<Ponencia> ponencias2 = ponenciaRepo.listarPonencias();
-
-						context.setVariable("eventos", eventos1);
-						context.setVariable("ponencias", ponencias2);
-
-						templateEngine.process("Asignacion_Ponencia-Evento", context, response.getWriter());
-						break;
-					case "Asignacion_Ponente-Ponencia":
-
-						PonenteRepo ponenteRepo1 = new PonenteRepo();
-						PonenciaRepo ponenciaRepo2 = new PonenciaRepo();
-
-						 Set <Ponente> ponentes1 = ponenteRepo1.listarPonente();
-						 Set<Ponencia> ponencias1 = ponenciaRepo2.listarPonencias();
-
-						context.setVariable("ponentes", ponentes1);
-						context.setVariable("ponencias", ponencias1);
-
-						templateEngine.process("Asignacion_Ponente-Ponencia", context, response.getWriter());
+					case "Modificar_Evento":
+						String idParamModificar = request.getParameter("id_Evento");
+						if (idParamModificar != null && !idParamModificar.isEmpty()) {
+							RepoEventos repoMod = new RepoEventos();
+							Evento evento = repoMod.mostrarEvento(Integer.parseInt(idParamModificar));
+							context.setVariable("evento", evento);
+							context.setVariable("estados", Set.of(Estado.values()));
+							context.setVariable("modalidades", Set.of(Modalidad.values()));
+							templateEngine.process("Modificar_Evento", context, response.getWriter());
+						} else {
+							response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro id_Evento");
+						}
 						break;
 
-                    default:
+					default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}
 			}
@@ -202,107 +157,105 @@ public class ParticipantesServlet extends HttpServlet {
 		String pathInfo = request.getPathInfo();
 		String path = (pathInfo != null) ? pathInfo.trim() : "";
 
-		System.out.println("En doPost");
-		System.out.println("Path: " + path);
+		System.out.println("En doPost - Path: " + path);
 
-		if (path.equals("/Crear_Evento")) {
-            try {
-                Evento evento = new Evento();
-                evento.setNombre(request.getParameter("nombre"));
-                evento.setDescripcion(request.getParameter("descripcion"));
-                evento.setDireccion(request.getParameter("direccion"));
-                evento.setCiudad(request.getParameter("ciudad"));
-                evento.setLugar(request.getParameter("lugar"));
-                evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
-                evento.setFechaInicio(java.time.LocalDate.parse(request.getParameter("fechaInicio")));
-                evento.setFechaFin(java.time.LocalDate.parse(request.getParameter("fechaFin")));
-                evento.setEstado(Estado.valueOf(request.getParameter("estado")));
-                evento.setModalidad(dam.primero.modelos.eventos_participantes.Modelo.Modalidad.valueOf(request.getParameter("modalidad")));
+		switch (path) {
 
-                RepoEventos repo = new RepoEventos();
-                repo.crearEvento(evento);
+			case "/Crear_Evento":
+				try {
+					Evento evento = new Evento();
+					evento.setNombre(request.getParameter("nombre"));
+					evento.setDescripcion(request.getParameter("descripcion"));
+					evento.setDireccion(request.getParameter("direccion"));
+					evento.setCiudad(request.getParameter("ciudad"));
+					evento.setLugar(request.getParameter("lugar"));
+					evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
+					evento.setFechaInicio(LocalDate.parse(request.getParameter("fechaInicio")));
+					evento.setFechaFin(LocalDate.parse(request.getParameter("fechaFin")));
+					evento.setEstado(Estado.valueOf(request.getParameter("estado")));
+					evento.setModalidad(Modalidad.valueOf(request.getParameter("modalidad")));
 
-                response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.getWriter().println("Error al crear evento: " + e.getMessage());
-            }
-        }else if (path.equals("/Modificar_Evento")) {
-
-			try {
-
-				Evento evento = new Evento();
-
-				evento.setId_Evento(
-						Integer.parseInt(request.getParameter("id_Evento"))
-				);
-
-				evento.setNombre(request.getParameter("nombre"));
-				evento.setDescripcion(request.getParameter("descripcion"));
-				evento.setDireccion(request.getParameter("direccion"));
-				evento.setCiudad(request.getParameter("ciudad"));
-				evento.setLugar(request.getParameter("lugar"));
-
-				evento.setCapacidad(
-						Integer.parseInt(request.getParameter("capacidad"))
-				);
-
-				evento.setFechaInicio(
-						java.time.LocalDate.parse(
-								request.getParameter("fechaInicio"))
-				);
-
-				evento.setFechaFin(
-						java.time.LocalDate.parse(
-								request.getParameter("fechaFin"))
-				);
-
-				evento.setEstado(
-						Estado.valueOf(
-								request.getParameter("estado"))
-				);
-
-				evento.setModalidad(
-						Modalidad.valueOf(
-								request.getParameter("modalidad"))
-				);
-
-				RepoEventos repo = new RepoEventos();
-
-				repo.modificarEvento(evento);
-
-				response.sendRedirect(
-						request.getContextPath()
-								+ "/participantes/Listado_Eventos"
-				);
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-				response.getWriter().println(
-						"Error al modificar evento: "
-								+ e.getMessage()
-				);
-			}
-		}else if (path.equals("/Asignacion_Ponencia-Evento")) {
-
-				String eventoId = request.getParameter("evento");
-				String ponenciaId = request.getParameter("ponencia");
-
-				if (eventoId == null || ponenciaId == null) {
-					response.sendRedirect(request.getContextPath() + "/participantes/Asignacion_Ponencia-Evento");
-					return;
+					new RepoEventos().crearEvento(evento);
+					response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
+				} catch (Exception e) {
+					e.printStackTrace();
+					response.getWriter().println("Error al crear evento: " + e.getMessage());
 				}
+				break;
 
-				int idEvento = Integer.parseInt(eventoId);
-				int idPonencia = Integer.parseInt(ponenciaId);
+			case "/Modificar_Evento":
+				try {
+					Evento evento = new Evento();
+					evento.setId_Evento(Integer.parseInt(request.getParameter("idEvento")));
+					evento.setNombre(request.getParameter("nombre"));
+					evento.setDescripcion(request.getParameter("descripcion"));
+					evento.setDireccion(request.getParameter("direccion"));
+					evento.setCiudad(request.getParameter("ciudad"));
+					evento.setLugar(request.getParameter("lugar"));
+					evento.setCapacidad(Integer.parseInt(request.getParameter("capacidad")));
+					evento.setFechaInicio(LocalDate.parse(request.getParameter("fechaInicio")));
+					evento.setFechaFin(LocalDate.parse(request.getParameter("fechaFin")));
+					evento.setEstado(Estado.valueOf(request.getParameter("estado")));
+					evento.setModalidad(Modalidad.valueOf(request.getParameter("modalidad")));
 
-				RepoEventosPonencias repo = new RepoEventosPonencias();
-				repo.asignarPonenciaEvento(idEvento, idPonencia);
+					new RepoEventos().modificarEvento(evento);
+					response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
+				} catch (Exception e) {
+					e.printStackTrace();
+					response.getWriter().println("Error al modificar evento: " + e.getMessage());
+				}
+				break;
 
-				response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
+			// FIX: POST de Crear_Ponencia implementado
+			case "/Crear_Ponencia":
+				try {
+					Ponencia ponencia = new Ponencia();
+					ponencia.setId_Evento(Integer.parseInt(request.getParameter("idEvento")));
+					ponencia.setTitulo(request.getParameter("titulo"));
+					ponencia.setDuracion(Integer.parseInt(request.getParameter("duracion")));
+					ponencia.setFecha(LocalDate.parse(request.getParameter("fecha")));
+					ponencia.setHora(LocalDate.parse(request.getParameter("fecha")).atTime(LocalTime.parse(request.getParameter("hora"))));
+					ponencia.setUbicacion(request.getParameter("ubicacion"));
+					ponencia.setNivel(Nivel.valueOf(request.getParameter("nivel")));
+					ponencia.setTipo(Tipo.valueOf(request.getParameter("tipo")));
+					ponencia.setFormato(Formato.valueOf(request.getParameter("formato")));
+
+					// Tematica: construimos el objeto con el ID que manda el formulario
+					int idTematica = Integer.parseInt(request.getParameter("idTematica"));
+					ponencia.setTematica(new Tematica(idTematica, ""));
+
+					new PonenciaRepo().crearPonencia(ponencia);
+					response.sendRedirect(request.getContextPath() + "/participantes/Listado_Ponencias");
+				} catch (Exception e) {
+					e.printStackTrace();
+					response.getWriter().println("Error al crear ponencia: " + e.getMessage());
+				}
+				break;
+
+			// FIX: POST de Registrar_Ponente implementado
+			case "/Registrar_Ponente":
+				try {
+					// El modelo Ponente requiere id_Persona (FK a Persona en la BD)
+					// El formulario recoge nombre, apellidos, correo, telefono → esos van a la tabla Persona
+					// Por ahora creamos el Ponente con los datos disponibles que acepta el repo
+					String especialidad = request.getParameter("especialidad");
+					String cv = request.getParameter("cv");
+					String bio = request.getParameter("nombre") + " " + request.getParameter("apellidos");
+					NivelImparticion nivel = NivelImparticion.valueOf(request.getParameter("nivelImparticion"));
+
+					// id_Persona = 0 hasta que se integre con la tabla Persona
+					Ponente ponente = new Ponente(0, bio, especialidad, cv, nivel);
+					new PonenteRepo().crearPonente(ponente);
+					response.sendRedirect(request.getContextPath() + "/participantes/Listado_Ponentes");
+				} catch (Exception e) {
+					e.printStackTrace();
+					response.getWriter().println("Error al registrar ponente: " + e.getMessage());
+				}
+				break;
+
+			default:
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "POST no reconocido: " + path);
+				break;
 		}
-
 	}
 }

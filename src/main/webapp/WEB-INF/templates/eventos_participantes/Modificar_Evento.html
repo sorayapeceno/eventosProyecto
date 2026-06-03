@@ -1,86 +1,99 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Modificar Evento</title>
-        <!--Estilo Lili-->
-        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Evento</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
 
-    <header>
-        <h1>Gestión de Eventos Educativos</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <aside>
-        <h2>Casos de uso</h2>
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav>
         <ul>
-            <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-            <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
-            <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
-            <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+            <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+            <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+            <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
         </ul>
-    </aside>
-        <main>
-            <section class="contenido-secundario">
-                <h2>Modificar evento</h2>
-                <!--Este formulario ya es dinamico -->
-                <form action="#" method="post">
-                    <fieldset>
-                        <legend>Datos del evento</legend>
-                        <label for="nombre"> Nombre del evento: </label>
-                        <input type="text" id="nombre" name="nombre" required>
+    </nav>
+</header>
 
-                        <label for="fechaInicio">Fecha de inicio:</label>
-                        <input type="date" id="fechaInicio" name="fechaInicio" required>
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
+        <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
+        <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+    </ul>
+</aside>
 
-                        <label for="fechaFin"> Fecha de fin:</label>
-                        <input type="date" id="fechaFin" name="fechaFin" required>
+<main>
+    <section class="contenido-secundario">
+        <h2>Modificar evento</h2>
+        <form th:action="@{/participantes/Modificar_Evento}" method="post">
+            <fieldset>
+                <legend>Datos del evento</legend>
 
-                        <label for="direccion"> Dirección: </label>
-                        <input type="text" id="direccion" name="direccion" required>
+                <!-- Campo hidden con el ID del evento -->
+                <input type="hidden" name="idEvento" th:value="${evento.id_Evento}">
 
-                        <label for="ciudad"> Ciudad:</label>
-                        <input type="text" id="ciudad" name="ciudad" required>
+                <label for="nombre">Nombre del evento:</label>
+                <input type="text" id="nombre" name="nombre" th:value="${evento.nombre}" required>
 
-                        <label for="capacidad">Capacidad:</label>
-                        <input type="number" id="capacidad" name="capacidad" required>
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="10" th:text="${evento.descripcion}"></textarea>
 
-                        <label for="estado"> Estado: </label>
-                        <select id="estado" name="estado">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
-                        </select>
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" th:value="${evento.fechaInicio}" required>
 
-                        <label for="modalidad">Modalidad:</label>
-                        <select id="modalidad" name="modalidad">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="modalidad : ${modalidades}" th:value="${modalidad}" th:text="${modalidad}"></option>
-                        </select>
+                <label for="fechaFin">Fecha de fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" th:value="${evento.fechaFin}" required>
 
-                        <label for="lugar"> Lugar:</label>
-                        <input type="text" id="lugar" name="lugar" required>
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" th:value="${evento.direccion}" required>
 
-                        <button type="submit"> Guardar cambios</button>
-                    </fieldset>
-                </form>
-            </section>
-        </main>
-        <footer>
-            <p>© 2026 Gestión de Eventos</p>
-        </footer>
-    </body>
+                <label for="ciudad">Ciudad:</label>
+                <input type="text" id="ciudad" name="ciudad" th:value="${evento.ciudad}" required>
+
+                <label for="capacidad">Capacidad:</label>
+                <input type="number" id="capacidad" name="capacidad" th:value="${evento.capacidad}" required>
+
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado">
+                    <option th:each="est : ${estados}"
+                            th:value="${est}"
+                            th:text="${est}"
+                            th:selected="${est == evento.estado}">
+                    </option>
+                </select>
+
+                <label for="modalidad">Modalidad:</label>
+                <select id="modalidad" name="modalidad">
+                    <option th:each="mod : ${modalidades}"
+                            th:value="${mod}"
+                            th:text="${mod}"
+                            th:selected="${mod == evento.modalidad}">
+                    </option>
+                </select>
+
+                <label for="lugar">Lugar:</label>
+                <input type="text" id="lugar" name="lugar" th:value="${evento.lugar}" required>
+
+                <!-- FIX: botón guardar + botón cancelar que vuelve al listado -->
+                <button type="submit">Guardar cambios</button>
+                <a th:href="@{/participantes/Listado_Eventos}">Cancelar</a>
+            </fieldset>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Gestión de Eventos</p>
+</footer>
+</body>
 </html>
