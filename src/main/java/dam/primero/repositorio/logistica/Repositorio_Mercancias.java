@@ -10,129 +10,133 @@ import java.util.List;
 
 public class Repositorio_Mercancias {
 
-    private final MySqlConector conector;
+    private final MySqlConector conexion;
 
     public Repositorio_Mercancias() throws MyException {
-        this.conector = new MySqlConector();
+
+        this.conexion = new MySqlConector();
     }
 
-    public void registrarEntradaMercancia(int idMercancia, int cantidad) throws SQLException, MyException {
+    public void entradaMercancia(int idMercancia, int cantidad) throws SQLException, MyException {
 
-        // 1- Aumenta el stock
-        String consultaSql = """
+        String consultaActualizarStock = """
                 UPDATE eventos.Mercancia
                 SET stock_actual = stock_actual + ?
                 WHERE id_mercancia = ?
         """;
 
-        try (PreparedStatement sentencia = conector.getConnect().prepareStatement(consultaSql)) {
+        try (PreparedStatement sentencia = conexion.getConnect().prepareStatement(consultaActualizarStock)) {
 
+            // meto los valores en la consulta
             sentencia.setInt(1, cantidad);
             sentencia.setInt(2, idMercancia);
 
-            int filasAfectadas = sentencia.executeUpdate();
+            int filasModificadas = sentencia.executeUpdate();
 
-            // Si no se ha modificado ninguna fila, es porque el ID no existe en la BD
-            if (filasAfectadas == 0) {
-                throw new MyException("No existe ninguna mercancía registrada con el ID: " + idMercancia);
+            // si no modifica es porque el id no existe
+            if (filasModificadas == 0) {
+                throw new MyException("No existe la mercancía con id: " + idMercancia);
             }
         }
 
-        // 2. Obtiene la mercancía actualizada
-        Mercancia mercancíaModificada = obtenerPorId(idMercancia);
+        // compruebo la mercancia de nuevo
+        Mercancia mercanciaActual = obtenerPorId(idMercancia);
 
-        // 3. Comprueba si necesita Stock
-        if (mercancíaModificada.necesitaReposicion()) {
-            reponerStock(mercancíaModificada);
+        // si necesita reposicion se añade automaticamente
+        if (mercanciaActual.necesitaReposicion()) {
+            reponerStock(mercanciaActual);
         }
     }
 
-    //El stock se repone automáticamente cuando baja de su mínimo.
-    // stockActual = stockActual + stockMinimo
-    private void reponerStock(Mercancia m) throws SQLException {
+    private void reponerStock(Mercancia mercancia) throws SQLException {
 
-        int nuevoStock = m.getStockActual() + m.getStockMinimo();
+        // calculo el nuevo stock sumando el mínimo al actual
+        int stockFinal = mercancia.getStockActual() + mercancia.getStockMinimo();
 
-        String sql = """
+        String consultaReposicion = """
                 UPDATE eventos.Mercancia
                 SET stock_actual = ?
                 WHERE id_mercancia = ?
         """;
 
-        try (PreparedStatement ps = conector.getConnect().prepareStatement(sql)) {
+        try (PreparedStatement sentenciaUpdate = conexion.getConnect().prepareStatement(consultaReposicion)) {
 
-            ps.setInt(1, nuevoStock);
-            ps.setInt(2, m.getIdMercancia());
 
-            ps.executeUpdate();
+            sentenciaUpdate.setInt(1, stockFinal);
+            sentenciaUpdate.setInt(2, mercancia.getIdMercancia());
+
+            sentenciaUpdate.executeUpdate();
         }
     }
 
-
-    //Obtiene por ID
     public Mercancia obtenerPorId(int idMercancia) throws SQLException {
 
-        String sql = """
+        // consulta para buscar una mercancía concreta por id
+        String consultaBuscar = """
                 SELECT id_mercancia, descripcion, categoria, precio_unitario,
                        stock_minimo, stock_actual, fecha_creacion
                 FROM eventos.Mercancia
                 WHERE id_mercancia = ?
         """;
 
-        try (PreparedStatement ps = conector.getConnect().prepareStatement(sql)) {
+        try (PreparedStatement sentenciaBuscar = conexion.getConnect().prepareStatement(consultaBuscar)) {
 
-            ps.setInt(1, idMercancia);
+            sentenciaBuscar.setInt(1, idMercancia);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet resultado = sentenciaBuscar.executeQuery()) {
 
-                if (rs.next()) {
+                if (resultado.next()) {
+
+                    // creo el objeto con los datos de la base de datos
                     return new Mercancia(
-                            rs.getInt("id_mercancia"),
-                            rs.getString("descripcion"),
-                            rs.getDouble("precio_unitario"),
-                            rs.getString("categoria"),
-                            rs.getInt("stock_minimo"),
-                            rs.getInt("stock_actual"),
-                            rs.getDate("fecha_creacion").toLocalDate()
+                            resultado.getInt("id_mercancia"),
+                            resultado.getString("descripcion"),
+                            resultado.getDouble("precio_unitario"),
+                            resultado.getString("categoria"),
+                            resultado.getInt("stock_minimo"),
+                            resultado.getInt("stock_actual"),
+                            resultado.getDate("fecha_creacion").toLocalDate()
                     );
                 }
             }
         }
 
-        throw new SQLException("Mercancía no encontrada con id " + idMercancia);
+        // si no lo encuentra
+        throw new SQLException("No se ha encontrado la mercancía con id " + idMercancia);
     }
 
-    //Listar Mercancia
     public List<Mercancia> listarMercancias() throws SQLException {
 
-        String sql = """
+        // consulta para sacar todas las mercancías
+        String consultaListado = """
                 SELECT id_mercancia, descripcion, categoria, precio_unitario,
                        stock_minimo, stock_actual, fecha_creacion
                 FROM eventos.Mercancia
         """;
 
-        List<Mercancia> lista = new ArrayList<>();
+        List<Mercancia> listaMercancias = new ArrayList<>();
 
-        try (PreparedStatement ps = conector.getConnect().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement sentenciaListado = conexion.getConnect().prepareStatement(consultaListado);
+             ResultSet resultadoListado = sentenciaListado.executeQuery()) {
 
-            while (rs.next()) {
+            while (resultadoListado.next()) {
 
-                Mercancia m = new Mercancia(
-                        rs.getInt("id_mercancia"),
-                        rs.getString("descripcion"),
-                        rs.getDouble("precio_unitario"),
-                        rs.getString("categoria"),
-                        rs.getInt("stock_minimo"),
-                        rs.getInt("stock_actual"),
-                        rs.getDate("fecha_creacion").toLocalDate()
+                // creo un objeto por cada mercancía
+                Mercancia mercancia = new Mercancia(
+                        resultadoListado.getInt("id_mercancia"),
+                        resultadoListado.getString("descripcion"),
+                        resultadoListado.getDouble("precio_unitario"),
+                        resultadoListado.getString("categoria"),
+                        resultadoListado.getInt("stock_minimo"),
+                        resultadoListado.getInt("stock_actual"),
+                        resultadoListado.getDate("fecha_creacion").toLocalDate()
                 );
 
-                lista.add(m);
+
+                listaMercancias.add(mercancia);
             }
         }
 
-        System.out.println("Mercancías cargadas: " + lista.size());
-        return lista;
+        return listaMercancias;
     }
 }

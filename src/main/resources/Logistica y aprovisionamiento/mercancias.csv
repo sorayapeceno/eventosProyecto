@@ -1,0 +1,3 @@
+id_mercancia,descripcion,categoria,precio_unitario,stock_actual
+1,Teclado,Periferico,20.0,55
+2,Raton,Periferico,10.0,44

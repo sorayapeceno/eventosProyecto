@@ -10,50 +10,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Repositorio_Proveedores {
-    private MySqlConector conector;
+
+    private MySqlConector conexion;
 
     public Repositorio_Proveedores() {
         try {
-            this.conector = new MySqlConector();
-        } catch (MyException e) {
-            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+            this.conexion = new MySqlConector();
+        } catch (MyException errorConexion) {
+            System.out.println("Error conectando con la base de datos: " + errorConexion.getMessage());
         }
     }
 
     public List<Proveedor> listarProveedores() throws SQLException {
-        String consultaSql = "SELECT id_proveedor, nombre, direccion, telefono, email, CIF, pais, fecha_alta, estado FROM eventos.Proveedor";
+
+        // consulta para sacar todos los proveedores
+        String consultaSql = "SELECT id_proveedor, nombre, direccion, telefono, email, CIF, pais, fecha_alta, estado " +
+                "FROM eventos.Proveedor";
+
+        // lista donde voy a guardar los proveedores
         List<Proveedor> listaProveedores = new ArrayList<>();
 
-        try (Connection conexion = conector.getConnect();
-             PreparedStatement sentencia = conexion.prepareStatement(consultaSql);
-             ResultSet resultado = sentencia.executeQuery()) {
+        try (Connection conexionBaseDatos = conexion.getConnect();
+             PreparedStatement sentenciaPreparada = conexionBaseDatos.prepareStatement(consultaSql);
+             ResultSet resultadoConsulta = sentenciaPreparada.executeQuery()) {
 
-            while (resultado.next()) {
-                Proveedor unProveedor = new Proveedor();
+            while (resultadoConsulta.next()) {
 
-                unProveedor.setIdProveedor(resultado.getInt("id_proveedor"));
-                unProveedor.setNombre(resultado.getString("nombre"));
-                unProveedor.setDireccion(resultado.getString("direccion"));
-                unProveedor.setTelefono(resultado.getString("telefono"));
-                unProveedor.setEmail(resultado.getString("email"));
-                unProveedor.setCif(resultado.getString("CIF"));
-                unProveedor.setPais(resultado.getString("pais"));
+                // creo un objeto proveedor por cada fila
+                Proveedor proveedor = new Proveedor();
 
-                // Conversión de la fecha de la base de datos a LocalDate
-                Date fechaAltaDb = resultado.getDate("fecha_alta");
-                if (fechaAltaDb != null) {
-                    unProveedor.setFechaAlta(fechaAltaDb.toLocalDate());
+                proveedor.setIdProveedor(resultadoConsulta.getInt("id_proveedor"));
+                proveedor.setNombre(resultadoConsulta.getString("nombre"));
+                proveedor.setDireccion(resultadoConsulta.getString("direccion"));
+                proveedor.setTelefono(resultadoConsulta.getString("telefono"));
+                proveedor.setEmail(resultadoConsulta.getString("email"));
+                proveedor.setCif(resultadoConsulta.getString("CIF"));
+                proveedor.setPais(resultadoConsulta.getString("pais"));
+
+                // Si la fecha es null le pongo la actual
+                Date fechaAltaBD = resultadoConsulta.getDate("fecha_alta");
+                if (fechaAltaBD != null) {
+                    proveedor.setFechaAlta(fechaAltaBD.toLocalDate());
                 }
 
-                // Mapeo de la cadena de texto al Enum de Java
-                String estadoTexto = resultado.getString("estado");
+                // convierto el estado de texto a enum
+                String estadoTexto = resultadoConsulta.getString("estado");
                 if (estadoTexto != null) {
-                    unProveedor.setEstadoProveedor(EstadoProveedor.valueOf(estadoTexto.toUpperCase()));
+                    proveedor.setEstadoProveedor(
+                            EstadoProveedor.valueOf(estadoTexto.toUpperCase())
+                    );
                 }
 
-                listaProveedores.add(unProveedor);
+                // añado el proveedor a la lista final
+                listaProveedores.add(proveedor);
             }
         }
+
         return listaProveedores;
     }
 }

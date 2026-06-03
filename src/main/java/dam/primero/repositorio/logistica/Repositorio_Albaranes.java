@@ -11,48 +11,61 @@ import java.util.List;
 
 public class Repositorio_Albaranes {
 
-    private final MySqlConector conector;
+    private final MySqlConector conexionBaseDatos;
 
     public Repositorio_Albaranes() throws MyException {
-        this.conector = new MySqlConector();
+        this.conexionBaseDatos = new MySqlConector();
     }
 
     public List<Albaran> listarAlbaranes() throws SQLException {
 
-        String sql = """
+        String consultaSql = """
                 SELECT id_albaran, fecha_albaran, estado,
                        id_pedido, numero_factura, transportista, fecha_recepcion
                 FROM eventos.Albaran
         """;
 
-        List<Albaran> lista = new ArrayList<>();
+        // aquí voy a ir guardando todos los albaranes que saque
+        List<Albaran> listaAlbaranes = new ArrayList<>();
 
-        try (PreparedStatement ps = conector.getConnect().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (
+                PreparedStatement sentenciaPreparada =
+                        conexionBaseDatos.getConnect().prepareStatement(consultaSql);
 
-            while (rs.next()) {
+                ResultSet resultadoConsulta =
+                        sentenciaPreparada.executeQuery()
+        ) {
 
-                Albaran a = new Albaran();
+            while (resultadoConsulta.next()) {
 
-                a.setIdAlbaran(rs.getInt("id_albaran"));
-                a.setFechaAlbaran(rs.getDate("fecha_albaran").toLocalDate());
+                // por cada fila creo un objeto tipo Albaran
+                Albaran albaran = new Albaran();
 
-                a.setEstadopedido(
-                        EstadoPedido.valueOf(rs.getString("estado"))
-                );
+                // Introduzco los datos al objeto
+                albaran.setIdAlbaran(resultadoConsulta.getInt("id_albaran"));
 
-                a.setNumeroFactura(rs.getString("numero_factura"));
-                a.setTransportista(rs.getString("transportista"));
+                albaran.setFechaAlbaran(resultadoConsulta.getDate("fecha_albaran").toLocalDate());
 
-                Date fechaRecepcion = rs.getDate("fecha_recepcion");
+                // convierto el texto a enum
+                albaran.setEstadopedido(EstadoPedido.valueOf(resultadoConsulta.getString("estado")));
+
+                albaran.setNumeroFactura(resultadoConsulta.getString("numero_factura"));
+
+                albaran.setTransportista(resultadoConsulta.getString("transportista"));
+
+                //Si la fecha es null le pongo la actual
+                Date fechaRecepcion = resultadoConsulta.getDate("fecha_recepcion");
+
                 if (fechaRecepcion != null) {
-                    a.setFechaRecepcion(fechaRecepcion.toLocalDate());
+                    albaran.setFechaRecepcion(fechaRecepcion.toLocalDate());
                 }
 
-                lista.add(a);
+
+                listaAlbaranes.add(albaran);
             }
         }
 
-        return lista;
+
+        return listaAlbaranes;
     }
 }
