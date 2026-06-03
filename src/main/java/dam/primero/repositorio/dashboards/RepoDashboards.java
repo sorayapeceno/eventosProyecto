@@ -31,7 +31,8 @@ public class RepoDashboards {
     public Map<String, Integer> eventosPorModalidad() { return agrupar("SELECT Modalidad, COUNT(*) AS total FROM Evento GROUP BY Modalidad ORDER BY total DESC", "Modalidad", "total"); }
     public Map<String, Integer> eventosPorCiudad() { return agrupar("SELECT Ciudad, COUNT(*) AS total FROM Evento WHERE Ciudad IS NOT NULL GROUP BY Ciudad ORDER BY total DESC", "Ciudad", "total"); }
     public List<Map<String, String>> detalleEventos() { return listar("SELECT Nombre, DATE_FORMAT(Fecha_Inicio,'%d/%m/%Y') AS Fecha_Inicio, DATE_FORMAT(Fecha_Fin,'%d/%m/%Y') AS Fecha_Fin, Ciudad, Estado, Modalidad, Capacidad, Lugar FROM Evento ORDER BY Fecha_Inicio", new String[]{"Nombre","Fecha_Inicio","Fecha_Fin","Ciudad","Estado","Modalidad","Capacidad","Lugar"}); }
-
+    public int contarPersonas() { return contarFila("SELECT COUNT(*) FROM Persona");
+    }
     // ══════════════════════════════════════════════════════
     //  PONENCIAS
     // ══════════════════════════════════════════════════════
