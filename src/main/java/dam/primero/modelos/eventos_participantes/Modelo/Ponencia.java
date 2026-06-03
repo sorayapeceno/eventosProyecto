@@ -18,13 +18,14 @@ public class Ponencia {
     private Nivel nivel;
     private Tipo tipo;
     private Formato formato;
+    private String sala;
 
 
     // Constructor vacío por buena práctica
     public Ponencia(int id_Ponencia, String titulo, int tematica, int duracion, LocalDate fecha, LocalTime hora, String ubicacion, String sala, Nivel nivel, Tipo tipo, Formato formato) {}
 
     // Constructor completo modificado para aceptar y respetar el ID real de la base de datos
-    public Ponencia(int id_Ponencia, String titulo, Tematica tematica, int duracion, LocalDate fecha, LocalDateTime hora, String ubicacion, Nivel nivel, Tipo tipo, Formato formato) {
+    public Ponencia() {
         contador++;
         this.id_Ponencia = id_Ponencia; // Guardamos el ID real de la BBDD
         this.titulo = titulo;
@@ -36,6 +37,7 @@ public class Ponencia {
         this.nivel = nivel;
         this.tipo = tipo;
         this.formato = formato;
+        this.sala = sala;
     }
 
     public static int getContador() {
@@ -133,6 +135,15 @@ public class Ponencia {
 
     public void setFormato(Formato formato) {
         this.formato = formato;
+    }
+
+
+    public String getSala() {
+        return sala;
+    }
+
+    public void setSala(String sala) {
+        this.sala = sala;
     }
 
     @Override

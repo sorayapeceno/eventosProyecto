@@ -87,21 +87,26 @@ public class PonenciaRepo {
             rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                int id_Ponencia = rs.getInt("id_Ponencia");
-                int id_Evento = rs.getInt("id_Evento");
-                int tematica = rs.getInt("id_Tematica");
-                String titulo = rs.getString("Titulo");
-                int duracion = rs.getInt("Duracion");
+
+                Ponencia p = new Ponencia();
+
+                p.setId_Ponencia(rs.getInt("id_Ponencia"));
+                p.setTitulo(rs.getString("Titulo"));
+
+                p.setDuracion(rs.getInt("Duracion"));
+                p.setFecha(rs.getDate("Fecha").toLocalDate());
+
                 LocalDate fecha = rs.getDate("Fecha").toLocalDate();
                 LocalTime hora = rs.getTime("Hora").toLocalTime();
-                String ubicacion = rs.getString("Ubicacion");
-                String sala = rs.getString("Sala");
-                Nivel nivel = Nivel.valueOf(rs.getString("Nivel").toUpperCase());
-                Tipo tipo = Tipo.valueOf(rs.getString("Tipo").toUpperCase());
-                Formato formato = Formato.valueOf(rs.getString("Formato").toUpperCase());
 
-                Ponencia p = new Ponencia(id_Ponencia,titulo,tematica,duracion,fecha,hora,
-                        ubicacion,sala,nivel,tipo,formato);
+                p.setHora(LocalDateTime.of(fecha, hora));
+
+                p.setUbicacion(rs.getString("Ubicacion"));
+                p.setSala(rs.getString("Sala"));
+
+                p.setNivel(Nivel.valueOf(rs.getString("Nivel").toUpperCase()));
+                p.setTipo(Tipo.valueOf(rs.getString("Tipo").toUpperCase()));
+                p.setFormato(Formato.valueOf(rs.getString("Formato").toUpperCase()));
 
                 ponencias.add(p);
             }

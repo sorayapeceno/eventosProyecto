@@ -68,6 +68,11 @@
 
                         <td th:text="${evento.modalidad}"></td>
 
+                        <td>
+                            <a th:href="@{/participantes/Modificar_Evento(id=${evento.id_Evento})}">
+                                Modificar
+                            </a>
+                        </td>
                     </tr>
 
                     </tbody>

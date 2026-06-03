@@ -105,7 +105,7 @@ public class ParticipantesServlet extends HttpServlet {
 
 						templateEngine.process("Crear_Ponencia",context,response.getWriter());
 
-						break;/**/
+						break;
 
 					case "Registrar_Ponente":
 						PonenteRepo ponenteRepo = new PonenteRepo();
@@ -150,7 +150,7 @@ public class ParticipantesServlet extends HttpServlet {
 
                     case "Modificar_Evento":
                         RepoEventos repoEventos1 = new RepoEventos();
-                        int idEvento = Integer.parseInt(request.getParameter("id_Evento"));
+						int idEvento = Integer.parseInt(request.getParameter("id_Evento"));
 
                         Evento evento = repoEventos1.mostrarEvento(idEvento);
 
@@ -159,6 +159,32 @@ public class ParticipantesServlet extends HttpServlet {
                         templateEngine.process("Modificar_Evento", context, response.getWriter());
 
                         break;
+					case "Asignacion_Ponencia-Evento":
+
+						RepoEventos eventoRepo = new RepoEventos();
+						PonenciaRepo ponenciaRepo = new PonenciaRepo();
+
+						List<Evento> eventos1 = eventoRepo.listarEvento();
+						Set<Ponencia> ponencias2 = ponenciaRepo.listarPonencias();
+
+						context.setVariable("eventos", eventos1);
+						context.setVariable("ponencias", ponencias2);
+
+						templateEngine.process("Asignacion_Ponencia-Evento", context, response.getWriter());
+						break;
+					case "Asignacion_Ponente-Ponencia":
+
+						PonenteRepo ponenteRepo1 = new PonenteRepo();
+						PonenciaRepo ponenciaRepo2 = new PonenciaRepo();
+
+						 Set <Ponente> ponentes1 = ponenteRepo1.listarPonente();
+						 Set<Ponencia> ponencias1 = ponenciaRepo2.listarPonencias();
+
+						context.setVariable("ponentes", ponentes1);
+						context.setVariable("ponencias", ponencias1);
+
+						templateEngine.process("Asignacion_Ponente-Ponencia", context, response.getWriter());
+						break;
 
                     default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
@@ -203,62 +229,80 @@ public class ParticipantesServlet extends HttpServlet {
             }
         }else if (path.equals("/Modificar_Evento")) {
 
-                try {
+			try {
 
-                    Evento evento = new Evento();
+				Evento evento = new Evento();
 
-                    evento.setId_Evento(
-                            Integer.parseInt(request.getParameter("idEvento"))
-                    );
+				evento.setId_Evento(
+						Integer.parseInt(request.getParameter("id_Evento"))
+				);
 
-                    evento.setNombre(request.getParameter("nombre"));
-                    evento.setDescripcion(request.getParameter("descripcion"));
-                    evento.setDireccion(request.getParameter("direccion"));
-                    evento.setCiudad(request.getParameter("ciudad"));
-                    evento.setLugar(request.getParameter("lugar"));
+				evento.setNombre(request.getParameter("nombre"));
+				evento.setDescripcion(request.getParameter("descripcion"));
+				evento.setDireccion(request.getParameter("direccion"));
+				evento.setCiudad(request.getParameter("ciudad"));
+				evento.setLugar(request.getParameter("lugar"));
 
-                    evento.setCapacidad(
-                            Integer.parseInt(request.getParameter("capacidad"))
-                    );
+				evento.setCapacidad(
+						Integer.parseInt(request.getParameter("capacidad"))
+				);
 
-                    evento.setFechaInicio(
-                            java.time.LocalDate.parse(
-                                    request.getParameter("fechaInicio"))
-                    );
+				evento.setFechaInicio(
+						java.time.LocalDate.parse(
+								request.getParameter("fechaInicio"))
+				);
 
-                    evento.setFechaFin(
-                            java.time.LocalDate.parse(
-                                    request.getParameter("fechaFin"))
-                    );
+				evento.setFechaFin(
+						java.time.LocalDate.parse(
+								request.getParameter("fechaFin"))
+				);
 
-                    evento.setEstado(
-                            Estado.valueOf(
-                                    request.getParameter("estado"))
-                    );
+				evento.setEstado(
+						Estado.valueOf(
+								request.getParameter("estado"))
+				);
 
-                    evento.setModalidad(
-                            Modalidad.valueOf(
-                                    request.getParameter("modalidad"))
-                    );
+				evento.setModalidad(
+						Modalidad.valueOf(
+								request.getParameter("modalidad"))
+				);
 
-                    RepoEventos repo = new RepoEventos();
+				RepoEventos repo = new RepoEventos();
 
-                    repo.modificarEvento(evento);
+				repo.modificarEvento(evento);
 
-                    response.sendRedirect(
-                            request.getContextPath()
-                                    + "/participantes/Listado_Eventos"
-                    );
+				response.sendRedirect(
+						request.getContextPath()
+								+ "/participantes/Listado_Eventos"
+				);
 
-                } catch (Exception e) {
+			} catch (Exception e) {
 
-                    e.printStackTrace();
+				e.printStackTrace();
 
-                    response.getWriter().println(
-                            "Error al modificar evento: "
-                                    + e.getMessage()
-                    );
-                }
-            }
+				response.getWriter().println(
+						"Error al modificar evento: "
+								+ e.getMessage()
+				);
+			}
+		}else if (path.equals("/Asignacion_Ponencia-Evento")) {
+
+				String eventoId = request.getParameter("evento");
+				String ponenciaId = request.getParameter("ponencia");
+
+				if (eventoId == null || ponenciaId == null) {
+					response.sendRedirect(request.getContextPath() + "/participantes/Asignacion_Ponencia-Evento");
+					return;
+				}
+
+				int idEvento = Integer.parseInt(eventoId);
+				int idPonencia = Integer.parseInt(ponenciaId);
+
+				RepoEventosPonencias repo = new RepoEventosPonencias();
+				repo.asignarPonenciaEvento(idEvento, idPonencia);
+
+				response.sendRedirect(request.getContextPath() + "/participantes/Listado_Eventos");
 		}
+
 	}
+}
