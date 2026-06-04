@@ -68,14 +68,12 @@
 
                 <label for="modalidad">Modalidad:</label>
                 <select id="modalidad" name="modalidad">
-                    <option th:each="mod : ${modalidades}"
-                            th:value="${mod}" th:text="${mod}"
-                            th:selected="${mod == evento.modalidad}"></option>
+                    <option value="">Elige una opción:</option>
+                    <option th:each="modalidad : ${modalidades}" th:value="${modalidad}" th:text="${modalidad}"></option>
                 </select>
 
                 <label for="lugar">Lugar:</label>
                 <input type="text" id="lugar" name="lugar" th:value="${evento.lugar}" required>
-
                 <button type="submit">Guardar cambios</button>
                 <a th:href="@{/participantes/Listado_Eventos}">Cancelar</a>
             </fieldset>
