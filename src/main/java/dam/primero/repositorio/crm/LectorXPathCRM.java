@@ -17,9 +17,6 @@ public class LectorXPathCRM {
 
     private static final String RUTA_XML = "/crm/formulariosCRM.xml";
 
-    /**
-     * Ejecuta una consulta XPath sencilla sobre el XML de formularios CRM.
-     */
     public List<String> consultar(String expresionXPath) {
         List<String> resultados = new ArrayList<>();
 
