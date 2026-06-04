@@ -3,6 +3,13 @@ package dam.primero.modelos.ventas;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa a un asistente del evento.
+ * Guarda sus datos personales, temática de interés, nivel de impartición
+ * y el total acumulado en compras. Puede tener varios tickets asociados.
+ *
+ * @author Jose Lazo
+ */
 public class Asistente {
 
     private long id_Asistente;

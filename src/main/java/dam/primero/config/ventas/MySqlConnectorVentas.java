@@ -8,6 +8,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Gestiona la conexión a la base de datos del módulo de ventas.
+ * Lee las credenciales del fichero db.propierties del classpath,
+ * abre la conexión al inicializarse y la cierra con release().
+ *
+ * @author Jose Lazo
+ */
 public class MySqlConnectorVentas {
 
     private Connection connect;

@@ -1,5 +1,13 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Representa cada línea de un ticket de compra.
+ * Asocia un producto con su cantidad y calcula automáticamente
+ * el subtotal base (sin IVA), la cuota de IVA y el total de la línea
+ * a través del método calcularTotales().
+ *
+ * @author Sergio Galan
+ */
 public class LineaTicket {
 
     private long    id_LineaTicket;

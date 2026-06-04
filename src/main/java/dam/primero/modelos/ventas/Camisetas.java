@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Producto textil de tipo Camiseta.
+ * Extiende de Textil y añade modelo y estampado específicos de la camiseta.
+ *
+ * @author Alexandru Cozaru
+ */
 public class Camisetas extends Textil {
 
     private long   id_Camisetas;

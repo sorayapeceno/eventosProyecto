@@ -1,5 +1,14 @@
 package dam.primero.repositorio.ventas;
 
+/**
+ * Repositorio JDBC para la gestión de tickets y sus líneas de compra.
+ * Incluye operaciones de consulta, creación con descuento de stock en transacción,
+ * y cancelación con restauración de stock. También proporciona métodos
+ * para obtener el siguiente ID disponible de ticket y de línea.
+ *
+ * @author Sergio Galan
+ */
+
 import dam.primero.modelos.ventas.*;
 import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;

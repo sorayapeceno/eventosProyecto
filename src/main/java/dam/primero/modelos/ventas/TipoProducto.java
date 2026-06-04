@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Enumerado con los tipos de producto disponibles en el módulo de ventas.
+ * Cada valor tiene un nombre legible para mostrar en la interfaz.
+ *
+ * @author Alexandru Cozaru
+ */
 public enum TipoProducto {
     VIP, ESTANDAR, BECA, CAMISETA, ACCESORIO, OTROS;
 

@@ -1,5 +1,13 @@
 package dam.primero.repositorio.ventas;
 
+/**
+ * Repositorio JDBC para la tabla Asistente.
+ * Permite listar, buscar por id, guardar, actualizar y eliminar asistentes.
+ * Cada método abre su propia conexión mediante MySqlConnectorVentas y la cierra en el finally.
+ *
+ * @author Jose Lazo
+ */
+
 import dam.primero.modelos.ventas.Asistente;
 import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;

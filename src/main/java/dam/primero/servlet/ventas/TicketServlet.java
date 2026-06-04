@@ -1,5 +1,14 @@
 package dam.primero.servlet.ventas;
 
+/**
+ * Servlet que gestiona el proceso completo de una nueva venta.
+ * Mantiene el carrito de compra en sesión HTTP, permite añadir y eliminar productos,
+ * aplica códigos promocionales, confirma la compra guardando el ticket en base de datos
+ * y genera el fichero JSON del ticket en WEB-INF/tickets/.
+ *
+ * @author Sergio Galan
+ */
+
 import dam.primero.modelos.ventas.*;
 import dam.primero.repositorio.ventas.AsistenteRepository;
 import dam.primero.repositorio.ventas.ProductoRepository;

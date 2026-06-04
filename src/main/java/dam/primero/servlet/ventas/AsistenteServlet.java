@@ -1,5 +1,13 @@
 package dam.primero.servlet.ventas;
 
+/**
+ * Servlet para la gestión de asistentes del evento.
+ * Permite listar todos los asistentes, mostrar el formulario de alta/edición,
+ * guardar los datos del formulario y eliminar un asistente por id.
+ *
+ * @author Jose Lazo
+ */
+
 import dam.primero.modelos.ventas.Asistente;
 import dam.primero.repositorio.ventas.AsistenteRepository;
 import dam.primero.exception.MyException;

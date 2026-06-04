@@ -1,5 +1,12 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Entrada de tipo VIP. Además de los campos de Entrada, incluye
+ * beneficios exclusivos, servicios adicionales y un precio extra
+ * sobre el precio base de la entrada.
+ *
+ * @author Alexandru Cozaru
+ */
 public class VIP extends Entrada {
 
     private long   id_Vip;

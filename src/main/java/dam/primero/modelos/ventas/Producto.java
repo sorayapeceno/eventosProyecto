@@ -1,5 +1,13 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Clase base abstracta para todos los productos del módulo de ventas.
+ * Define los atributos comunes: nombre, precio, stock, descripción, IVA y descuento.
+ * Las subclases deben implementar getTipoProducto() para identificar su categoría.
+ * El método getPrecioConDescuento() devuelve el precio ya aplicado el descuento.
+ *
+ * @author Alexandru Cozaru
+ */
 public abstract class Producto {
 
     private long   id_Producto;
