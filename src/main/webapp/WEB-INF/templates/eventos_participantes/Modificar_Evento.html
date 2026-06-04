@@ -6,47 +6,43 @@
     <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
 </head>
 <body>
-
 <header>
     <h1>Gestión de Eventos Educativos</h1>
-    <nav>
-        <ul>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-        </ul>
-    </nav>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
 </header>
-
 <aside>
     <h2>Casos de uso</h2>
     <ul>
         <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
         <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
         <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
         <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
     </ul>
 </aside>
-
 <main>
     <section class="contenido-secundario">
         <h2>Modificar evento</h2>
+        <!-- FIX: th:action correcto + campo hidden con el ID + th:value en todos los inputs -->
         <form th:action="@{/participantes/Modificar_Evento}" method="post">
             <fieldset>
                 <legend>Datos del evento</legend>
 
-                <!-- Campo hidden con el ID del evento -->
                 <input type="hidden" name="idEvento" th:value="${evento.id_Evento}">
 
                 <label for="nombre">Nombre del evento:</label>
                 <input type="text" id="nombre" name="nombre" th:value="${evento.nombre}" required>
 
                 <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" rows="10" th:text="${evento.descripcion}"></textarea>
+                <textarea id="descripcion" name="descripcion" rows="6" th:text="${evento.descripcion}"></textarea>
 
                 <label for="fechaInicio">Fecha de inicio:</label>
                 <input type="date" id="fechaInicio" name="fechaInicio" th:value="${evento.fechaInicio}" required>
@@ -66,34 +62,26 @@
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado">
                     <option th:each="est : ${estados}"
-                            th:value="${est}"
-                            th:text="${est}"
-                            th:selected="${est == evento.estado}">
-                    </option>
+                            th:value="${est}" th:text="${est}"
+                            th:selected="${est == evento.estado}"></option>
                 </select>
 
                 <label for="modalidad">Modalidad:</label>
                 <select id="modalidad" name="modalidad">
                     <option th:each="mod : ${modalidades}"
-                            th:value="${mod}"
-                            th:text="${mod}"
-                            th:selected="${mod == evento.modalidad}">
-                    </option>
+                            th:value="${mod}" th:text="${mod}"
+                            th:selected="${mod == evento.modalidad}"></option>
                 </select>
 
                 <label for="lugar">Lugar:</label>
                 <input type="text" id="lugar" name="lugar" th:value="${evento.lugar}" required>
 
-                <!-- FIX: botón guardar + botón cancelar que vuelve al listado -->
                 <button type="submit">Guardar cambios</button>
                 <a th:href="@{/participantes/Listado_Eventos}">Cancelar</a>
             </fieldset>
         </form>
     </section>
 </main>
-
-<footer>
-    <p>© 2026 Gestión de Eventos</p>
-</footer>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
 </body>
 </html>

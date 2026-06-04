@@ -1,69 +1,63 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Asignar Ponente a Evento</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Asignar Ponente a Evento</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
+</header>
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
+        <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
+        <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
+    </ul>
+</aside>
+<main>
+    <section class="contenido-secundario">
+        <h2>Asignar ponente a evento</h2>
+        <form th:action="@{/participantes/Asignacion_Ponente-Evento}" method="post">
+            <fieldset>
+                <legend>Datos de asignación</legend>
 
-        <!--Estilo Lili-->
-        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
-    </head>
-    <body>
+                <label for="idPonente">Selecciona un ponente:</label>
+                <select id="idPonente" name="idPonente">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="ponente : ${ponentes}"
+                            th:value="${ponente.idPonente}"
+                            th:text="${ponente.especialidad}">
+                    </option>
+                </select>
 
-    <header>
-        <h1>Gestión de Eventos Educativos</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-            </ul>
-        </nav>
-    </header>
+                <label for="idEvento">Selecciona un evento:</label>
+                <select id="idEvento" name="idEvento">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="evento : ${eventos}"
+                            th:value="${evento.id_Evento}"
+                            th:text="${evento.nombre}">
+                    </option>
+                </select>
 
-    <aside>
-        <h2>Casos de uso</h2>
-        <ul>
-            <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-            <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
-            <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
-            <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
-        </ul>
-    </aside>
-        <main>
-            <section class="contenido-secundario">
-                <h2>Asignar ponente a evento</h2>
-
-                <form action="#" method="post">
-                    <fieldset>
-                        <legend>Datos de asignación</legend>
-
-                        <!-- EVENTO -->
-                        <label for="evento">Selecciona un evento:</label>
-                        <select id="evento" name="evento">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
-                        </select>
-
-                        <!-- PONENTE -->
-                        <label for="ponente">Selecciona un ponente:</label>
-                        <select id="ponente" name="ponente">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="ponente : ${ponentes}" th:value="${ponente.id}" th:text="${ponente.nombre}"></option>
-                        </select>
-
-                        <button type="submit">Asignar ponente</button>
-                    </fieldset>
-                </form>
-            </section>
-        </main>
-        <footer>
-            <p>© 2026 Gestión de Eventos</p>
-        </footer>
-    </body>
+                <button type="submit">Asignar ponente</button>
+            </fieldset>
+        </form>
+    </section>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+</body>
 </html>

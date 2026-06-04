@@ -6,40 +6,35 @@
     <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
 </head>
 <body>
-
 <header>
     <h1>Gestión de Eventos Educativos</h1>
-    <nav>
-        <ul>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-        </ul>
-    </nav>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
 </header>
-
 <aside>
     <h2>Casos de uso</h2>
     <ul>
         <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
         <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
         <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
         <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
     </ul>
 </aside>
-
 <main>
     <section class="contenido-secundario">
         <h2>Crear nuevo evento</h2>
-        <!-- FIX: th:action apunta correctamente al servlet -->
+        <!-- FIX: th:action en lugar de action="#" -->
         <form th:action="@{/participantes/Crear_Evento}" method="post">
             <fieldset>
                 <legend>Datos del evento</legend>
-
                 <label for="nombre">Nombre del evento:</label>
                 <input type="text" id="nombre" name="nombre" required>
 
@@ -81,9 +76,6 @@
         </form>
     </section>
 </main>
-
-<footer>
-    <p>© 2026 Gestión de Eventos</p>
-</footer>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
 </body>
 </html>
