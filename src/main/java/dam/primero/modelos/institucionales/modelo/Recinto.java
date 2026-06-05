@@ -9,6 +9,9 @@ public class Recinto {
     private int capacidad;
     private String ubicacion;
 
+    public Recinto() {
+    }
+
     public Recinto(int idRecinto, String nombre, int capacidad, String ubicacion) {
         contador++;
         this.idRecinto = contador;

@@ -13,6 +13,9 @@ public class HistorialOportunidad {
     private LocalDate fechaInicio;
     private LocalDate fechaFin; //no lo pongo en el constructor porque puede que no se haya realizado todavia
 
+    public HistorialOportunidad() {
+    }
+
     public HistorialOportunidad(int idHistorial, Organizacion idOrganizacion, Oportunidad idOportunidad, Recinto idRecinto, String iteraciones, LocalDate fechaInicio, LocalDate fechaFin) {
         contador++;
         this.idHistorial = contador;

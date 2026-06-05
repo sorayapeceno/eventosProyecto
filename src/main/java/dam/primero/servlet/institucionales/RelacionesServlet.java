@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 public class RelacionesServlet extends HttpServlet {
 	private static final long serialVersionUID = 2051990309999713971L;
 	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
