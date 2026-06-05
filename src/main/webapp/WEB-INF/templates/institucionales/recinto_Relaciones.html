@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recinto</title>
+    <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
+</head>
+<body>
+    <header>
+        <h1>Recinto</h1>
+        <a th:href="@{/relaciones}">
+            <button type="button">&#8592; Atrás</button>
+        </a>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Recinto</th>
+                    <th>Nombre</th>
+                    <th>Capacidad</th>
+                    <th>Ubicación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Palacio de Congresos</td>
+                    <td>2,000</td>
+                    <td>Sevilla</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Centro Cultural Norte</td>
+                    <td>750</td>
+                    <td>Málaga</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Pabellón Municipal</td>
+                    <td>1,200</td>
+                    <td>Cádiz</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organización</title>
+    <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
+</head>
+<body>
+    <header>
+        <h1>Organización</h1>
+        <a th:href="@{/relaciones}">
+            <button type="button">&#8592; Atrás</button>
+        </a>
+    </header>
+
+    <main>
+        <h2>Organización</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Organización</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Ciudad</th>
+                    <th>Fecha de Registro</th>
+                    <th>ID Historial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Tech_Solutions</td>
+                    <td>Av_Andalucia 25</td>
+                    <td>654321987</td>
+                    <td>contacto@techsolutions.com</td>
+                    <td>Sevilla</td>
+                    <td>2025-03-12</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Asociación Futuro Joven</td>
+                    <td>Calle Real 14</td>
+                    <td>611223344</td>
+                    <td>info@futurojoven.org</td>
+                    <td>Málaga</td>
+                    <td>2025-04-20</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Ayuntamiento de La Algaba</td>
+                    <td>Plaza Constitución 1</td>
+                    <td>955667788</td>
+                    <td>ayuntamiento@algaba.es</td>
+                    <td>La Algaba</td>
+                    <td>2025-01-05</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Administración</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Administración</th>
+                    <th>Ámbito</th>
+                    <th>Presupuesto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Educación</td>
+                    <td>2,500,000</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Sanidad</td>
+                    <td>4,200,000</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Cultura</td>
+                    <td>1,800,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Empresa</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Empresa</th>
+                    <th>Sector</th>
+                    <th>Número de Empleados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Tecnología</td>
+                    <td>120</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Marketing</td>
+                    <td>45</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Transporte</td>
+                    <td>300</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Centro Educativo</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Centro</th>
+                    <th>Tipo de Centro</th>
+                    <th>Número de Alumnos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Instituto</td>
+                    <td>850</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Universidad</td>
+                    <td>12,000</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Colegio Privado</td>
+                    <td>430</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Asociación</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Asociación</th>
+                    <th>Finalidad</th>
+                    <th>Número de Socios</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Ayuda Social</td>
+                    <td>250</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Protección Animal</td>
+                    <td>180</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Actividades Juveniles</td>
+                    <td>320</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Ayuntamiento</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Ayuntamiento</th>
+                    <th>Provincia</th>
+                    <th>Alcalde</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sevilla</td>
+                    <td>María Lopez</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Málaga</td>
+                    <td>Antonio Ruiz</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Cádiz</td>
+                    <td>Carmen Ortega</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

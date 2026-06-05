@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>RELACIONES</title>
-	<link rel="stylesheet" th:href="@{/CSS/PaginaBase.css}">
+	<link rel="stylesheet" th:href="@{/CSS/indexRelaciones.css}">
 	<style>
 		body  { text-align: center; }
 		main  { display: flex; justify-content: center; align-items: center; }
@@ -27,9 +27,20 @@
 	<a th:href="@{/}">
 		<button type="button">&#8592; Atrás</button>
 	</a>
+
+
 </header>
 
 <main>
+	<nav>
+		<a th:href="@{/relaciones/organizacion}" class="button">Organización</a>
+		<a th:href="@{/relaciones/oportunidad}" class="button">Oportunidad</a>
+		<a th:href="@{/relaciones/historial}" class="button">Historial Oportunidad</a>
+		<a th:href="@{/relaciones/recinto}" class="button">Recinto</a>
+		<a th:href="@{/relaciones/colaboracion}" class="button">Colaboración</a>
+		<a th:href="@{/relaciones/actividad}" class="button">Actividad</a>
+		<a th:href="@{/relaciones/patrocinio}" class="button">Patrocinio</a>
+	</nav>
 	<div></div>
 </main>
 </body>

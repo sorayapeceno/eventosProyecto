@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colaboración</title>
+    <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
+</head>
+<body>
+    <header>
+        <h1>Colaboración</h1>
+        <a th:href="@{/relaciones}">
+            <button type="button">&#8592; Atrás</button>
+        </a>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Colaboración</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Firma</th>
+                    <th>Dinero</th>
+                    <th>Convenio</th>
+                    <th>ID Historial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Académica</td>
+                    <td>2026-05-15</td>
+                    <td>Sí</td>
+                    <td>5,000</td>
+                    <td>Convenio Universitario</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Empresarial</td>
+                    <td>2026-06-20</td>
+                    <td>No</td>
+                    <td>7,500</td>
+                    <td>Acuerdo Temporal</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Institucional</td>
+                    <td>2026-07-01</td>
+                    <td>Sí</td>
+                    <td>12,000</td>
+                    <td>Convenio Anual</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

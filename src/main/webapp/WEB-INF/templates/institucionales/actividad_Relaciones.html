@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad</title>
+    <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
+</head>
+<body>
+    <header>
+        <h1>Actividad</h1>
+        <a th:href="@{/relaciones}">
+            <button type="button">&#8592; Atrás</button>
+        </a>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Actividad</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Dinero</th>
+                    <th>Firma</th>
+                    <th>ID Historial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Taller de Programación</td>
+                    <td>2026-06-11</td>
+                    <td>2,500</td>
+                    <td>Sí</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Conferencia de Empleo</td>
+                    <td>2026-07-06</td>
+                    <td>1,000</td>
+                    <td>No</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Jornada de Networking</td>
+                    <td>2026-09-18</td>
+                    <td>2,000</td>
+                    <td>Sí</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

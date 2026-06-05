@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrocinio</title>
+    <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
+</head>
+<body>
+    <header>
+        <h1>Patrocinio</h1>
+        <a th:href="@{/relaciones}">
+            <button type="button">&#8592; Atrás</button>
+        </a>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Patrocinio</th>
+                    <th>Firma</th>
+                    <th>Dinero</th>
+                    <th>Tipo</th>
+                    <th>ID Historial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sí</td>
+                    <td>3,000</td>
+                    <td>Bronce</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>No</td>
+                    <td>7,000</td>
+                    <td>Plata</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Sí</td>
+                    <td>15,000</td>
+                    <td>Oro</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

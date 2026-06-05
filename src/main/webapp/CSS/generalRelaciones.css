@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Estilos Generales (Heredados del CSS Principal)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    /* Fondo con imagen difuminada y degradado */
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Cabecera Reestructurada (Header con Divider)
+   ========================================================================== */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000000;
+    margin: 0;
+}
+
+/* Contenedor del botón simulando la fila inferior/divider del menú */
+header a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Línea divisoria sutil (divider) */
+}
+
+/* ==========================================================================
+   Estilo de Botones (Línea de diseño unificada)
+   ========================================================================== */
+header a button {
+    display: inline-block;
+    width: auto;
+    min-width: 160px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    /* Colores y bordes requeridos */
+    background-color: #3498db;
+    color: #2c3e50;
+    border: none;
+    border-radius: 5px;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+header a button:hover {
+    background-color: #2980b9;
+    color: #ecf0f1;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   Contenido Principal
+   ========================================================================== */
+main {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ==========================================================================
+   Estilos de Tablas (Mantenidos 100% Intactos)
+   ========================================================================== */
+table {
+    width: 80%;
+    margin: 20px auto 40px; /* Margen inferior de 40px conservado */
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #3498db;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #d4e6f1;
+}

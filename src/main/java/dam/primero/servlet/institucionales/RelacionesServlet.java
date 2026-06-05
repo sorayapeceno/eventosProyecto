@@ -84,11 +84,26 @@ public class RelacionesServlet extends HttpServlet {
 
 			// Aquí tu lógica de negocio por acción
 			switch (accion.toLowerCase()) {
-				case "clientes":
-					// templateEngine.process("clientes", context, response.getWriter());
+				case "organizacion":
+					 templateEngine.process("organizacion_Relaciones", context, response.getWriter());
 					break;
-				case "eventos":
-					// templateEngine.process("eventos", context, response.getWriter());
+				case "actividad":
+					 templateEngine.process("actividad_Relaciones", context, response.getWriter());
+					break;
+				case "colaboracion":
+					templateEngine.process("colaboracion_Relaciones", context, response.getWriter());
+					break;
+				case "historial":
+					templateEngine.process("historialOportunidad_Relaciones", context, response.getWriter());
+					break;
+				case "oportunidad":
+					templateEngine.process("oportunidad_Relaciones", context, response.getWriter());
+					break;
+				case "patrocinio":
+					templateEngine.process("patrocinio_Relaciones", context, response.getWriter());
+					break;
+				case "recinto":
+					templateEngine.process("recinto_Relaciones", context, response.getWriter());
 					break;
 				default:
 					response.sendError(HttpServletResponse.SC_NOT_FOUND,

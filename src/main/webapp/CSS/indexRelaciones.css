@@ -1,0 +1,199 @@
+/* ==========================================================================
+   Estilos Generales
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                url('../Fotos/instituto.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Cabecera Reestructurada (Header)
+   ========================================================================== */
+header {
+    background-color: #2d97d0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column; /* Coloca los botones debajo de la fila del título */
+    gap: 20px;
+}
+
+/* Fila de arriba: Logo, Título e Inicio */
+.header-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    color: #000000;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.contenedorBotonInicio button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 35px;
+    border: 2px solid transparent;
+    border-radius: 5px; /* Sincronizado con el nuevo estilo angular */
+    background-color: #ffffff;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.contenedorBotonInicio button:hover {
+    background-color: #3498db;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Fila de abajo: El contenedor de botones adaptado horizontalmente */
+.cajaDeBotones, nav {
+    display: flex;
+    flex-direction: row; /* Dispuestos en fila de forma horizontal */
+    justify-content: center;
+    flex-wrap: wrap; /* Si no caben en pantallas medianas, bajan de forma ordenada */
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Línea divisoria sutil */
+}
+
+/* ==========================================================================
+   NUEVOS ESTILOS DE BOTONES Y BOTÓN DE ATRÁS (Unificados)
+   ========================================================================== */
+.botones, .button, header a button {
+    display: inline-block;
+    width: auto; /* Ancho automático basado en el texto */
+    min-width: 160px; /* Un tamaño mínimo estético */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    /* Colores heredados del segundo archivo */
+    background-color: #3498db;
+    color: #2c3e50;
+    border: none;
+    border-radius: 5px; /* Bordes ligeramente suavizados, no redondos del todo */
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.botones:hover, .button:hover, header a button:hover {
+    /* Efecto hover heredado del segundo archivo */
+    background-color: #2980b9;
+    color: #ecf0f1;
+
+    transform: translateY(-2px); /* Mantiene la animación sutil de elevación */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   Contenido Principal (Sección de Introducción del Centro)
+   ========================================================================== */
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 40px 20px;
+}
+
+.contenido-introduccion {
+    width: 100%;
+    max-width: 900px;
+    background-color: rgba(255, 255, 255, 0.95); /* Caja flotante traslúcida */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.contenido-introduccion h2 {
+    font-size: 28px;
+    color: #2980b9; /* Ajustado para hacer juego con el azul de los nuevos botones */
+    margin-bottom: 20px;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.contenido-introduccion p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.contenido-introduccion p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Adaptabilidad (Responsive)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-superior {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin: 10px 0;
+    }
+
+    .cajaDeBotones, nav {
+        flex-direction: column; /* En móviles se vuelven a poner en lista vertical */
+        align-items: center;
+        width: 100%;
+    }
+
+    .botones, .button, header a button {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .contenido-introduccion {
+        padding: 25px;
+    }
+
+    .contenido-introduccion h2 {
+        font-size: 24px;
+    }
+}
