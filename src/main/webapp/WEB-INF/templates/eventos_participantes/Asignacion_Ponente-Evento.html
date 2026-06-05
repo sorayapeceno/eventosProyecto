@@ -45,16 +45,24 @@
 
                         <!-- EVENTO -->
                         <label for="evento">Selecciona un evento:</label>
-                        <select id="evento" name="evento">
+                        <select id="evento" name="evento" required>
+
                             <option value="">Elige una opción:</option>
-                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
+
+                            <option th:each="evento : ${eventos}"
+                                    th:value="${evento.id_Evento}"
+                                    th:text="${evento.nombre}">
+                            </option>
+
                         </select>
 
                         <!-- PONENTE -->
                         <label for="ponente">Selecciona un ponente:</label>
                         <select id="ponente" name="ponente">
                             <option value="">Elige una opción:</option>
-                            <option th:each="ponente : ${ponentes}" th:value="${ponente.id}" th:text="${ponente.nombre}"></option>
+                            <option th:each="ponente : ${ponentes}"
+                                    th:value="${ponente.id_ponente}"
+                                    th:text="${ponente.BIO}"></option>
                         </select>
 
                         <button type="submit">Asignar ponente</button>
