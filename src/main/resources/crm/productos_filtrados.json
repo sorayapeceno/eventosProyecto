@@ -1,0 +1,23 @@
+[
+  {
+    "nombre": "Camiseta Evento",
+    "descripcion": "Camiseta oficial para asistentes.",
+    "precio": "12.5",
+    "stock": "100",
+    "categoria": "Merchandising"
+  },
+  {
+    "nombre": "pieza",
+    "descripcion": "test",
+    "precio": "12.0",
+    "stock": "5",
+    "categoria": "test"
+  },
+  {
+    "nombre": "122",
+    "descripcion": "112",
+    "precio": "12.0",
+    "stock": "12",
+    "categoria": "12"
+  }
+]

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="ES">
+<html lang="ES" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I.E.S. Torre de los Guzmanes - Actividades</title>
-        <link rel="stylesheet" th:href="@{/CSS/actividades.css}">
-    </head>
     <title>CRM</title>
+    <link rel="stylesheet" th:href="@{/CSS/actividades.css}">
     <link rel="stylesheet" th:href="@{/CSS/CRM/indexCRM.css}">
     <style>
         .botonVolver{
@@ -29,15 +27,10 @@
         }
     </style>
 </head>
-
 <body>
 <header>
-    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/"
-       target="_blank">
-
-        <img th:src="@{/Fotos/logo.svg}"
-             alt="Logo Instituto"
-             id="logo">
+    <a href="https://blogsaverroes.juntadeandalucia.es/iestorrredelosguzmanes/" target="_blank">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logo Instituto" id="logo">
     </a>
     <h1>CRM</h1>
     <a th:href="@{/}">
@@ -46,72 +39,34 @@
 </header>
 <div class="contenedorPrincipal">
     <div class="panelCRM">
-        <img th:src="@{/Fotos/logo.svg}"
-             alt="Logo Instituto"
-             class="logoCRM">
+        <img th:src="@{/Fotos/logo.svg}" alt="Logo Instituto" class="logoCRM">
         <h2>CRM</h2>
-        <p>
-            Gestión de formularios,
-            páginas web y recursos CRM.
-        </p>
+        <p>Gestión de formularios, páginas web y recursos CRM.</p>
     </div>
     <div class="contenedorBotones">
-        <!-- ========================= -->
-        <!-- FORMULARIOS -->
-        <!-- ========================= -->
-
         <section class="bloque">
-
             <h3>Formularios</h3>
-
             <a th:href="@{/crm/organizacion}"><button class="botones" type="button">Formulario Organización</button></a>
-
             <a th:href="@{/crm/oportunidad}"><button class="botones" type="button">Formulario Oportunidad</button></a>
-
             <a th:href="@{/crm/producto}"><button class="botones" type="button">Formulario Producto</button></a>
-
         </section>
 
-        <!-- ========================= -->
-        <!-- PAGINAS WEB -->
-        <!-- ========================= -->
-
         <section class="bloque">
-
             <h3>Páginas Web</h3>
-
             <a th:href="@{/crm/listadopaginas}"><button class="botones" type="button">Listado Páginas</button></a>
-
             <a th:href="@{/crm/crearpagina}"><button class="botones" type="button">Crear Página</button></a>
-
         </section>
 
-        <!-- ========================= -->
-        <!-- TIPOS PAGINA -->
-        <!-- ========================= -->
-
         <section class="bloque">
-
             <h3>Tipos de Página</h3>
-
             <a th:href="@{/crm/listadotipospagina}"><button class="botones" type="button">Listado Tipos Página</button></a>
-
         </section>
-
-        <!-- ========================= -->
-        <!-- XML -->
-        <!-- ========================= -->
 
         <section class="bloque">
-
             <h3>XML y JSON</h3>
-
             <a th:href="@{/crm/xpath}"><button class="botones" type="button">Consultas XPath</button></a>
-
             <a th:href="@{/crm/generar-json}"><button class="botones" type="button">Generar JSON Productos</button></a>
-
         </section>
-
     </div>
 </div>
 </body>

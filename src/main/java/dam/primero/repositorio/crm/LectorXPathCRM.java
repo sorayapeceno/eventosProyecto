@@ -19,26 +19,42 @@ public class LectorXPathCRM {
 
     public List<String> consultar(String expresionXPath) {
         List<String> resultados = new ArrayList<>();
+        InputStream inputStream = null;
 
-        try (InputStream inputStream = getClass().getResourceAsStream(RUTA_XML)) {
+        try {
+            inputStream = getClass().getResourceAsStream(RUTA_XML);
+
             if (inputStream == null) {
                 resultados.add("No se encontró el fichero XML de formularios.");
-                return resultados;
-            }
+            } else {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(inputStream);
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(inputStream);
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                NodeList nodos = (NodeList) xpath.evaluate(expresionXPath, document, XPathConstants.NODESET);
 
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            NodeList nodos = (NodeList) xpath.evaluate(expresionXPath, document, XPathConstants.NODESET);
+                for (int i = 0; i < nodos.getLength(); i++) {
+                    Node nodo = nodos.item(i);
+                    String valor = nodo.getNodeValue();
 
-            for (int i = 0; i < nodos.getLength(); i++) {
-                Node nodo = nodos.item(i);
-                resultados.add(nodo.getNodeValue() != null ? nodo.getNodeValue() : nodo.getTextContent().trim());
+                    if (valor == null) {
+                        valor = nodo.getTextContent().trim();
+                    }
+
+                    resultados.add(valor);
+                }
             }
         } catch (Exception e) {
             resultados.add("Error ejecutando XPath: " + e.getMessage());
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (Exception e) {
+                resultados.add("Error cerrando el XML.");
+            }
         }
 
         return resultados;
