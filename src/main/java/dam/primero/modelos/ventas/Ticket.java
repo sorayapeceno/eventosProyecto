@@ -4,6 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa un ticket de compra generado en el evento.
+ * Agrupa las líneas de compra de un asistente, el método de pago,
+ * un posible código promocional y el descuento aplicado.
+ * El precio final se calcula sumando los totales de todas las líneas
+ * y restando el descuento del ticket.
+ *
+ * @author Sergio Galan
+ */
 public class Ticket {
 
     private long        id_Ticket;

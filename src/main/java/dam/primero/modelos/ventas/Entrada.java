@@ -1,5 +1,13 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Clase abstracta que representa una entrada al evento.
+ * Extiende de Producto y añade los datos propios de una entrada:
+ * zona, asiento, accesos permitidos, validez en horas y estado.
+ * Sus subclases concretas son VIP, Estandar y Beca.
+ *
+ * @author Alexandru Cozaru
+ */
 public abstract class Entrada extends Producto {
 
     private long         id_Entrada;

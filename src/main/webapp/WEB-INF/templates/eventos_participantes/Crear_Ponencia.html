@@ -1,99 +1,93 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Crear Ponencia</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Ponencia</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
+</header>
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
+        <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
+        <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
+    </ul>
+</aside>
+<main>
+    <section class="contenido-secundario">
+        <h2>Crear nueva ponencia</h2>
+        <!-- FIX: th:action correcto -->
+        <form th:action="@{/participantes/Crear_Ponencia}" method="post">
+            <fieldset>
+                <legend>Datos de la ponencia</legend>
 
-        <!--Estilo Lili-->
-        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
-    </head>
-    <body>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
 
-    <header>
-        <h1>Gestión de Eventos Educativos</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-            </ul>
-        </nav>
-    </header>
+                <label for="duracion">Duración (minutos):</label>
+                <input type="number" id="duracion" name="duracion" required>
 
-    <aside>
-        <h2>Casos de uso</h2>
-        <ul>
-            <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-            <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
-            <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
-            <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
-        </ul>
-    </aside>
-        <main>
-            <section class="contenido-secundario">
-                <h2>Crear nueva ponencia</h2>
-                <form action="#" method="post">
-                    <fieldset>
-                        <legend>Datos de la ponencia</legend>
-                        <label for="titulo">Título:</label>
-                        <input type="text" id="titulo" name="titulo" required>
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
 
-                        <label for="duracion"> Duración:</label>
-                        <input type="number" id="duracion" name="duracion" required>
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" required>
 
-                        <label for="fecha"> Fecha: </label>
-                        <input type="date" id="fecha" name="fecha" required>
+                <label for="ubicacion">Ubicación:</label>
+                <input type="text" id="ubicacion" name="ubicacion" required>
 
-                        <label for="hora">Hora:</label>
-                        <input type="time" id="hora" name="hora" required>
+                <label for="nivel">Nivel:</label>
+                <select id="nivel" name="nivel">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="nivel : ${niveles}" th:value="${nivel}" th:text="${nivel}"></option>
+                </select>
 
-                        <label for="ubicacion">Ubicación:</label>
-                        <input type="text" id="ubicacion" name="ubicacion" required>
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}"></option>
+                </select>
 
-                        <label for="sala">Sala:</label>
-                        <input type="text" id="sala" name="sala" required>
+                <label for="formato">Formato:</label>
+                <select id="formato" name="formato">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="formato : ${formatos}" th:value="${formato}" th:text="${formato}"></option>
+                </select>
 
-                        <label for="nivel">Nivel:</label>
-                        <select id="nivel" name="nivel">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="nivel : ${niveles}" th:value="${nivel}" th:text="${nivel}"></option>
-                        </select>
+                <!-- FIX: Temática como select con los datos reales de BD -->
+                <label for="idTematica">Temática:</label>
+                <select id="idTematica" name="idTematica">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="t : ${tematicas}" th:value="${t.id_Tematica}" th:text="${t.tema}"></option>
+                </select>
 
-                        <label for="tipo">Tipo:</label>
-                        <select id="tipo" name="tipo">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
-                            </option>
-                        </select>
+                <!-- FIX: Evento como select con id correcto -->
+                <label for="idEvento">Evento asociado:</label>
+                <select id="idEvento" name="idEvento">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="evento : ${eventos}" th:value="${evento.id_Evento}" th:text="${evento.nombre}"></option>
+                </select>
 
-                        <label for="formato">Formato:</label>
-                        <select id="formato" name="formato">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="formato : ${formatos}" th:value="${formato}" th:text="${formato}"></option>
-                        </select>
-
-                        <label for="tematica">Temática</label>
-                        <input type="text" id="tematica" name="tematica" required>
-
-                        <label for="evento">Evento asociado:</label>
-                        <select id="evento" name="evento">
-                            <option value="">Elige una opción:</option>
-                            <option th:each="evento : ${eventos}" th:value="${evento.id}" th:text="${evento.nombre}"></option>
-                        </select>
-
-                        <button type="submit">Crear ponencia</button>
-                    </fieldset>
-                </form>
-            </section>
-        </main>
-        <footer>
-            <p>© 2026 Gestión de Eventos Educativos</p>
-        </footer>
-    </body>
+                <button type="submit">Crear ponencia</button>
+            </fieldset>
+        </form>
+    </section>
+</main>
+<footer><p>© 2026 Gestión de Eventos Educativos</p></footer>
+</body>
 </html>

@@ -1,5 +1,12 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Entrada de tipo Beca. Permite aplicar un descuento porcentual
+ * sobre el precio base según el motivo y los requisitos de la beca.
+ * Incluye el método getPrecioConBeca() para calcular el precio final.
+ *
+ * @author Alexandru Cozaru
+ */
 public class Beca extends Entrada {
 
     private long   id_Beca;

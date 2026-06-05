@@ -1,5 +1,14 @@
 package dam.primero.repositorio.ventas;
 
+/**
+ * Repositorio JDBC para la jerarquía de productos (Producto, Entrada, VIP, Estandar,
+ * Beca, Textil, Camisetas, Accesorios, Otros).
+ * Gestiona el alta, edición y borrado en cascada sobre todas las tablas relacionadas,
+ * usando transacciones para garantizar la consistencia de los datos.
+ *
+ * @author Alexandru Cozaru
+ */
+
 import dam.primero.modelos.ventas.*;
 import dam.primero.config.ventas.MySqlConnectorVentas;
 import dam.primero.exception.MyException;

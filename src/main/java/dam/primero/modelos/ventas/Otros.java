@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Producto de tipo "Otros": artículos que no encajan en ninguna categoría principal.
+ * Extiende directamente de Producto y añade una descripción adicional.
+ *
+ * @author Alexandru Cozaru
+ */
 public class Otros extends Producto {
 
     private long   id_Otros;

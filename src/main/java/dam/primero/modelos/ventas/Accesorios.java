@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Producto textil de tipo Accesorio (gorras, pulseras, etc.).
+ * Extiende de Textil y añade el campo tipo de accesorio.
+ *
+ * @author Alexandru Cozaru
+ */
 public class Accesorios extends Textil {
 
     private long   id_Accesorios;

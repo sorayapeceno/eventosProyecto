@@ -1,13 +1,8 @@
 package dam.primero.servlet.logistica;
 
-import dam.primero.modelos.logistica.modelo.Albaran;
-import dam.primero.modelos.logistica.modelo.Mercancia;
-import dam.primero.modelos.logistica.modelo.Pedido;
-import dam.primero.modelos.logistica.modelo.Proveedor;
-import dam.primero.repositorio.logistica.Repositorio_Albaranes;
-import dam.primero.repositorio.logistica.Repositorio_Mercancias;
-import dam.primero.repositorio.logistica.Repositorio_Pedidos;
-import dam.primero.repositorio.logistica.Repositorio_Proveedores;
+import dam.primero.exception.MyException;
+import dam.primero.modelos.logistica.modelo.*;
+import dam.primero.repositorio.logistica.*;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -23,23 +18,22 @@ import java.util.List;
 
 public class LogisticaServlet extends HttpServlet {
 
-	private TemplateEngine templateEngine;
-	private JavaxServletWebApplication application;
+	private TemplateEngine engine;
+	private JavaxServletWebApplication app;
 
 	@Override
 	public void init() {
 		ServletContext ctx = getServletContext();
-		application = JavaxServletWebApplication.buildApplication(ctx);
 
-		WebApplicationTemplateResolver resolver =
-				new WebApplicationTemplateResolver(application);
+		app = JavaxServletWebApplication.buildApplication(ctx);
 
+		WebApplicationTemplateResolver resolver = new WebApplicationTemplateResolver(app);
 		resolver.setPrefix("/WEB-INF/templates/logistica/");
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode(TemplateMode.HTML);
 
-		templateEngine = new TemplateEngine();
-		templateEngine.setTemplateResolver(resolver);
+		engine = new TemplateEngine();
+		engine.setTemplateResolver(resolver);
 	}
 
 	@Override
@@ -48,133 +42,116 @@ public class LogisticaServlet extends HttpServlet {
 
 		response.setContentType("text/html;charset=UTF-8");
 
-		IServletWebExchange exchange = application.buildExchange(request, response);
+		IServletWebExchange exchange = app.buildExchange(request, response);
 		WebContext context = new WebContext(exchange, request.getLocale());
 
 		String path = request.getPathInfo();
 
 		if (path == null || path.equals("/") || path.isEmpty()) {
-			templateEngine.process("indexLogistica", context, response.getWriter());
-			return;
+			path = "/";
 		}
 
-		if ("/mercancias".equals(path)) {
-			try {
-				Repositorio_Mercancias repo = new Repositorio_Mercancias();
-				List<Mercancia> lista = repo.listarMercancias();
+		try {
 
-				context.setVariable("mercancias", lista);
+			switch (path) {
 
-				templateEngine.process("mercancias", context, response.getWriter());
-				return;
+				case "/" -> engine.process("indexLogistica", context, response.getWriter());
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendError(500);
-				return;
-			}
-		}
-
-		if ("/entradamercancia".equals(path)) {
-			try {
-				Repositorio_Mercancias repo = new Repositorio_Mercancias();
-				List<Mercancia> lista = repo.listarMercancias();
-
-				context.setVariable("mercancias", lista);
-
-				// Comprobamos si el doPost nos ha dejado un error guardado en la sesión
-				HttpSession sesion = request.getSession();
-				String errorSesion = (String) sesion.getAttribute("errorSesion");
-
-				if (errorSesion != null) {
-					context.setVariable("error", errorSesion);
-					sesion.removeAttribute("errorSesion"); // Se borra inmediatamente para que no repita al refrescar
+				case "/mercancias" -> {
+					// saco todas las mercancías y las mando a la vista
+					Repositorio_Mercancias repo = new Repositorio_Mercancias();
+					List<Mercancia> lista = repo.listarMercancias();
+					context.setVariable("mercancias", lista);
+					engine.process("mercancias", context, response.getWriter());
 				}
 
-				if ("1".equals(request.getParameter("ok"))) {
-					context.setVariable("mensaje", "Entrada realizada");
+				case "/entradamercancia" -> {
+					// si funciona:
+					if ("1".equals(request.getParameter("ok"))) {
+						context.setVariable("mensaje", "Entrada registrada correctamente");
+					}
+
+					engine.process("entradaMercancia", context, response.getWriter());
 				}
 
-				templateEngine.process("entradaMercancia", context, response.getWriter());
-				return;
+				case "/albaranes" -> {
+					// saco los albaranes y los muestro
+					Repositorio_Albaranes repo = new Repositorio_Albaranes();
+					List<Albaran> lista = repo.listarAlbaranes();
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendError(500);
-				return;
-			}
-		}
+					if (lista.isEmpty()) {
+						context.setVariable("mensaje", "No hay albaranes");
+					} else {
+						context.setVariable("albaranes", lista);
+					}
 
-		if ("/albaranes".equals(path)) {
-			try {
-				Repositorio_Albaranes repo = new Repositorio_Albaranes();
-				List<Albaran> lista = repo.listarAlbaranes();
-
-				if (lista.isEmpty()) {
-					context.setVariable("mensaje", "No existen albaranes registrados");
-				} else {
-					context.setVariable("albaranes", lista);
+					engine.process("albaranes", context, response.getWriter());
 				}
 
-				templateEngine.process("albaranes", context, response.getWriter());
-				return;
+				case "/pedidos" -> {
+					// busco un pedido por id que me introducen como parametro
+					String idParam = request.getParameter("idPedido");
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendError(500);
-				return;
-			}
-		}
+					if (idParam != null && !idParam.isEmpty()) {
 
-		if ("/pedidos".equals(path)) {
-			String idParam = request.getParameter("idPedido");
+						try {
+							int id = Integer.parseInt(idParam);
 
-			if (idParam != null && !idParam.trim().isEmpty()) {
-				try {
-					int idPedido = Integer.parseInt(idParam);
-					Repositorio_Pedidos repo = new Repositorio_Pedidos();
+							Repositorio_Pedidos repo = new Repositorio_Pedidos();
+							Pedido pedido = repo.obtenerPedidoConLineas(id);
 
-					Pedido pedido = repo.obtenerPedidoConLineas(idPedido);
+							context.setVariable("pedido", pedido);
+							context.setVariable("totalPedido", pedido.calcularTotal());
 
-					context.setVariable("pedido", pedido);
-					context.setVariable("totalPedido", pedido.calcularTotal());
+						} catch (NumberFormatException e) {
+							context.setVariable("error", "El ID debe ser numérico");
+						} catch (MyException e) {
+							context.setVariable("error", e.getMessage());
+						}
+					}
 
-				} catch (NumberFormatException e) {
-					context.setVariable("error", "El ID introducido debe ser un número entero válido.");
-				} catch (dam.primero.exception.MyException e) {
-					context.setVariable("error", e.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-					context.setVariable("error", "Ocurrió un error inesperado en el servidor.");
-				}
-			}
-
-			templateEngine.process("pedidos", context, response.getWriter());
-			return;
-		}
-
-		if ("/proveedores".equals(path)) {
-			try {
-				Repositorio_Proveedores repo = new Repositorio_Proveedores();
-				List<Proveedor> lista = repo.listarProveedores();
-
-				if (lista.isEmpty()) {
-					context.setVariable("mensaje", "No hay proveedores registrados en el sistema.");
-				} else {
-					context.setVariable("proveedores", lista);
+					engine.process("pedidos", context, response.getWriter());
 				}
 
-				templateEngine.process("proveedores", context, response.getWriter());
-				return;
+				case "/proveedores" -> {
+					// muestro todos los proveedores
+					Repositorio_Proveedores repo = new Repositorio_Proveedores();
+					List<Proveedor> lista = repo.listarProveedores();
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendError(500);
-				return;
+					if (lista.isEmpty()) {
+						context.setVariable("mensaje", "No hay proveedores");
+					} else {
+						context.setVariable("proveedores", lista);
+					}
+
+					engine.process("proveedores", context, response.getWriter());
+				}
+
+				case "/exportarmercancias" -> {
+
+					try {
+						// genero el CSV con mercancías con stock mayor a 40
+						ExportadorMercanciasCsv exportador = new ExportadorMercanciasCsv();
+						exportador.exportarMercanciasStockMayor40();
+
+						context.setVariable("mensaje", "CSV generado correctamente");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						context.setVariable("error", "Error al generar el CSV");
+					}
+
+					// vuelvo a la vista de mercancías
+					engine.process("mercancias", context, response.getWriter());
+				}
+
+				default -> response.sendError(404);
 			}
-		}
 
-		response.sendError(404);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(500);
+		}
 	}
 
 	@Override
@@ -189,20 +166,18 @@ public class LogisticaServlet extends HttpServlet {
 			int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 
 			Repositorio_Mercancias repo = new Repositorio_Mercancias();
-			repo.registrarEntradaMercancia(id, cantidad);
+			repo.entradaMercancia(id, cantidad);
 
 			response.sendRedirect(
 					request.getContextPath() + "/logistica/entradamercancia?ok=1"
 			);
 
-		} catch (dam.primero.exception.MyException e) {
-			// Captura controlada: guardamos el texto en la sesión y redirigimos al formulario de vuelta
-			HttpSession sesion = request.getSession();
-			sesion.setAttribute("errorSesion", e.getMessage());
-
+		} catch (MyException e) {
+			// vuelve al formulario si ocurre un error
 			response.sendRedirect(
 					request.getContextPath() + "/logistica/entradamercancia"
 			);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(500);

@@ -186,20 +186,7 @@ public class ParticipantesServlet extends HttpServlet {
 						templateEngine.process("Asignacion_Ponente-Ponencia", context, response.getWriter());
 						break;
 
-					case "Asignacion_Ponente-Evento":
-						PonenteRepo ponenteRepo2 = new PonenteRepo();
-						RepoEventos repoEventos2 = new RepoEventos();
-
-						Set<Ponente> ponentes2 = new HashSet<>();
-						Set<Evento> eventos2 = new HashSet<>();
-
-						context.setVariable("eventos2",eventos2);
-						context.setVariable("ponentes2",ponentes2);
-
-						templateEngine.process("Asignacion_Ponente-Evento", context, response.getWriter());
-
-
-					default:
+                    default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}
 			}

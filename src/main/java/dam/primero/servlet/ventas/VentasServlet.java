@@ -1,5 +1,13 @@
 package dam.primero.servlet.ventas;
 
+/**
+ * Servlet principal del módulo de ventas.
+ * Gestiona el listado de tickets, el detalle de un ticket concreto
+ * y la cancelación de una venta. Usa Thymeleaf para renderizar las vistas.
+ *
+ * @author Sergio Galan
+ */
+
 import dam.primero.modelos.ventas.*;
 import dam.primero.repositorio.ventas.TicketRepository;
 import dam.primero.exception.MyException;

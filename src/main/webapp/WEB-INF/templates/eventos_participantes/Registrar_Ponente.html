@@ -1,78 +1,70 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registrar Ponente</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Ponente</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
+</header>
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
+        <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
+        <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
+    </ul>
+</aside>
+<main>
+    <section class="contenido-secundario">
+        <h2>Registrar nuevo ponente</h2>
+        <!-- FIX: th:action correcto, eliminado th:object que no existe -->
+        <form th:action="@{/participantes/Registrar_Ponente}" method="post">
+            <fieldset>
+                <legend>Datos del ponente</legend>
 
-        <!--Estilo Lili-->
-        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
-    </head>
-    <body>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-    <header>
-        <h1>Gestión de Eventos Educativos</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-            </ul>
-        </nav>
-    </header>
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" required>
 
-    <aside>
-        <h2>Casos de uso</h2>
-        <ul>
-            <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-            <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
-            <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
-            <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
-        </ul>
-    </aside>
-        <main>
-            <section class="contenido-secundario">
-                <h2>Registrar nuevo ponente</h2>
-                <form action="#" method="post" th:object="${ponente}">
-                    <fieldset>
-                        <legend>Datos del ponente</legend>
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre"  required>
-                        
-                        <label for="apellidos">Apellidos:</label>
-                        <input type="text" id="apellidos" name="apellidos"  required>
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" name="especialidad" required>
 
-                        <label for="especialidad">Especialidad:</label>
-                        <input type="text" id="especialidad" name="especialidad"  required>
+                <label for="correo">Correo electrónico:</label>
+                <input type="email" id="correo" name="correo" required>
 
-                        <label for="correo">Correo electrónico:</label>
-                        <input type="email" id="correo" name="correo"  required>
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required>
 
-                        <label for="telefono">Teléfono:</label>
-                        <input type="tel" id="telefono" name="telefono"  required>
+                <label for="cv">Currículum (resumen):</label>
+                <textarea id="cv" name="cv" rows="4"></textarea>
 
-                        <label for="cv">Currículum (resumen):</label> 
-                        <textarea id="cv" name="cv" rows="4" ></textarea>
+                <label for="nivelImparticion">Nivel de impartición:</label>
+                <select id="nivelImparticion" name="nivelImparticion">
+                    <option value="">Elige una opción:</option>
+                    <option th:each="nivel : ${niveles}" th:value="${nivel}" th:text="${nivel}"></option>
+                </select>
 
-                        <label for="nivelImparticion"> Nivel de impartición:</label>
-                        <select id="nivelImparticion" name="nivelImparticion">
-                        <option value="">Elige una opción:</option>
-                        <option th:each="nivel : ${niveles}" th:value="${nivel}" th:text="${nivel}"></option>
-                        </select>
-
-                        <button type="submit">Registrar ponente</button>
-                    </fieldset>
-                 </form>
-            </section>
-        </main>
-        <footer>
-            <p>© 2026 Gestión de Eventos</p>
-        </footer>
-    </body>
+                <button type="submit">Registrar ponente</button>
+            </fieldset>
+        </form>
+    </section>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+</body>
 </html>
-

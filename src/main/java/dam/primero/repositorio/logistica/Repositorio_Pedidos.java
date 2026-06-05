@@ -10,55 +10,84 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Repositorio_Pedidos {
-    private final MySqlConector conector;
+
+    private final MySqlConector conexion;
 
     public Repositorio_Pedidos() throws MyException {
-        this.conector = new MySqlConector();
+
+        this.conexion = new MySqlConector();
     }
 
     public Pedido obtenerPedidoConLineas(int idPedido) throws SQLException, MyException {
-        String sqlPedido = "SELECT id_pedido, fecha_pedido, fecha_entrega_prevista, estado_pedido FROM eventos.Pedido WHERE id_pedido = ?";
-        String sqlLineas = "SELECT id_linea_pedido, id_mercancia, cantidad, precio_unitario, descuento_aplicado FROM eventos.Linea_Pedido WHERE id_pedido = ?";
+
+        // consulta para sacar los datos del pedido
+        String sqlPedido = """
+                SELECT id_pedido, fecha_pedido, fecha_entrega_prevista, estado_pedido
+                FROM eventos.Pedido
+                WHERE id_pedido = ?
+        """;
+
+        // consulta para sacar las lineas del pedido
+        String sqlLineas = """
+                SELECT id_linea_pedido, id_mercancia, cantidad, precio_unitario, descuento_aplicado
+                FROM eventos.Linea_Pedido
+                WHERE id_pedido = ?
+        """;
 
         Pedido pedido = null;
 
-        try (Connection conn = conector.getConnect();
-             PreparedStatement psPedido = conn.prepareStatement(sqlPedido);
-             PreparedStatement psLineas = conn.prepareStatement(sqlLineas)) {
+        try (Connection conexionBd = conexion.getConnect();
+             PreparedStatement sentenciaPedido = conexionBd.prepareStatement(sqlPedido);
+             PreparedStatement sentenciaLineas = conexionBd.prepareStatement(sqlLineas)) {
 
-            // 1. Buscar cabecera del Pedido
-            psPedido.setInt(1, idPedido);
-            try (ResultSet rsPedido = psPedido.executeQuery()) {
-                if (rsPedido.next()) {
+            // busco el pedido por id
+            sentenciaPedido.setInt(1, idPedido);
+
+            try (ResultSet resultadoPedido = sentenciaPedido.executeQuery()) {
+
+                if (resultadoPedido.next()) {
+
+                    // creo el objeto pedido con los datos de la base de datos
                     pedido = new Pedido();
-                    pedido.setIdPedido(rsPedido.getInt("id_pedido"));
-                    pedido.setFechaPedido(rsPedido.getDate("fecha_pedido").toLocalDate());
-                    pedido.setFechaEntregaPrevista(rsPedido.getDate("fecha_entrega_prevista").toLocalDate());
-                    pedido.setEstadoPedido(EstadoPedido.valueOf(rsPedido.getString("estado_pedido")));
+
+                    pedido.setIdPedido(resultadoPedido.getInt("id_pedido"));
+                    pedido.setFechaPedido(resultadoPedido.getDate("fecha_pedido").toLocalDate());
+                    pedido.setFechaEntregaPrevista(resultadoPedido.getDate("fecha_entrega_prevista").toLocalDate());
+
+                    // convierto el estado a enum
+                    pedido.setEstadoPedido(EstadoPedido.valueOf(resultadoPedido.getString("estado_pedido")));
+
+                    // inicializo la lista de lineas del pedido
                     pedido.setLineasPedidos(new ArrayList<>());
+
                 } else {
-                    // Excepción si el pedido no existe (Requisito del CU)
-                    throw new MyException("El pedido con ID " + idPedido + " no existe en el sistema.");
+                    // si no existe el pedido lanzo error
+                    throw new MyException("No existe el pedido con id " + idPedido);
                 }
             }
 
-            // 2. Recuperar y mapear sus líneas de mercancía
-            psLineas.setInt(1, idPedido);
-            try (ResultSet rsLineas = psLineas.executeQuery()) {
-                while (rsLineas.next()) {
+            // busco las lineas del pedido
+            sentenciaLineas.setInt(1, idPedido);
+
+            try (ResultSet resultadoLineas = sentenciaLineas.executeQuery()) {
+
+                while (resultadoLineas.next()) {
+
+                    // creo cada linea del pedido
                     LineaPedido linea = new LineaPedido();
-                    linea.setIdLineaPedido(rsLineas.getInt("id_linea_pedido"));
-                    linea.setCantidad(rsLineas.getInt("cantidad"));
-                    linea.setPrecioUnitarioEnPedido(rsLineas.getDouble("precio_unitario"));
-                    linea.setDescuentoAplicado(rsLineas.getDouble("descuento_aplicado"));
 
-                    // Forzamos el cálculo interno del subtotal
+                    linea.setIdLineaPedido(resultadoLineas.getInt("id_linea_pedido"));
+                    linea.setCantidad(resultadoLineas.getInt("cantidad"));
+                    linea.setPrecioUnitarioEnPedido(resultadoLineas.getDouble("precio_unitario"));
+                    linea.setDescuentoAplicado(resultadoLineas.getDouble("descuento_aplicado"));
+
                     linea.calcularSubtotal();
-
                     pedido.getLineasPedidos().add(linea);
                 }
             }
         }
+
+
         return pedido;
     }
 }

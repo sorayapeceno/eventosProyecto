@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Entrada de tipo Estándar. Extiende de Entrada y añade un campo
+ * para indicar si la entrada incluye algún regalo para el asistente.
+ *
+ * @author Alexandru Cozaru
+ */
 public class Estandar extends Entrada {
 
     private long   id_Estandar;

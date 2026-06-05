@@ -6,31 +6,26 @@
     <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
 </head>
 <body>
-
 <header>
     <h1>Gestión de Eventos Educativos</h1>
-    <nav>
-        <ul>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-        </ul>
-    </nav>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
 </header>
-
 <aside>
     <h2>Casos de uso</h2>
     <ul>
         <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-        <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
         <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
         <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
         <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
         <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
     </ul>
 </aside>
 <main>
@@ -44,53 +39,28 @@
                 <th>Título</th>
                 <th>Fecha</th>
                 <th>Hora</th>
-                <th>Evento</th>
+                <th>ID Evento</th>
                 <th>Nivel</th>
                 <th>Tipo</th>
                 <th>Formato</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="ponencia: ${ponencias}">
-                <td th:text="${ponencia.id}"></td>
+            <!-- FIX: getters correctos id_Ponencia, id_Evento (no id ni evento) -->
+            <tr th:each="ponencia : ${ponencias}">
+                <td th:text="${ponencia.id_Ponencia}"></td>
                 <td th:text="${ponencia.titulo}"></td>
                 <td th:text="${ponencia.fecha}"></td>
                 <td th:text="${ponencia.hora}"></td>
-                <td th:text="${ponencia.evento}"></td>
-                <td>
-                    <select name="nivel">
-                        <option th:each="nivel : ${niveles}"
-                                th:value="${nivel}"
-                                th:text="${nivel}"
-                                th:selected="${nivel == ponencia.nivel}">
-                        </option>
-                    </select>
-                </td>
-                <td>
-                    <select name="tipo">
-                        <option th:each="tipo : ${tipos}"
-                                th:value="${tipo}"
-                                th:text="${tipo}"
-                                th:selected="${tipo == ponencia.tipo}">
-                        </option>
-                    </select>
-                </td>
-                <td>
-                    <select name="formato">
-                        <option th:each="formato : ${formatos}"
-                                th:value="${formato}"
-                                th:text="${formato}"
-                                th:selected="${formato == ponencia.formato}">
-                        </option>
-                    </select>
-                </td>
+                <td th:text="${ponencia.id_Evento}"></td>
+                <td th:text="${ponencia.nivel}"></td>
+                <td th:text="${ponencia.tipo}"></td>
+                <td th:text="${ponencia.formato}"></td>
             </tr>
             </tbody>
         </table>
     </section>
 </main>
-<footer>
-    <p>© 2026 Gestión de Eventos</p>
-</footer>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
 </body>
 </html>

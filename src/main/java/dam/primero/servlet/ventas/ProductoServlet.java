@@ -1,5 +1,13 @@
 package dam.primero.servlet.ventas;
 
+/**
+ * Servlet para la gestión del catálogo de productos.
+ * Muestra el listado de productos, el formulario de alta/edición según el tipo,
+ * guarda o actualiza el producto con todos sus subtipos y permite eliminarlo.
+ *
+ * @author Alexandru Cozaru
+ */
+
 import dam.primero.modelos.ventas.*;
 import dam.primero.repositorio.ventas.ProductoRepository;
 import dam.primero.exception.MyException;

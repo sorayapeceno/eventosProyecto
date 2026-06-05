@@ -1,5 +1,11 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Enumerado con los tipos de IVA aplicables a los productos (0%, 4%, 10%, 21%).
+ * Incluye un método para convertir desde texto o número.
+ *
+ * @author Jose Lazo
+ */
 public enum TipoIVA {
     IVA_0(0.0),
     IVA_4(4.0),

@@ -1,86 +1,68 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Listado de Eventos</title>
-        <!--Estilo Lili-->
-        <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
-    </head>
-    <body>
-
-    <header>
-        <h1>Gestión de Eventos Educativos</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
-                <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <aside>
-        <h2>Casos de uso</h2>
-        <ul>
-            <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
-            <li><a th:href="@{/participantes/Modificar_Evento}">Modificar Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
-            <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
-            <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
-            <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignar ponente a evento</a></li>
-            <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
-        </ul>
-    </aside>
-        <main>
-            <section class="contenido-secundario">
-                <h2>Listado de eventos</h2>
-                <table>
-                    <caption>Eventos registrados</caption>
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Fecha inicio</th>
-                        <th>Fecha fin</th>
-                        <th>Ciudad</th>
-                        <th>Estado</th>
-                        <th>Modalidad</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr th:each="evento : ${eventos}">
-
-                        <td th:text="${evento.id_Evento}"></td>
-
-                        <td th:text="${evento.nombre}"></td>
-
-                        <td th:text="${evento.fecha_Inicio}"></td>
-
-                        <td th:text="${evento.fecha_Fin}"></td>
-
-                        <td th:text="${evento.ciudad}"></td>
-
-                        <td th:text="${evento.estado}"></td>
-
-                        <td th:text="${evento.modalidad}"></td>
-
-                        <td>
-                            <a th:href="@{/participantes/Modificar_Evento(id=${evento.id_Evento})}">
-                                Modificar
-                            </a>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </section>
-        </main>
-        <footer>
-            <p>© 2026 Gestión de Eventos</p>
-        </footer>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Eventos</title>
+    <link rel="stylesheet" th:href="@{/CSS/modulo1.css}">
+</head>
+<body>
+<header>
+    <h1>Gestión de Eventos Educativos</h1>
+    <nav><ul>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Eventos</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Ponencias</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Ponentes</a></li>
+    </ul></nav>
+</header>
+<aside>
+    <h2>Casos de uso</h2>
+    <ul>
+        <li><a th:href="@{/participantes/Crear_Evento}">Crear Evento</a></li>
+        <li><a th:href="@{/participantes/Listado_Eventos}">Listado Eventos</a></li>
+        <li><a th:href="@{/participantes/Crear_Ponencia}">Crear Ponencia</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponencias}">Listado de ponencias</a></li>
+        <li><a th:href="@{/participantes/Registrar_Ponente}">Registrar Ponente</a></li>
+        <li><a th:href="@{/participantes/Listado_Ponentes}">Listado de ponentes</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponencia-Evento}">Asignación Ponencia-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Evento}">Asignación Ponente-Evento</a></li>
+        <li><a th:href="@{/participantes/Asignacion_Ponente-Ponencia}">Asignación Ponente-Ponencia</a></li>
+    </ul>
+</aside>
+<main>
+    <section class="contenido-secundario">
+        <h2>Listado de eventos</h2>
+        <table>
+            <caption>Eventos registrados</caption>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Ciudad</th>
+                <th>Estado</th>
+                <th>Modalidad</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="evento : ${eventos}">
+                <td th:text="${evento.id_Evento}"></td>
+                <td th:text="${evento.nombre}"></td>
+                <!-- FIX: getters correctos fechaInicio / fechaFin (no fecha_Inicio) -->
+                <td th:text="${evento.fechaInicio}"></td>
+                <td th:text="${evento.fechaFin}"></td>
+                <td th:text="${evento.ciudad}"></td>
+                <td th:text="${evento.estado}"></td>
+                <td th:text="${evento.modalidad}"></td>
+                <td>
+                    <a th:href="@{/participantes/Modificar_Evento(id_Evento=${evento.id_Evento})}">Modificar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<footer><p>© 2026 Gestión de Eventos</p></footer>
+</body>
 </html>

@@ -40,6 +40,29 @@ public class Ponencia {
         this.sala = sala;
     }
 
+    public Ponencia(int id_Ponencia,
+                    String titulo,
+                    Tematica tematica,
+                    int duracion,
+                    LocalDate fecha,
+                    LocalDateTime hora,
+                    String ubicacion,
+                    Nivel nivel,
+                    Tipo tipo,
+                    Formato formato) {
+
+        this.id_Ponencia = id_Ponencia;
+        this.titulo = titulo;
+        this.tematica = tematica;
+        this.duracion = duracion;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.ubicacion = ubicacion;
+        this.nivel = nivel;
+        this.tipo = tipo;
+        this.formato = formato;
+    }
+
     public static int getContador() {
         return contador;
     }

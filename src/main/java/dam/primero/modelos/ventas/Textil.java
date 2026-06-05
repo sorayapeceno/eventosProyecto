@@ -1,5 +1,13 @@
 package dam.primero.modelos.ventas;
 
+/**
+ * Clase abstracta que representa un producto textil del evento.
+ * Extiende de Producto y define los atributos comunes a toda la ropa:
+ * talla, color, material, género y tipo textil.
+ * Sus subclases concretas son Camisetas y Accesorios.
+ *
+ * @author Alexandru Cozaru
+ */
 public abstract class Textil extends Producto {
 
     private long   id_Textil;

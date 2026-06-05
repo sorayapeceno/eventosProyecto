@@ -14,12 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class CRMServlet extends HttpServlet {
     private static final long serialVersionUID = 2051990309999713971L;
@@ -129,7 +127,7 @@ public class CRMServlet extends HttpServlet {
                 generarJsonProductos(context, response);
                 break;
             case "crearpagina":
-                templateEngine.process("html/Crear_Pagina.html", context, response.getWriter());
+                templateEngine.process("html/Crear_Pagina", context, response.getWriter());
                 break;
             case "listadopaginas":
                 RepoPaginaWeb repo = new RepoPaginaWeb();
@@ -200,7 +198,6 @@ public class CRMServlet extends HttpServlet {
 
 
     private void mostrarConsultasXPath(WebContext context, HttpServletResponse response) throws IOException {
-        // Consultas XPath usadas para cubrir la parte de Lenguaje de Marcas.
         context.setVariable("obligatoriosOrganizacion",
                 lectorXPathCRM.consultar("/formularios/formulario[@id='organizacion']/campo[@obligatorio='true']/@nombre"));
         context.setVariable("numericosProducto",
@@ -217,19 +214,28 @@ public class CRMServlet extends HttpServlet {
     private void generarJsonProductos(WebContext context, HttpServletResponse response) throws IOException {
         try {
             List<FormularioProducto> productos = repoCRM.obtenerProductosConStock();
-            String rutaArchivo = "src/main/resources/crm/productos_filtrados.json";
+            String rutaArchivo = obtenerRutaJson();
 
-            // El filtro usado es sencillo: solo productos con stock disponible.
             generadorJsonCRM.generarProductos(productos, rutaArchivo);
 
             context.setVariable("exito", "JSON generado correctamente.");
             context.setVariable("rutaArchivo", rutaArchivo);
             context.setVariable("totalProductos", productos.size());
         } catch (SQLException | IOException e) {
+            e.printStackTrace();
             context.setVariable("error", "No se pudo generar el fichero JSON.");
         }
 
         templateEngine.process("jsonCRM", context, response.getWriter());
+    }
+
+    private String obtenerRutaJson() {
+        String rutaWeb = getServletContext().getRealPath("/");
+        File carpetaWeb = new File(rutaWeb);
+        File carpetaMain = carpetaWeb.getParentFile();
+        File archivoJson = new File(carpetaMain, "resources/crm/productos_filtrados.json");
+
+        return archivoJson.getAbsolutePath();
     }
 
     private void guardarOrganizacion(HttpServletRequest request, WebContext context, HttpServletResponse response)
@@ -241,17 +247,17 @@ public class CRMServlet extends HttpServlet {
         String tipoOrganizacion = limpiar(request.getParameter("tipoOrganizacion"));
 
         String error = validarOrganizacion(nombre, telefono, email, tipoOrganizacion);
+
         if (error != null) {
             context.setVariable("organizacion", new FormularioOrganizacion(nombre, direccion, telefono, email, tipoOrganizacion));
             mostrarMensaje("formularioOrganizacion", "error", error, context, response);
-            return;
-        }
-
-        try {
-            repoCRM.insertarOrganizacion(new FormularioOrganizacion(nombre, direccion, telefono, email, tipoOrganizacion));
-            mostrarMensaje("formularioOrganizacion", "exito", "Organización guardada correctamente.", context, response);
-        } catch (SQLException e) {
-            mostrarMensaje("formularioOrganizacion", "error", "No se pudo guardar la organización.", context, response);
+        } else {
+            try {
+                repoCRM.insertarOrganizacion(new FormularioOrganizacion(nombre, direccion, telefono, email, tipoOrganizacion));
+                mostrarMensaje("formularioOrganizacion", "exito", "Organización guardada correctamente.", context, response);
+            } catch (SQLException e) {
+                mostrarMensaje("formularioOrganizacion", "error", "No se pudo guardar la organización.", context, response);
+            }
         }
     }
 
@@ -263,17 +269,17 @@ public class CRMServlet extends HttpServlet {
         String tiposOportunidad = unirValores(request.getParameterValues("tiposOportunidad"));
 
         String error = validarOportunidad(titulo, fechaInicio, tiposOportunidad);
+
         if (error != null) {
             context.setVariable("oportunidad", new FormularioOportunidad(titulo, descripcion, fechaInicio, tiposOportunidad));
             mostrarMensaje("formularioOportunidad", "error", error, context, response);
-            return;
-        }
-
-        try {
-            repoCRM.insertarOportunidad(new FormularioOportunidad(titulo, descripcion, fechaInicio, tiposOportunidad));
-            mostrarMensaje("formularioOportunidad", "exito", "Oportunidad guardada correctamente.", context, response);
-        } catch (SQLException e) {
-            mostrarMensaje("formularioOportunidad", "error", "No se pudo guardar la oportunidad.", context, response);
+        } else {
+            try {
+                repoCRM.insertarOportunidad(new FormularioOportunidad(titulo, descripcion, fechaInicio, tiposOportunidad));
+                mostrarMensaje("formularioOportunidad", "exito", "Oportunidad guardada correctamente.", context, response);
+            } catch (SQLException e) {
+                mostrarMensaje("formularioOportunidad", "error", "No se pudo guardar la oportunidad.", context, response);
+            }
         }
     }
 
@@ -286,83 +292,140 @@ public class CRMServlet extends HttpServlet {
         String categoria = limpiar(request.getParameter("categoria"));
 
         String error = validarProducto(nombre, precioTexto, stockTexto, categoria);
+
         if (error != null) {
             context.setVariable("producto", new FormularioProducto(nombre, descripcion, precioTexto, stockTexto, categoria));
             mostrarMensaje("formularioProducto", "error", error, context, response);
-            return;
-        }
-
-        try {
-            repoCRM.insertarProducto(new FormularioProducto(nombre, descripcion, precioTexto, stockTexto, categoria));
-            mostrarMensaje("formularioProducto", "exito", "Producto guardado correctamente.", context, response);
-        } catch (SQLException e) {
-            mostrarMensaje("formularioProducto", "error", "No se pudo guardar el producto.", context, response);
+        } else {
+            try {
+                repoCRM.insertarProducto(new FormularioProducto(nombre, descripcion, precioTexto, stockTexto, categoria));
+                mostrarMensaje("formularioProducto", "exito", "Producto guardado correctamente.", context, response);
+            } catch (SQLException e) {
+                mostrarMensaje("formularioProducto", "error", "No se pudo guardar el producto.", context, response);
+            }
         }
     }
 
     private String validarOrganizacion(String nombre, String telefono, String email, String tipoOrganizacion) {
-        if (estaVacio(nombre)) return "El nombre es obligatorio.";
-        if (estaVacio(email) || !emailValido(email)) return "El email no es válido.";
-        if (!telefonoValido(telefono)) return "El teléfono debe tener entre 9 y 15 números.";
-        if (estaVacio(tipoOrganizacion)) return "Debes seleccionar un tipo de organización.";
-        return null;
+        String mensaje = null;
+
+        if (estaVacio(nombre)) {
+            mensaje = "El nombre es obligatorio.";
+        } else if (estaVacio(email) || !emailValido(email)) {
+            mensaje = "El email no es válido.";
+        } else if (!telefonoValido(telefono)) {
+            mensaje = "El teléfono debe tener entre 9 y 15 números.";
+        } else if (estaVacio(tipoOrganizacion)) {
+            mensaje = "Debes seleccionar un tipo de organización.";
+        }
+
+        return mensaje;
     }
 
     private String validarOportunidad(String titulo, String fechaInicio, String tiposOportunidad) {
-        if (estaVacio(titulo)) return "El título es obligatorio.";
-        if (estaVacio(fechaInicio)) return "La fecha de inicio es obligatoria.";
-        if (estaVacio(tiposOportunidad)) return "Selecciona al menos un tipo de oportunidad.";
-        return null;
+        String mensaje = null;
+
+        if (estaVacio(titulo)) {
+            mensaje = "El título es obligatorio.";
+        } else if (estaVacio(fechaInicio)) {
+            mensaje = "La fecha de inicio es obligatoria.";
+        } else if (estaVacio(tiposOportunidad)) {
+            mensaje = "Selecciona al menos un tipo de oportunidad.";
+        }
+
+        return mensaje;
     }
 
     private String validarProducto(String nombre, String precioTexto, String stockTexto, String categoria) {
-        if (estaVacio(nombre)) return "El nombre del producto es obligatorio.";
-        if (estaVacio(categoria)) return "La categoría es obligatoria.";
+        String mensaje = null;
 
-        try {
-            if (Double.parseDouble(precioTexto) <= 0) return "El precio debe ser mayor que 0.";
-        } catch (NumberFormatException e) {
-            return "El precio debe ser numérico.";
+        if (estaVacio(nombre)) {
+            mensaje = "El nombre del producto es obligatorio.";
+        } else if (estaVacio(categoria)) {
+            mensaje = "La categoría es obligatoria.";
+        } else {
+            try {
+                if (Double.parseDouble(precioTexto) <= 0) {
+                    mensaje = "El precio debe ser mayor que 0.";
+                }
+            } catch (NumberFormatException e) {
+                mensaje = "El precio debe ser numérico.";
+            }
+
+            if (mensaje == null) {
+                try {
+                    if (Integer.parseInt(stockTexto) < 0) {
+                        mensaje = "El stock no puede ser negativo.";
+                    }
+                } catch (NumberFormatException e) {
+                    mensaje = "El stock debe ser un número entero.";
+                }
+            }
         }
 
-        try {
-            if (Integer.parseInt(stockTexto) < 0) return "El stock no puede ser negativo.";
-        } catch (NumberFormatException e) {
-            return "El stock debe ser un número entero.";
-        }
-
-        return null;
+        return mensaje;
     }
 
     private void mostrarMensaje(String plantilla, String tipo, String mensaje, WebContext context, HttpServletResponse response)
             throws IOException {
         context.setVariable(tipo, mensaje);
-        templateEngine.process(plantilla, context, response.getWriter());
+        templateEngine.process("html/" + plantilla, context, response.getWriter());
     }
 
     private String limpiar(String valor) {
-        return valor == null ? "" : valor.trim();
+        String texto = "";
+
+        if (valor != null) {
+            texto = valor.trim();
+        }
+
+        return texto;
     }
 
     private boolean estaVacio(String valor) {
-        return valor == null || valor.trim().isEmpty();
+        boolean vacio = true;
+
+        if (valor != null && !valor.trim().isEmpty()) {
+            vacio = false;
+        }
+
+        return vacio;
     }
 
     private boolean emailValido(String email) {
-        return email != null && email.contains("@") && email.contains(".");
+        boolean valido = false;
+
+        if (email != null && email.contains("@") && email.contains(".")) {
+            valido = true;
+        }
+
+        return valido;
     }
 
     private boolean telefonoValido(String telefono) {
-        return estaVacio(telefono) || telefono.matches("[0-9]{9,15}");
+        boolean valido = true;
+
+        if (!estaVacio(telefono) && !telefono.matches("[0-9]{9,15}")) {
+            valido = false;
+        }
+
+        return valido;
     }
 
     private String unirValores(String[] valores) {
-        if (valores == null || valores.length == 0) return "";
+        String resultado = "";
 
-        StringJoiner joiner = new StringJoiner(",");
-        for (String valor : valores) {
-            joiner.add(valor);
+        if (valores != null) {
+            for (int i = 0; i < valores.length; i++) {
+                resultado += valores[i];
+
+                if (i < valores.length - 1) {
+                    resultado += ",";
+                }
+            }
         }
-        return joiner.toString();
+
+        return resultado;
     }
+
 }
