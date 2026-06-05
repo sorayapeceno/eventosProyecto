@@ -11,8 +11,8 @@ public class Asociacion extends Organizacion {
     public Asociacion() {
     }
 
-    public Asociacion(int idOrganizacion, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idAsociacion, String finalidad, int numSocios) {
-        super(idOrganizacion, nombre, direccion, telefono, email, ciudad, fechaRegistro);
+    public Asociacion(int idOrganizacion, HistorialOportunidad idHistorial, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idAsociacion, String finalidad, int numSocios) {
+        super(idOrganizacion, idHistorial, nombre, direccion, telefono, email, ciudad, fechaRegistro);
         contador++;
         this.idAsociacion = contador;
         this.finalidad = finalidad;

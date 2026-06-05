@@ -12,16 +12,10 @@ public class CentroEducativo extends Organizacion{
     public CentroEducativo() {
     }
 
-    public CentroEducativo(int idOrganizacion, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idCentroEducativo, String tipoCentro, int numAlumnos) {
-        super(idOrganizacion, nombre, direccion, telefono, email, ciudad, fechaRegistro);
+    public CentroEducativo(int idOrganizacion, HistorialOportunidad idHistorial, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idCentroEducativo, String tipoCentro, int numAlumnos) {
+        super(idOrganizacion, idHistorial, nombre, direccion, telefono, email, ciudad, fechaRegistro);
         contador++;
-        this.idCentroEducativo = contador;
-        this.tipoCentro = tipoCentro;
-        this.numAlumnos = numAlumnos;
-    }
-
-    public CentroEducativo(int idOrganizacion, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, String tipoCentro, int numAlumnos) {
-        super(idOrganizacion, nombre, direccion, telefono, email, ciudad, fechaRegistro);
+        this.idCentroEducativo = contador;;
         this.tipoCentro = tipoCentro;
         this.numAlumnos = numAlumnos;
     }

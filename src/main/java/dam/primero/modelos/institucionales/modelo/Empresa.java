@@ -11,8 +11,8 @@ public class Empresa extends Organizacion {
     public Empresa() {
     }
 
-    public Empresa(int idOrganizacion, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idEmpresa, String sector, int numEmpleados) {
-        super(idOrganizacion, nombre, direccion, telefono, email, ciudad, fechaRegistro);
+    public Empresa(int idOrganizacion, HistorialOportunidad idHistorial, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idEmpresa, String sector, int numEmpleados) {
+        super(idOrganizacion, idHistorial, nombre, direccion, telefono, email, ciudad, fechaRegistro);
         contador++;
         this.idEmpresa = contador;
         this.sector = sector;

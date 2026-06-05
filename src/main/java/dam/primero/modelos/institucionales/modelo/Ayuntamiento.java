@@ -11,8 +11,8 @@ public class Ayuntamiento extends  Organizacion{
     public Ayuntamiento() {
     }
 
-    public Ayuntamiento(int idOrganizacion, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idAyuntamiento, String provincia, String alcalde) {
-        super(idOrganizacion, nombre, direccion, telefono, email, ciudad, fechaRegistro);
+    public Ayuntamiento(int idOrganizacion, HistorialOportunidad idHistorial, String nombre, String direccion, int telefono, String email, String ciudad, LocalDate fechaRegistro, int idAyuntamiento, String provincia, String alcalde) {
+        super(idOrganizacion, idHistorial, nombre, direccion, telefono, email, ciudad, fechaRegistro);
         contador++;
         this.idAyuntamiento = contador;
         this.provincia = provincia;
