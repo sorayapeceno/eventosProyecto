@@ -186,6 +186,15 @@ public class ParticipantesServlet extends HttpServlet {
 						templateEngine.process("Asignacion_Ponente-Ponencia", context, response.getWriter());
 						break;
 
+					case "jsonEventos":
+                        repoEventos = new RepoEventos();
+						List<Evento> todos = repoEventos.listarEvento();
+						GeneradorJsonEventos generador = new GeneradorJsonEventos();
+						String json = generador.eventosFiltradosPorEstadoAJson(todos, Estado.ABIERTO);
+						response.setContentType("application/json;charset=UTF-8");
+						response.getWriter().print(json);
+						break;
+
                     default:
 						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no reconocida: " + accion);
 				}
