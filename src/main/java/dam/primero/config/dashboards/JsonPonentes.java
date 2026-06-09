@@ -2,7 +2,6 @@ package dam.primero.config.dashboards;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dam.primero.config.dashboards.MySqlConectorDashboards;
 import dam.primero.exception.MyException;
 import dam.primero.modelos.dashboards.Ponente;
 
@@ -14,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtilidadesJsonPonentes {
+public class JsonPonentes {
 
     public static void main(String[] args) {
 
@@ -40,8 +39,8 @@ public class UtilidadesJsonPonentes {
         List<Ponente> lista = new ArrayList<>();
         try {
             MySqlConectorDashboards conector = new MySqlConectorDashboards();
-            Statement stmt = conector.getConnect().createStatement();
-            ResultSet rs = stmt.executeQuery(
+            Statement stmt = conector.getConnect().createStatement(); //conecta con la BBDD
+            ResultSet rs = stmt.executeQuery( // obtiene la tabla de la BBDD
                     "SELECT CONCAT(per.Nombre,' ',per.Ap1) AS Nombre, " +
                             "po.Especialidad, po.Nivel_Imparticion, " +
                             "per.Correo, per.Ciudad, " +
@@ -53,7 +52,7 @@ public class UtilidadesJsonPonentes {
                             "po.Especialidad, po.Nivel_Imparticion, per.Correo, per.Ciudad"
             );
             while (rs.next()) {
-                lista.add(new Ponente(
+                lista.add(new Ponente( //se añade la tabla de datos a la lista
                         rs.getString("Nombre"),
                         rs.getString("Especialidad"),
                         rs.getString("Nivel_Imparticion"),
@@ -62,7 +61,7 @@ public class UtilidadesJsonPonentes {
                         rs.getInt("TotalPonencias")
                 ));
             }
-        } catch (MyException | SQLException e) {
+        } catch (MyException | SQLException e) { //si no se puede conectar con la base de datos, gestionamos la excepción
             System.out.println("Error al leer ponentes: " + e.getMessage());
         }
         return lista;
