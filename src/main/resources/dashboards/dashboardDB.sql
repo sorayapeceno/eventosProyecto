@@ -696,7 +696,7 @@ INSERT INTO Tematica (Tema) VALUES
                                 ('IA'),
                                 ('Ciberseguridad');
 
-INSERT INTO Evento (
+INSERT INTO     (
     Nombre, Descripcion, Fecha_Inicio, Fecha_Fin,
     Direccion, Ciudad, Capacidad, Estado, Modalidad, Lugar
 ) VALUES

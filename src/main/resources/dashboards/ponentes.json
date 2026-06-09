@@ -1,0 +1,82 @@
+[
+  {
+    "nombre": "Javier López",
+    "especialidad": "BBDD",
+    "nivelImparticion": "FP",
+    "correo": "jlopez@gmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "María García",
+    "especialidad": "Java",
+    "nivelImparticion": "FP",
+    "correo": "maria.gp@hotmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "Carlos Fernández",
+    "especialidad": "Programación",
+    "nivelImparticion": "Universidad",
+    "correo": "carlosf@gmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "Ana López",
+    "especialidad": "BBDD",
+    "nivelImparticion": "Universidad",
+    "correo": "ana_lopez@gmail.com",
+    "ciudad": "Málaga",
+    "totalPonencias": 0
+  },
+  {
+    "nombre": "Diego Martín",
+    "especialidad": "JS",
+    "nivelImparticion": "Postgrados",
+    "correo": "die_marso@gmail.com",
+    "ciudad": "Córdoba",
+    "totalPonencias": 1
+  },
+  {
+    "nombre": "Julio Rodríguez",
+    "especialidad": "Python",
+    "nivelImparticion": "FP",
+    "correo": "julio_rod_guti@gmail.com",
+    "ciudad": "Huelva",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "Julia Sánchez",
+    "especialidad": "FrontEnd",
+    "nivelImparticion": "FP",
+    "correo": "julia@gmail.com",
+    "ciudad": "Cádiz",
+    "totalPonencias": 1
+  },
+  {
+    "nombre": "Alba Santos",
+    "especialidad": "IA",
+    "nivelImparticion": "Secundaria",
+    "correo": "alba@gmail.com",
+    "ciudad": "Cádiz",
+    "totalPonencias": 1
+  },
+  {
+    "nombre": "Anthony West",
+    "especialidad": "Ciberseguridad",
+    "nivelImparticion": "Postgrados",
+    "correo": "anthony@gmail.com",
+    "ciudad": "Madrid",
+    "totalPonencias": 1
+  },
+  {
+    "nombre": "Luna Rodríguez",
+    "especialidad": "IA",
+    "nivelImparticion": "Otros",
+    "correo": "lunaa96@gmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 1
+  }
+]

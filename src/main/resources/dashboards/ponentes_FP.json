@@ -1,0 +1,34 @@
+[
+  {
+    "nombre": "Javier López",
+    "especialidad": "BBDD",
+    "nivelImparticion": "FP",
+    "correo": "jlopez@gmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "María García",
+    "especialidad": "Java",
+    "nivelImparticion": "FP",
+    "correo": "maria.gp@hotmail.com",
+    "ciudad": "Sevilla",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "Julio Rodríguez",
+    "especialidad": "Python",
+    "nivelImparticion": "FP",
+    "correo": "julio_rod_guti@gmail.com",
+    "ciudad": "Huelva",
+    "totalPonencias": 2
+  },
+  {
+    "nombre": "Julia Sánchez",
+    "especialidad": "FrontEnd",
+    "nivelImparticion": "FP",
+    "correo": "julia@gmail.com",
+    "ciudad": "Cádiz",
+    "totalPonencias": 1
+  }
+]
