@@ -10,28 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Genera JSON manualmente (sin Gson ni ficheros .json)
- * para las entidades del módulo eventos_participantes.
- *
- * Métodos disponibles:
- *   - eventosAJson(List<Evento>)                          → todos los eventos
- *   - eventosFiltradosPorEstado(List<Evento>, Estado)     → filtrar por estado
- *   - eventosFiltradosPorModalidad(List<Evento>, Modalidad) → filtrar por modalidad
- *   - eventosFiltradosPorCiudad(List<Evento>, String)     → filtrar por ciudad
- *   - ponenciasAJson(Set<Ponencia>)                       → todas las ponencias
- *   - ponenciasFiltradosPorNivel(Set<Ponencia>, String)   → filtrar por nivel
- *   - ponentesAJson(Set<Ponente>)                         → todos los ponentes
- */
+
 public class GeneradorJsonEventos {
 
-    // =========================================================
-    //  MÉTODOS DE FILTRADO
-    // =========================================================
-
-    /**
-     * Filtra una lista de eventos por su estado (BORRADOR, ABIERTO, CERRADO…)
-     */
     public List<Evento> filtrarEventosPorEstado(List<Evento> eventos, Estado estado) {
         List<Evento> resultado = new ArrayList<>();
         for (Evento e : eventos) {
@@ -42,9 +23,6 @@ public class GeneradorJsonEventos {
         return resultado;
     }
 
-    /**
-     * Filtra una lista de eventos por modalidad (PRESENCIAL, ONLINE, HIBRIDO)
-     */
     public List<Evento> filtrarEventosPorModalidad(List<Evento> eventos, Modalidad modalidad) {
         List<Evento> resultado = new ArrayList<>();
         for (Evento e : eventos) {
@@ -55,9 +33,6 @@ public class GeneradorJsonEventos {
         return resultado;
     }
 
-    /**
-     * Filtra una lista de eventos por ciudad (sin distinguir mayúsculas/minúsculas)
-     */
     public List<Evento> filtrarEventosPorCiudad(List<Evento> eventos, String ciudad) {
         List<Evento> resultado = new ArrayList<>();
         for (Evento e : eventos) {
@@ -68,9 +43,6 @@ public class GeneradorJsonEventos {
         return resultado;
     }
 
-    /**
-     * Filtra ponencias por nivel (BASICO, INTERMEDIO, AVANZADO)
-     */
     public List<Ponencia> filtrarPonenciasPorNivel(Set<Ponencia> ponencias, String nivel) {
         List<Ponencia> resultado = new ArrayList<>();
         for (Ponencia p : ponencias) {
@@ -81,21 +53,7 @@ public class GeneradorJsonEventos {
         return resultado;
     }
 
-    // =========================================================
-    //  MÉTODOS DE GENERACIÓN DE JSON
-    // =========================================================
 
-    /**
-     * Convierte una lista de Eventos a JSON en formato String.
-     * Ejemplo de salida:
-     * [
-     *   {
-     *     "id_Evento": 1,
-     *     "nombre": "JavaDay",
-     *     ...
-     *   }
-     * ]
-     */
     public String eventosAJson(List<Evento> eventos) {
         StringBuilder sb = new StringBuilder();
         sb.append("[\n");
@@ -127,9 +85,6 @@ public class GeneradorJsonEventos {
         return sb.toString();
     }
 
-    /**
-     * Convierte un Set de Ponencias a JSON en formato String.
-     */
     public String ponenciasAJson(Set<Ponencia> ponencias) {
         // Pasamos el Set a List para poder recorrerlo con índice
         List<Ponencia> lista = new ArrayList<>(ponencias);
@@ -162,9 +117,6 @@ public class GeneradorJsonEventos {
         return sb.toString();
     }
 
-    /**
-     * Convierte un Set de Ponentes a JSON en formato String.
-     */
     public String ponentesAJson(Set<Ponente> ponentes) {
         List<Ponente> lista = new ArrayList<>(ponentes);
 
@@ -191,38 +143,23 @@ public class GeneradorJsonEventos {
         return sb.toString();
     }
 
-    // =========================================================
-    //  MÉTODOS COMBINADOS (filtrar + generar JSON de una vez)
-    // =========================================================
-
-    /**
-     * Filtra por estado Y devuelve el JSON resultante.
-     * Equivale a llamar filtrarEventosPorEstado() + eventosAJson()
-     */
     public String eventosFiltradosPorEstadoAJson(List<Evento> eventos, Estado estado) {
         List<Evento> filtrados = filtrarEventosPorEstado(eventos, estado);
         return eventosAJson(filtrados);
     }
 
-    /**
-     * Filtra por modalidad Y devuelve el JSON resultante.
-     */
     public String eventosFiltradosPorModalidadAJson(List<Evento> eventos, Modalidad modalidad) {
         List<Evento> filtrados = filtrarEventosPorModalidad(eventos, modalidad);
         return eventosAJson(filtrados);
     }
 
-    /**
-     * Filtra por ciudad Y devuelve el JSON resultante.
-     */
+
     public String eventosFiltradosPorCiudadAJson(List<Evento> eventos, String ciudad) {
         List<Evento> filtrados = filtrarEventosPorCiudad(eventos, ciudad);
         return eventosAJson(filtrados);
     }
 
-    /**
-     * Filtra ponencias por nivel Y devuelve el JSON resultante.
-     */
+
     public String ponenciasFiltradosPorNivelAJson(Set<Ponencia> ponencias, String nivel) {
         List<Ponencia> filtrados = filtrarPonenciasPorNivel(ponencias, nivel);
         // Reutilizamos ponenciasAJson pasando los filtrados como Set (o directamente como lista)
@@ -251,14 +188,6 @@ public class GeneradorJsonEventos {
         return sb.toString();
     }
 
-    // =========================================================
-    //  MÉTODO AUXILIAR PRIVADO
-    // =========================================================
-
-    /**
-     * Escapa caracteres especiales para que el JSON sea válido.
-     * Reemplaza comillas dobles y barras invertidas que podrían romper el JSON.
-     */
     private String escapar(String texto) {
         if (texto == null) {
             return "";

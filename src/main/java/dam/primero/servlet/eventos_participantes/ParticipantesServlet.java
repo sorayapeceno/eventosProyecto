@@ -186,11 +186,11 @@ public class ParticipantesServlet extends HttpServlet {
 						templateEngine.process("Asignacion_Ponente-Ponencia", context, response.getWriter());
 						break;
 
-					case "jsonEventos":
-                        repoEventos = new RepoEventos();
-						List<Evento> todos = repoEventos.listarEvento();
+					case "Json_Eventos":
+						RepoEventos repoJson = new RepoEventos();
+						List<Evento> todosEventos = repoJson.listarEvento();
 						GeneradorJsonEventos generador = new GeneradorJsonEventos();
-						String json = generador.eventosFiltradosPorEstadoAJson(todos, Estado.ABIERTO);
+						String json = generador.eventosAJson(todosEventos);
 						response.setContentType("application/json;charset=UTF-8");
 						response.getWriter().print(json);
 						break;
