@@ -21,7 +21,7 @@ public class Ponente {
         this.totalPonencias = totalPonencias;
     }
 
-    //métodos
+    //métodos (esto se va a convertir en String de JSON)
     public String getNombre() { return nombre; }
     public String getEspecialidad() { return especialidad; }
     public String getNivelImparticion() { return nivelImparticion; }
