@@ -18,7 +18,7 @@ public class MySqlConectorInstitucionales {
         try {
             Properties properties = new Properties();
             var stream = dam.primero.config.eventos_participantes.MySqlConectorEventosParticipantes.class.getClassLoader()
-                    .getResourceAsStream("eventos_participantes/db.properties");
+                    .getResourceAsStream("institucionales/db.properties");
             if (stream == null) {
                 throw new MyException("No se encontró db.properties en el classpath");
             }
