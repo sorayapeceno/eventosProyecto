@@ -7,48 +7,38 @@
     <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
 </head>
 <body>
-    <header>
-        <h1>Patrocinio</h1>
-        <a th:href="@{/relaciones}">
-            <button type="button">&#8592; Atrás</button>
-        </a>
-    </header>
+<header>
+    <h1>Patrocinio</h1>
+    <a th:href="@{/relaciones}">
+        <button type="button">&#8592; Atrás</button>
+    </a>
+</header>
 
-    <main>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Patrocinio</th>
-                    <th>Firma</th>
-                    <th>Dinero</th>
-                    <th>Tipo</th>
-                    <th>ID Historial</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Sí</td>
-                    <td>3,000</td>
-                    <td>Bronce</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>No</td>
-                    <td>7,000</td>
-                    <td>Plata</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Sí</td>
-                    <td>15,000</td>
-                    <td>Oro</td>
-                    <td>3</td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
+<main>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID Colaboración</th>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Firma</th>
+            <th>Dinero</th>
+            <th>Convenio</th>
+            <th>ID Historial</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="col : ${colaboraciones}">
+            <td th:text="${col.idColaboracion}">1</td>
+            <td th:text="${col.tipo}">Bronce</td>
+            <td th:text="${col.fecha != null ? col.fecha : '---'}">2026-06-18</td>
+            <td th:text="${col.firma ? 'Sí' : 'No'}">Sí</td>
+            <td th:text="${col.dinero}">3000</td>
+            <td th:text="${col.convenio}">Convenio Standard</td>
+            <td th:text="${col.idHistorial != null ? col.idHistorial.idHistorial : '---'}">1</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
 </body>
 </html>

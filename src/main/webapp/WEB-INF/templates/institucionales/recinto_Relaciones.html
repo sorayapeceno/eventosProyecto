@@ -15,34 +15,22 @@
     </header>
 
     <main>
-        <table>
+        <table border="1">
             <thead>
-                <tr>
-                    <th>ID Recinto</th>
-                    <th>Nombre</th>
-                    <th>Capacidad</th>
-                    <th>Ubicación</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Capacidad</th>
+                <th>Ubicación</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Palacio de Congresos</td>
-                    <td>2,000</td>
-                    <td>Sevilla</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Centro Cultural Norte</td>
-                    <td>750</td>
-                    <td>Málaga</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Pabellón Municipal</td>
-                    <td>1,200</td>
-                    <td>Cádiz</td>
-                </tr>
+            <tr th:each="rec : ${recintos}">
+                <td th:text="${rec.idRecinto}">1</td>
+                <td th:text="${rec.nombre}">Teatro Central</td>
+                <td th:text="${rec.capacidad}">500</td>
+                <td th:text="${rec.ubicacion}">Planta Alta</td>
+            </tr>
             </tbody>
         </table>
     </main>

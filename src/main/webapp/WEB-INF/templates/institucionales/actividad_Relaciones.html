@@ -7,19 +7,31 @@
     <link rel="stylesheet" th:href="@{/CSS/generalRelaciones.css}">
 </head>
 <body>
-    <header>
-        <h1>Actividad</h1>
-        <a th:href="@{/relaciones}">
-            <button type="button">&#8592; Atrás</button>
-        </a>
-    </header>
+<header>
+    <h1>Actividad</h1>
+    <a th:href="@{/relaciones}">
+        <button type="button">&#8592; Atrás</button>
+    </a>
+</header>
 
-    <main>
-        <span th:each="Patrocinio : ${Patrocinio}">
-        </span>
-        <span th:text="${Patrocinio.ID_Patrocinio}"
-              ></span>
-        <span th:text="${Patrocinio.Firma}"></span>
-    </main>
+<main>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID Patrocinio / Colaboración</th>
+            <th>Estado de Firma</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pat : ${colaboraciones}">
+            <td th:text="${pat.idColaboracion}">1</td>
+            <td th:text="${pat.firma ? 'Firmado' : 'No Firmado'}">Firmado</td>
+        </tr>
+        <tr th:if="${colaboraciones == null || colaboraciones.isEmpty()}">
+            <td colspan="2">No hay actividades ni patrocinios registrados actualmente.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
 </body>
 </html>
